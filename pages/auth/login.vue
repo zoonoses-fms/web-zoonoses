@@ -93,14 +93,19 @@ export default {
         password: '',
       },
       logo: require('@/assets/img/background.png'),
+      platformUuid: process.env.PLATFORM_UUID,
+      platformPassword: process.env.PLATFORM_PASSWORD,
     };
   },
+  created() {},
   mounted() {},
   methods: {
     async onSubmit() {
       try {
         const response = await this.$auth.loginWith('local', {
           data: {
+            plataforma_uuid: this.platformUuid,
+            plataforma_password: this.platformPassword,
             email: this.user.email,
             password: this.user.password,
           },

@@ -1,5 +1,5 @@
 export const state = () => ({
-  title: 'NEV',
+  title: 'Zoonoses',
 });
 
 export const mutations = {

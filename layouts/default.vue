@@ -9,7 +9,7 @@
           class="justify-content-between"
         >
           <b-avatar variant="light" :src="logo"></b-avatar>
-          <b-navbar-brand>Nev</b-navbar-brand>
+          <b-navbar-brand>Zoonoses</b-navbar-brand>
           <b-button variant="outline-light" size="sm" @click="switchShow">
             X
           </b-button>
@@ -21,40 +21,44 @@
               Home
             </NuxtLink>
           </li>
-          <li class="list-group-item">
-            <NuxtLink to="/dn" class="item">
+          <li
+            v-b-tooltip.hover
+            class="list-group-item"
+            title="Núcleo de Controle da Raiva, Leishmaniose e Outras Zoonoses"
+          >
+            <NuxtLink to="/ncrlo" class="item">
               <b-icon icon="clipboard-check"></b-icon>
-              Formulários DN
+              NCRLO
             </NuxtLink>
           </li>
-          <li class="list-group-item">
-            <NuxtLink to="/do" class="item">
+          <li
+            v-b-tooltip.hover
+            class="list-group-item"
+            title="Núcleo de Controle de Roedores e Vetores"
+          >
+            <NuxtLink to="/ncrv" class="item">
               <b-icon icon="clipboard-check"></b-icon>
-              Formulários DO
+              NCRV
             </NuxtLink>
           </li>
-          <li class="list-group-item">
-            <NuxtLink to="/health_unit" class="item">
-              <b-icon icon="fullscreen-exit"></b-icon>
-              Unidades de Saúde
+          <li
+            v-b-tooltip.hover
+            class="list-group-item"
+            title="Núcleo de Correição"
+          >
+            <NuxtLink to="/nc" class="item">
+              <b-icon icon="clipboard-check"></b-icon>
+              NC
             </NuxtLink>
           </li>
-          <li class="list-group-item">
-            <NuxtLink to="/sim" class="item">
-              <b-icon icon="pie-chart"></b-icon>
-              SIM
-            </NuxtLink>
-          </li>
-          <li class="list-group-item">
-            <NuxtLink to="/sinasc" class="item">
-              <b-icon icon="pie-chart"></b-icon>
-              SINASC
-            </NuxtLink>
-          </li>
-          <li class="list-group-item">
-            <NuxtLink to="/datasets" class="item">
-              <b-icon icon="pie-chart"></b-icon>
-              Datasets
+          <li
+            v-b-tooltip.hover
+            class="list-group-item"
+            title="Mapas"
+          >
+            <NuxtLink to="/maps" class="item">
+              <b-icon icon="map"></b-icon>
+              Mapas
             </NuxtLink>
           </li>
         </ul>
@@ -83,8 +87,19 @@
                     <em>Usuário</em>
                     <b-avatar size="sm"></b-avatar>
                   </template>
-                  <NuxtLink v-show="isAdmin" to="/admin/" class="dropdown-item">
-                    Admin
+                  <NuxtLink
+                    v-show="isAdmin"
+                    to="/admin/user"
+                    class="dropdown-item"
+                  >
+                    Usuários
+                  </NuxtLink>
+                  <NuxtLink
+                    v-show="isAdmin"
+                    to="/admin/team"
+                    class="dropdown-item"
+                  >
+                    Turmas
                   </NuxtLink>
                   <NuxtLink
                     v-show="isAdmin"

@@ -2,7 +2,8 @@ export default {
   env: {
     apiUrl: process.env.API_BASE_URL,
     baseUrl: process.env.BASE_URL,
-    applicationToken: process.env.APPLICATION_TOKEN,
+    platformUuid: process.env.PLATFORM_UUID,
+    platformPassword: process.env.PLATFORM_PASSWORD
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -21,14 +22,13 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~plugins/axios.js'},
     { src: '~plugins/filter' },
     { src: '~/plugins/apexcharts', mode: 'client' },
     { src: '~/plugins/autocomplete-vue', mode: 'client' },
     { src: '~/plugins/easy-circular-progress', mode: 'client' },
-    { src: '~/plugins/vuelayers', mode: 'client' },
-    { src: '~/plugins/ol-ext', mode: 'client' },
-    { src: '~/plugins/ol', mode: 'client' },
     { src: '~/plugins/v-click-outside', mode: 'client' },
+    { src: '~/plugins/ol', mode: 'client' },
     { src: '~/plugins/locale' },
     { src: '~/plugins/palette' },
     { src: '~/plugins/simple-statistics' },
@@ -54,6 +54,8 @@ export default {
         defaultTimezone: 'America/Fortaleza',
       },
     ],
+    // https://github.com/nuxt-community/dotenv-module
+    '@nuxtjs/dotenv'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -112,7 +114,9 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    // transpile: ['ol']
+  },
 
   styleResources: {
     // your settings here
@@ -152,7 +156,7 @@ export default {
           required: true,
         },
         refreshToken: {
-          property: 'access_token',
+          property: 'refresh_token',
           data: 'refresh_token',
           maxAge: 60 * 60 * 24 * 30,
         },

@@ -1,19 +1,20 @@
 <template>
   <div>
-    <b-button v-b-modal="`modal-lg-${id}`" :variant="variant" @click="setUser">
+    <b-button v-b-modal="`modal-xl-${id}`" :variant="variant" @click="setUser">
       {{ textButton }}
     </b-button>
     <ValidationObserver v-slot="{ invalid }">
       <b-modal
-        :id="`modal-lg-${id}`"
+        :id="`modal-xl-${id}`"
+        size="xl"
         scrollable
         :title="user.username"
         @ok="handleOk"
       >
         <b-overlay :show="show" rounded="sm">
-          <form ref="form" @submit.stop.prevent>
-            <div class="row">
-              <div class="col-12">
+          <div class="row p-2">
+            <div class="col-md-12 col-lg-6 px-2 py-2 shadow bg-white rounded">
+              <form ref="form" @submit.stop.prevent>
                 <div class="row">
                   <div class="col-12">
                     <ValidationProvider
@@ -99,15 +100,23 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    <b-form-group label="Ocupação" label-for="occupation-input">
-                      <b-form-input
-                        v-model="user.occupation"
-                        name="occupation-input"
-                        type="text"
-                        label="Nome"
-                        placeholder="Ocupação"
+                    <b-form-group v-slot="{ ariaDescribedbyAbility }">
+                      <b-form-checkbox-group
+                        id="cores"
+                        v-model="selectedCores"
+                        :aria-describedby="ariaDescribedbyAbility"
+                        name="flavour-2"
+                        switches
+                        @input="showAbilities"
                       >
-                      </b-form-input>
+                        <b-form-checkbox
+                          v-for="core in cores"
+                          :key="core.id"
+                          :value="core.id"
+                        >
+                          <b>{{ core.initial }}</b>
+                        </b-form-checkbox>
+                      </b-form-checkbox-group>
                     </b-form-group>
                   </div>
                 </div>
@@ -184,48 +193,59 @@
                 <div class="row justify-content-center align-items-center">
                   <div class="col-12 align-self-center"></div>
                 </div>
-              </div>
+              </form>
             </div>
-            <div v-if="isAdmin" class="row">
-              <div class="col-12">
-                <div class="accordion" role="tablist">
-                  <b-card no-body class="mb-1">
-                    <b-card-header header-tag="header" class="p-1" role="tab">
-                      <b-button
-                        v-b-toggle="`collapse-role-${id}`"
-                        block
-                        variant="info"
+            <div class="col-md-12 col-lg-6 px-2 py-2 shadow bg-white rounded">
+              <b-form-group v-slot="{ ariaDescribedby }" label="Plataformas:">
+                <b-form-checkbox-group
+                  id="plataforms"
+                  v-model="selectedPlataformas"
+                  :aria-describedby="ariaDescribedby"
+                  name="flavour-2"
+                  switches
+                >
+                  <b-form-checkbox
+                    v-for="plataform in plataforms"
+                    :key="plataform.id"
+                    :value="plataform.id"
+                  >
+                    {{ plataform.description }}
+                  </b-form-checkbox>
+                </b-form-checkbox-group>
+              </b-form-group>
+
+              <div class="row">
+                <div class="col-12">
+                  <h5>Núcleos:</h5>
+                  <div
+                    v-for="core in showCores"
+                    :key="core.id"
+                    :value="core.id"
+                  >
+                    <b>{{ core.name }}</b>
+                    <b-form-group v-slot="{ ariaDescribedbyAbility }">
+                      <b-form-checkbox-group
+                        id="abilities"
+                        v-model="selectedAbilities"
+                        :aria-describedby="ariaDescribedbyAbility"
+                        name="flavour-2"
+                        switches
+                        stacked
                       >
-                        Grupos
-                      </b-button>
-                    </b-card-header>
-                    <b-collapse
-                      :id="`collapse-role-${id}`"
-                      visible
-                      accordion="roles"
-                      role="tabpanel"
-                    >
-                      <b-card-body>
-                        <b-card-text>
-                          <div v-for="role in roles" :key="role.id" class="row">
-                            {{ role.alias | truncate(30) }}
-                            <b-form-checkbox
-                              v-model="role.selected"
-                              name="check-button"
-                              switch
-                              size="lg"
-                              class="ml-2"
-                            >
-                            </b-form-checkbox>
-                          </div>
-                        </b-card-text>
-                      </b-card-body>
-                    </b-collapse>
-                  </b-card>
+                        <b-form-checkbox
+                          v-for="ability in core.abilities"
+                          :key="ability.id"
+                          :value="ability.id"
+                        >
+                          <b>{{ ability.name }}</b>
+                        </b-form-checkbox>
+                      </b-form-checkbox-group>
+                    </b-form-group>
+                  </div>
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </b-overlay>
         <template #modal-footer="{ ok, cancel }">
           <button class="btn btn-success" :disabled="invalid" @click="ok()">
@@ -263,8 +283,9 @@ export default {
           email: null,
           is_staff: true,
           is_superuser: false,
-          roles: [],
-          user_permissions: [],
+          plataforms: [],
+          cores: [],
+          abilities: [],
         };
       },
     },
@@ -280,7 +301,12 @@ export default {
       show: false,
       url: 'user/',
       id: null,
-      roles: [],
+      plataforms: [],
+      selectedPlataformas: [],
+      cores: [],
+      showCores: [],
+      selectedCores: [],
+      selectedAbilities: [],
       user: {
         id: null,
         username: null,
@@ -289,10 +315,10 @@ export default {
         email: null,
         is_staff: true,
         is_superuser: false,
-        roles: [],
-        user_permissions: [],
+        plataforms: [],
+        cores: [],
+        abilities: [],
       },
-      selectedRoles: [],
     };
   },
   computed: {},
@@ -303,7 +329,14 @@ export default {
   mounted() {},
   methods: {
     setUser() {
-      this.getRoles();
+      this.selectedPlataformas = [];
+      this.selectedCores = [];
+      this.selectedAbilities = [];
+      this.user.cores.forEach((core) => {
+        this.selectedCores.push(core.id);
+      });
+      this.getPlataforms();
+      this.getCores();
     },
     async createUser() {
       try {
@@ -366,20 +399,19 @@ export default {
       this.handleSubmit();
     },
     handleSubmit() {
-      this.selectedRoles = [];
-      this.roles.forEach((group) => {
-        if (group.selected) {
-          this.selectedRoles.push(group.id);
-        }
-      });
-
-      if (this.selectedRoles.length > 0) {
-        this.user.roles = this.selectedRoles;
+      if (
+        this.selectedPlataformas.length > 0 &&
+        this.selectedAbilities.length > 0 &&
+        this.selectedCores.length > 0
+      ) {
+        this.user.plataforms = this.selectedPlataformas;
+        this.user.cores = this.selectedCores;
+        this.user.abilities = this.selectedAbilities;
 
         if (this.user.id) {
-          this.updateMember();
+          this.updateUser();
         } else {
-          this.createMember();
+          this.createUser();
         }
         this.$nextTick(() => {
           // this.$bvModal.hide(`modal-xl-${this.id}`);
@@ -389,19 +421,31 @@ export default {
         this.show = false;
       }
     },
-    async getRoles() {
-      const response = await this.$axios.get('role/?limit=100');
-      this.roles = await response.data;
-      console.log(this.roles);
-      this.roles.forEach((role) => {
-        role.selected = false;
+    async getPlataforms() {
+      const response = await this.$axios.get('plataform');
+      this.plataforms = response.data;
+      this.user.plataforms.forEach((plataform) => {
+        this.selectedPlataformas.push(plataform.id);
       });
-      this.user.roles.forEach((memberGroup) => {
-        this.roles.forEach((group) => {
-          if (group.id === memberGroup.id) {
-            group.selected = true;
-          }
-        });
+    },
+    async getCores() {
+      const response = await this.$axios.get('core');
+      this.cores = response.data;
+      this.showAbilities();
+    },
+    showAbilities() {
+      this.showCores = [];
+      this.cores.forEach((core) => {
+        if (this.selectedCores.includes(core.id)) {
+          this.showCores.push(core);
+          core.abilities.forEach((ability) => {
+            this.user.abilities.forEach((userAbility) => {
+              if (ability.id === userAbility.id) {
+                this.selectedAbilities.push(ability.id);
+              }
+            });
+          });
+        }
       });
     },
     async checkEmail() {

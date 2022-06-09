@@ -3,7 +3,7 @@ export default {
     isAdmin() {
       if (process.client) {
         if (this.$auth.loggedIn) {
-          if (this.$auth.user.roles.some((role) => role.name === 'admin')) {
+          if (this.$auth.user.abilities.some((abilitie) => abilitie.name === 'zoonoses:admin')) {
             return true;
           } else {
             return false;

@@ -26,11 +26,11 @@
         </div>
       </div>
       <div class="col-sm-12 col-md-2 col-xl-1">
-        <FormsUser
+        <FormsTeam
           text-button="Cadastar"
           variant="primary"
-          @createMember="getRows"
-        ></FormsUser>
+          @createTeam="getRows"
+        ></FormsTeam>
       </div>
     </div>
     <div class="row justify-content-between">
@@ -42,25 +42,25 @@
             responsive
             hover
             :fields="fields"
-            :items="listUsers"
+            :items="listTeams"
             primary-key="id"
           >
             <template #cell(id)="data">
               {{ data.item.id }}
             </template>
             <template #cell(name)="data">
-              {{ data.item.name }}
+              {{ data.item.core.name }}
             </template>
             <template #cell(email)="data">
-              {{ data.item.email }}
+              {{ data.item.number }}
             </template>
             <template #cell(edit)="data">
-              <FormsUser
+              <FormsTeam
                 text-button="Editar"
-                :old-user="data.item"
+                :old-team="data.item"
                 variant="primary"
                 @updateMember="getRows"
-              ></FormsUser>
+              ></FormsTeam>
             </template>
             <template #cell(delete)="data">
               <ModalDelete :item="data.item" url="user/" @deletItem="getRows">
@@ -75,55 +75,58 @@
 
 <script>
 export default {
-  name: 'AdminPage',
-  data() {
-    return {
-      fields: [
-        { key: 'id', label: 'Id', sortable: true },
-        { key: 'name', label: 'Nome', sortable: true },
-        { key: 'email', label: 'E-mail', sortable: true },
-        { key: 'edit', label: 'Editar' },
-        { key: 'delete', label: 'Excluir' },
-      ],
-      perPage: 10,
-      currentPage: 2,
-      totalRows: 0,
-      search: '',
-      listUsers: [],
-    };
-  },
-  fetch() {
-    this.getRows();
-  },
-  created() {
-    this.getRows();
-    this.welcomeMessage();
-  },
-  methods: {
-    welcomeMessage() {
-      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Usuários');
+    name: "AdminPage",
+    data() {
+        return {
+            fields: [
+                { key: "id", label: "Id", sortable: true },
+                { key: "core.name", label: "Núcleo", sortable: true },
+                { key: "number", label: "Turma", sortable: true },
+                { key: "edit", label: "Editar" },
+                { key: "delete", label: "Excluir" },
+            ],
+            perPage: 10,
+            currentPage: 1,
+            totalRows: 0,
+            search: "",
+            listTeams: [],
+        };
     },
-    async getRows() {
-      const response = await this.$axios.get(`user/`, {
-        params: {
-          per_page: this.perPage,
-          page: this.currentPage,
-          search: this.search.length > 3 ? this.search : '',
-        },
-      });
-      this.listUsers = await response.data.data;
-      this.totalRows = await response.data.total;
+    fetch() {
+        // this.getRows();
     },
-    async getGroups() {
-      const response = await this.$axios.get(`role/`);
-      this.listGroups = await response.data;
-    },
-    searchHandler() {
-      if (this.search.length > 3) {
+    created() {
         this.getRows();
-      }
+        this.welcomeMessage();
     },
-  },
+    methods: {
+        welcomeMessage() {
+            this.$store.commit("layout/CHANGE_NAV_TITLE", "Usuários");
+        },
+        async getRows() {
+            try {
+                const response = await this.$axios.get(`team/`, {
+                    params: {
+                        per_page: this.perPage,
+                        page: this.currentPage,
+                        search: this.search.length > 3 ? this.search : "",
+                    },
+                });
+                this.listTeams = await response.data.data;
+                this.totalRows = await response.data.total;
+            }
+            catch (error) {
+                /* if(error.response.status === 401) {
+                  this.$router.push('/');
+                } */
+            }
+        },
+        searchHandler() {
+            if (this.search.length > 3) {
+                this.getRows();
+            }
+        },
+    },
 };
 </script>
 

@@ -17,6 +17,7 @@
   "dependencies": {
     "@nuxtjs/auth-next": "^5.0.0-1648802546.c9880dc",
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/style-resources": "^1.2.1",
@@ -31,7 +32,7 @@
     "nuxt": "^2.15.8",
     "nuxt-validate": "^1.0.1",
     "ol": "^6.14.1",
-    "ol-ext": "^3.2.24",
+    "ol-ext": "^3.2.25",
     "simple-statistics": "^7.7.5",
     "v-click-outside": "^3.1.2",
     "vue": "^2.6.14",
@@ -40,7 +41,6 @@
     "vue-swatches": "^2.1.1",
     "vue-template-compiler": "^2.6.14",
     "vue-toastification": "^1.7.14",
-    "vuelayers": "^0.12.3",
     "webpack": "^4.46.0",
     "xlsx": "^0.18.5"
   },
