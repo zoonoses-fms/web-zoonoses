@@ -8,7 +8,7 @@
       ref="popover"
       target="popup"
       placement="top"
-      title="Popover"
+      title="Informações"
       :show.sync="showPopover"
     >
       <div class="form-group">
@@ -39,7 +39,7 @@ export default {
   props: {
     height: {
       type: String,
-      default: '600',
+      default: '80',
     },
     mapFeatures: {
       type: Array,
@@ -154,7 +154,7 @@ export default {
   computed: {
     mapStyle() {
       return {
-        height: `${this.height}px`,
+        height: `${this.height}vh`,
       };
     },
   },
@@ -317,13 +317,18 @@ export default {
         this.draw.abortDrawing();
       }
     },
+    handleMouseoverEdit(e) {
+      document.addEventListener('keydown', this.handleKeypessEdit, false);
+    },
+    handleMouseoutEdit(e) {
+      document.removeEventListener('keydown', this.handleKeypessEdit, false);
+    },
     handleKeypessEdit(e) {
       if (e.key === 'Backspace') {
         if (this.selectedEditable.getFeatures().getLength() > 0) {
           const features = this.selectedEditable.getFeatures().getArray();
           let layer = null;
           for (const feature of features) {
-
             this.$emit(
               'delete',
               new Vue.ol.format.GeoJSON().writeFeatures([feature])
@@ -337,7 +342,9 @@ export default {
     },
     setEditable(value) {
       if (value) {
-        document.addEventListener('keydown', this.handleKeypessEdit, false);
+        this.$refs.map.addEventListener('mouseover', this.handleMouseoverEdit, false);
+        this.$refs.map.addEventListener('mouseout', this.handleMouseoutEdit, false);
+
         this.selectedEditable = new Vue.ol.interaction.Select({
           wrapX: false,
           style: new Vue.ol.style.Style({
@@ -377,7 +384,8 @@ export default {
       } else {
         this.map.removeInteraction(this.selectedEditable);
         this.map.removeInteraction(this.modify);
-        document.removeEventListener('keydown', this.handleKeypessEdit, false);
+        this.$refs.map.removeEventListener('mouseover', this.handleMouseoverEdit, false);
+        this.$refs.map.removeEventListener('mouseout', this.handleMouseoutEdit, false);
       }
     },
     setInfo(value) {

@@ -234,7 +234,7 @@ export default {
   }
 
   .item.nuxt-link-exact-active {
-    background-color: rgba(229, 146, 56, 0.8);
+    background-color: rgba(229, 146, 56, 1);
     color: #fff;
     border-color: rgba(229, 146, 56, 0.1);
   }
@@ -244,7 +244,7 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    background: rgba(229, 146, 56, 0.8);
+    background: rgba(229, 146, 56, 1);
     height: 100%;
     width: 10px;
     border-radius: 0 16px 16px 0;

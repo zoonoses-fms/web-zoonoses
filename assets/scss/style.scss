@@ -1,6 +1,11 @@
+/* $primary: rgba(229, 146, 56, 0.8);
+$brand-primary: rgba(229, 146, 56);
+
 $theme-colors: (
-  'primary': rgba(229, 146, 56, 0.8),
+  "primary": $primary,
 );
+ */
+@import 'paper-dashboard/variables';
 
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss';

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import 'ol/ol.css';
-import TileLayer from 'ol/layer/tile';
+import TileLayer from 'ol/layer/Tile';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorLayer from 'ol/layer/Vector';
@@ -12,7 +12,7 @@ import Text from 'ol/style/Text';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import MVT from 'ol/format/MVT';
-import GeoJSON from 'ol/format/Geojson';
+import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import View from 'ol/View';
 // import Interaction from 'ol/interaction';
