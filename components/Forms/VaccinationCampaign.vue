@@ -1,6 +1,10 @@
 <template>
   <div>
-    <b-button v-b-modal="`modal-md-${id}`" :variant="variant" @click="setTeam">
+    <b-button
+      v-b-modal="`modal-md-${id}`"
+      :variant="variant"
+      @click="setCampaign"
+    >
       {{ textButton }}
     </b-button>
     <ValidationObserver v-slot="{ valid }">
@@ -8,7 +12,7 @@
         :id="`modal-md-${id}`"
         size="md"
         scrollable
-        :title="`${team.number}`"
+        :title="vaccinationCampaign.year ? `${vaccinationCampaign.year}` : ``"
         @ok="handleOk"
       >
         <b-overlay :show="show" rounded="sm">
@@ -16,28 +20,27 @@
             <div class="col-12 px-2 py-2 shadow bg-white rounded">
               <form ref="form" @submit.stop.prevent>
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-4 px-1">
                     <ValidationProvider
                       v-slot="{ errors }"
-                      name="Núcleo"
-                      :rules="{ required: true }"
+                      name="Ano"
+                      :rules="{ required: true, min: 4, max: 4 }"
                     >
-                      <b-form-group label="Núcleo" label-for="core">
-                        <b-form-select
-                          v-model="team.core_id"
-                          class="mb-3"
-                          name="core"
-                          @input="getUsers"
+                      <div class="form-group">
+                        <label for="year-input">Ano</label>
+                        <select
+                          v-model="vaccinationCampaign.year"
+                          name="year-input"
+                          class="form-control"
                         >
-                          <b-form-select-option
-                            v-for="core in cores"
-                            :key="core.id"
-                            :value="core.id"
+                          <option
+                            v-for="(year, index) in years"
+                            :key="index"
+                            :value="year"
                           >
-                            {{ core.initial }}
-                          </b-form-select-option>
-                        </b-form-select>
-
+                            {{ year }}
+                          </option>
+                        </select>
                         <div
                           v-for="(error, index) in errors"
                           :key="index"
@@ -45,73 +48,57 @@
                         >
                           {{ error }}
                         </div>
-                      </b-form-group>
+                      </div>
                     </ValidationProvider>
+                  </div>
+                  <div class="col-4 px-1">
+                    <ValidationProvider
+                      v-slot="{ errors }"
+                      name="Início"
+                      :rules="{ required: true }"
+                    >
+                      <div class="form-group">
+                        <label for="start-input">Início</label>
+                        <input
+                          v-model="vaccinationCampaign.start"
+                          name="start-input"
+                          class="form-control"
+                          type="date"
+                        />
+                        <div
+                          v-for="(error, index) in errors"
+                          :key="index"
+                          class="invalid-feedback d-block"
+                        >
+                          {{ error }}
+                        </div>
+                      </div>
+                    </ValidationProvider>
+                  </div>
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="end-input">Fim</label>
+                      <input
+                        v-model="vaccinationCampaign.end"
+                        name="end-input"
+                        class="form-control"
+                        type="date"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Supervisor"
-                      :rules="{ required: true }"
-                    >
-                      <b-form-group label="Supervisor" label-for="user">
-                        <b-form-select
-                          v-model="team.user_id"
-                          class="mb-3"
-                          name="user"
-                        >
-                          <b-form-select-option
-                            v-for="user in users"
-                            :key="user.id"
-                            :value="user.id"
-                          >
-                            {{ user.name }}
-                          </b-form-select-option>
-                        </b-form-select>
-
-                        <div
-                          v-for="(error, index) in errors"
-                          :key="index"
-                          class="invalid-feedback d-block"
-                        >
-                          {{ error }}
-                        </div>
-                      </b-form-group>
-                    </ValidationProvider>
+                  <div class="col-5 px-1">
+                    <div class="form-group">
+                      <label for="goal-input">Meta:</label>
+                      <input
+                        v-model="vaccinationCampaign.goal"
+                        name="goal-input"
+                        class="form-control"
+                        type="number"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Número"
-                      :rules="{ required: true }"
-                    >
-                      <b-form-group label="Número" label-for="number-input">
-                        <b-form-input
-                          v-model="team.number"
-                          name="number-input"
-                          type="number"
-                          label="Número"
-                        >
-                        </b-form-input>
-
-                        <div
-                          v-for="(error, index) in errors"
-                          :key="index"
-                          class="invalid-feedback d-block"
-                        >
-                          {{ error }}
-                        </div>
-                      </b-form-group>
-                    </ValidationProvider>
-                  </div>
-                </div>
-
-                <div class="row justify-content-center align-items-center">
-                  <div class="col-12 align-self-center"></div>
                 </div>
               </form>
             </div>
@@ -127,29 +114,29 @@
     </ValidationObserver>
   </div>
 </template>
+
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
-import is from '@/mixins/is';
 export default {
-  name: 'FormsTeam',
+  name: 'FormsVaccinationCampaign',
   components: {
     ValidationObserver,
     ValidationProvider,
   },
-  mixins: [is],
   props: {
     textButton: {
       type: String,
       required: true,
     },
-    oldTeam: {
+    oldVaccinationCampaign: {
       type: Object,
       default() {
         return {
           id: null,
-          number: null,
-          core_id: null,
-          user_id: null,
+          year: null,
+          start: null,
+          end: null,
+          goal: null,
         };
       },
     },
@@ -160,39 +147,45 @@ export default {
   },
   data() {
     return {
-      initialImage: null,
-      face: require('@/assets/img/face-0.jpg'),
-      show: false,
-      url: 'team/',
       id: null,
-      cores: [],
-      users: [],
-      team: {
+      show: false,
+      url: 'ncrlo/campaign/',
+      vaccinationCampaign: {
         id: null,
-        number: null,
-        core_id: null,
-        user_id: null,
+        year: null,
+        start: null,
+        end: null,
+        goal: null,
       },
     };
   },
-  computed: {},
-  created() {
-    this.id = this.oldTeam.id;
-    this.team = { ...this.oldTeam };
-  },
-  mounted() {},
-  methods: {
-    setTeam() {
-      this.getCores();
-      if (this.team.id) {
-        this.getUsers();
+  computed: {
+    years() {
+      const today = new Date();
+      const start = today.getFullYear() + 1;
+      const end = 2010;
+      const years = [];
+
+      for (let i = start; i >= end; i--) {
+        years.push(i);
       }
-      // this.getUsers();
+      return years;
+    },
+  },
+  created() {
+    this.id = this.oldVaccinationCampaign.id;
+    this.vaccinationCampaign = { ...this.oldVaccinationCampaign };
+  },
+  methods: {
+    setCampaign() {
+      if (this.vaccinationCampaign.id) {
+        // get data
+      }
     },
     async create() {
       try {
-        const response = await this.$axios.post(`${this.url}`, this.team);
-        this.team = response.data;
+        const response = await this.$axios.post(`${this.url}`, this.vaccinationCampaign);
+        this.vaccinationCampaign = response.data;
         this.$bvToast.toast('Cadastro efetuado!', {
           title: 'Sucesso',
           autoHideDelay: 5000,
@@ -219,10 +212,10 @@ export default {
     async update() {
       try {
         const response = await this.$axios.put(
-          `${this.url}${this.team.id}/`,
-          this.team
+          `${this.url}${this.vaccinationCampaign.id}/`,
+          this.vaccinationCampaign
         );
-        this.team = response.data;
+        this.vaccinationCampaign = response.data;
 
         this.$bvToast.toast('Cadastro atualizado!', {
           title: 'Sucesso',
@@ -250,7 +243,7 @@ export default {
       this.handleSubmit();
     },
     handleSubmit() {
-      if (this.team.id) {
+      if (this.vaccinationCampaign.id) {
         this.update();
       } else {
         this.create();
@@ -260,18 +253,6 @@ export default {
       });
       this.show = false;
     },
-    async getUsers() {
-      const response = await this.$axios.get('user', {
-        params: {
-          core: this.team.core_id,
-        },
-      });
-      this.users = response.data;
-    },
-    async getCores() {
-      const response = await this.$axios.get('core');
-      this.cores = response.data;
-    }
   },
 };
 </script>
