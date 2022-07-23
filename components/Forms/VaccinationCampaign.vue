@@ -8,17 +8,17 @@
       {{ textButton }}
     </b-button>
     <ValidationObserver v-slot="{ valid }">
-      <b-modal
-        :id="`modal-md-${id}`"
-        size="md"
-        scrollable
-        :title="vaccinationCampaign.year ? `${vaccinationCampaign.year}` : ``"
-        @ok="handleOk"
-      >
-        <b-overlay :show="show" rounded="sm">
-          <div class="row p-2">
-            <div class="col-12 px-2 py-2 shadow bg-white rounded">
-              <form ref="form" @submit.stop.prevent>
+      <form @submit.prevent="handleOk">
+        <b-modal
+          :id="`modal-md-${id}`"
+          size="md"
+          scrollable
+          :title="vaccinationCampaign.year ? `${vaccinationCampaign.year}` : ``"
+          @ok="handleOk"
+        >
+          <b-overlay :show="show" rounded="sm">
+            <div class="row p-2">
+              <div class="col-12 px-2 py-2 shadow bg-white rounded">
                 <div class="row">
                   <div class="col-4 px-1">
                     <ValidationProvider
@@ -88,7 +88,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-5 px-1">
+                  <div class="col-3 px-1">
                     <div class="form-group">
                       <label for="goal-input">Meta:</label>
                       <input
@@ -99,29 +99,111 @@
                       />
                     </div>
                   </div>
+                  <div class="col-3 px-1">
+                    <div class="form-group">
+                      <label for="coordinator-cost-input">Coordinator:</label>
+                      <money
+                        v-model="vaccinationCampaign.coordinator_cost"
+                        v-bind="money"
+                        name="coordinator-cost-input"
+                        class="form-control"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-3 px-1">
+                    <div class="form-group">
+                      <label for="supervisor-cost-input">Supervisor:</label>
+                      <money
+                        v-model="vaccinationCampaign.supervisor_cost"
+                        v-bind="money"
+                        name="supervisor-cost-input"
+                        class="form-control"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-3 px-1">
+                    <div class="form-group">
+                      <label for="vaccinator-cost-input">Vacinador:</label>
+                      <money
+                        v-model="vaccinationCampaign.vaccinator_cost"
+                        v-bind="money"
+                        name="vaccinator-cost-input"
+                        class="form-control"
+                        type="text"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </form>
+                <div class="row">
+                  <div class="col-3 px-1">
+                    <div class="form-group">
+                      <label for="vaccine-cost-input">Vacina:</label>
+                      <money
+                        v-model="vaccinationCampaign.vaccine_cost"
+                        v-bind="money"
+                        name="vaccine-cost-input"
+                        class="form-control"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-3 px-1">
+                    <div class="form-group">
+                      <label for="mileage-cost-input">KM:</label>
+                      <money
+                        v-model="vaccinationCampaign.mileage_cost"
+                        v-bind="money"
+                        name="mileage-cost-input"
+                        class="form-control"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-3 px-1">
+                    <div class="form-group">
+                      <label for="driver-cost-input">Motorista:</label>
+                      <money
+                        v-model="vaccinationCampaign.driver_cost"
+                        v-bind="money"
+                        name="driver-cost-input"
+                        class="form-control"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </b-overlay>
-        <template #modal-footer="{ ok, cancel }">
-          <button class="btn btn-success" :disabled="!valid" @click="ok()">
-            Salvar
-          </button>
-          <b-button variant="danger" @click="cancel()"> Sair </b-button>
-        </template>
-      </b-modal>
+          </b-overlay>
+
+          <template #modal-footer="{ ok, cancel }">
+            <button
+              type="submit"
+              class="btn btn-success"
+              :disabled="!valid && vaccinationCampaign.id === null"
+              @click="ok()"
+            >
+              Salvar
+            </button>
+            <b-button variant="danger" @click="cancel()"> Sair </b-button>
+          </template>
+        </b-modal>
+      </form>
     </ValidationObserver>
   </div>
 </template>
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
+import { Money } from 'v-money';
 export default {
   name: 'FormsVaccinationCampaign',
   components: {
     ValidationObserver,
     ValidationProvider,
+    Money,
   },
   props: {
     textButton: {
@@ -136,7 +218,13 @@ export default {
           year: null,
           start: null,
           end: null,
-          goal: null,
+          goal: 0,
+          coordinator_cost: 0,
+          supervisor_cost: 0,
+          vaccinator_cost: 0,
+          vaccine_cost: 0,
+          mileage_cost: 0,
+          driver_cost: 0,
         };
       },
     },
@@ -155,7 +243,21 @@ export default {
         year: null,
         start: null,
         end: null,
-        goal: null,
+        goal: 0,
+        coordinator_cost: 0,
+        supervisor_cost: 0,
+        vaccinator_cost: 0,
+        vaccine_cost: 0,
+        mileage_cost: 0,
+        driver_cost: 0,
+      },
+      money: {
+        decimal: ',',
+        thousands: '.',
+        prefix: 'R$ ',
+        suffix: '',
+        precision: 2,
+        masked: false /* doesn't work with directive */,
       },
     };
   },
@@ -174,25 +276,27 @@ export default {
   },
   created() {
     this.id = this.oldVaccinationCampaign.id;
-    this.vaccinationCampaign = { ...this.oldVaccinationCampaign };
   },
   methods: {
     setCampaign() {
+      this.vaccinationCampaign = { ...this.oldVaccinationCampaign };
       if (this.vaccinationCampaign.id) {
         // get data
       }
     },
     async create() {
       try {
-        const response = await this.$axios.post(`${this.url}`, this.vaccinationCampaign);
-        this.vaccinationCampaign = response.data;
+        const response = await this.$axios.post(
+          `${this.url}`,
+          this.vaccinationCampaign
+        );
         this.$bvToast.toast('Cadastro efetuado!', {
           title: 'Sucesso',
           autoHideDelay: 5000,
           variant: 'success',
           solid: true,
         });
-        this.$emit('createTeam', await response.data);
+        this.$emit('create', await response.data);
         this.show = false;
       } catch (errors) {
         for (const prop in errors.response.data) {
@@ -215,15 +319,13 @@ export default {
           `${this.url}${this.vaccinationCampaign.id}/`,
           this.vaccinationCampaign
         );
-        this.vaccinationCampaign = response.data;
-
         this.$bvToast.toast('Cadastro atualizado!', {
           title: 'Sucesso',
           autoHideDelay: 5000,
           variant: 'success',
           solid: true,
         });
-        this.$emit('updateTeam', await response.data);
+        this.$emit('update', await response.data);
         this.show = false;
       } catch (errors) {
         for (const prop in errors.response.data) {

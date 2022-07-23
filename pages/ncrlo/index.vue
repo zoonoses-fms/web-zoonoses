@@ -1,6 +1,6 @@
 <template>
   <div
-    class="row justify-content-center row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4"
+    class="row justify-content-center row-cols-1 row-cols-md-2 row-cols-xl-3"
   >
     <div class="col mb-4">
       <div class="card mb-4 shadow-sm">

@@ -182,11 +182,11 @@ export default {
     // linkExactActiveClass: 'active',
     middleware: ['auth'],
     extendRoutes(routes, resolve) {
-      routes.push({
+/*       routes.push({
         name: 'datasets-loads',
         path: '/datasets/load/:source/:system/:initial',
         component: '~/pages/datasets/_load.vue',
-      });
+      }); */
     },
   },
 };

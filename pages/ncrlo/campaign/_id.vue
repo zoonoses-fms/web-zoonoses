@@ -1,22 +1,88 @@
 <template>
   <main class="container-fluid">
     <div class="row m-2 justify-content-between">
-      <div class="col-sm-12 col-md-6"></div>
+      <div class="col-sm-12 col-md-6 d-flex justify-content-star">
+        <NuxtLink to="/ncrlo/vaccination/support" class="btn btn-success">
+          Todos os Pontos de Apoio
+        </NuxtLink>
+      </div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
         <FormsAddSupport
           text-button="Adicionar Apoio"
           variant="primary"
+          :current-campaign.sync="campaign"
+          @addSupport="addSupport"
         ></FormsAddSupport>
+      </div>
+    </div>
+    <div v-if="newCampaignSupports.length > 0">
+      <div class="row justify-content-between">
+        <div class="col-12">
+          <b-card class="text-center">
+            <template #header>
+              <div class="row m-0">
+                <div class="col-sm-12 col-md-6 d-flex justify-content-start">
+                  <h5 class="mb-0">Novos Ponto de Apoio</h5>
+                </div>
+                <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+                  <b-button variant="success" @click="saveSupport">
+                    Salvar
+                  </b-button>
+                </div>
+              </div>
+            </template>
+            <b-table
+              id="table-campaign-supports"
+              striped
+              responsive
+              hover
+              :fields="fields"
+              :items="newCampaignSupports"
+              primary-key="id"
+            >
+              <template #cell(id)="data">
+                {{ data.item.id }}
+              </template>
+              <template #cell(name)="data">
+                {{ data.item.name }}
+              </template>
+              <template #cell(address)="data">
+                {{ data.item.address }}
+              </template>
+              <template #cell(number)="data">
+                {{ data.item.number }}
+              </template>
+              <template #cell(support)="data">
+                <NuxtLink
+                  :to="`/ncrlo/campaign/support/${data.item.id}`"
+                  class="btn btn-warning"
+                >
+                  Detalhes
+                </NuxtLink>
+              </template>
+              <template #cell(delete)="data">
+                <ModalDelete
+                  :item="data.item"
+                  :url="urlCampaignSupport"
+                  text-button="Remover"
+                  @deletItem="getDetailCampaign"
+                >
+                </ModalDelete>
+              </template>
+            </b-table>
+          </b-card>
+        </div>
       </div>
     </div>
     <div class="row justify-content-between">
       <div class="col-12">
-        <b-card class="text-center">
+        <b-card>
           <b-table
-            id="table-campaign-supports"
+            id="table-campaign-new-supports"
             striped
             responsive
             hover
+            small
             :fields="fields"
             :items="campaignSupports"
             primary-key="id"
@@ -25,15 +91,22 @@
               {{ data.item.id }}
             </template>
             <template #cell(name)="data">
-              {{ data.item.name }}
+              {{ data.item.support.name }}
             </template>
             <template #cell(address)="data">
-              {{ data.item.address }}
+              {{ data.item.support.address }}
             </template>
             <template #cell(number)="data">
-              {{ data.item.number }}
+              {{ data.item.support.number }}
             </template>
-            <template #cell(support)="data">
+            <template #cell(edit)="data">
+              <FormsCampaignSupport
+                text-button="Editar"
+                variant="success"
+                :old-support="data.item"
+              ></FormsCampaignSupport>
+            </template>
+            <template #cell(details)="data">
               <NuxtLink
                 :to="`/ncrlo/campaign/support/${data.item.id}`"
                 class="btn btn-warning"
@@ -42,7 +115,12 @@
               </NuxtLink>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete :item="data.item" :url="url" @deletItem="getRows">
+              <ModalDelete
+                :item="data.item"
+                :url="urlCampaignSupport"
+                text-button="Remover"
+                @deletItem="getDetailCampaign"
+              >
               </ModalDelete>
             </template>
           </b-table>
@@ -57,10 +135,11 @@ export default {
   name: 'CampaignDetailsPage',
   data() {
     return {
-      campaign: null,
+      campaign: {},
       campaignSupports: [],
-      vaccinationSupports: [],
-      url: 'ncrlo/campaign',
+      newCampaignSupports: [],
+      url: 'ncrlo/campaign/',
+      urlCampaignSupport: 'ncrlo/campaign/support/',
       fields: [
         {
           key: 'id',
@@ -82,30 +161,18 @@ export default {
           label: 'Número',
         },
         {
-          key: 'support',
-          label: 'Suporte',
+          key: 'edit',
+          label: 'Editar',
+        },
+        {
+          key: 'details',
+          label: 'Detalhes',
         },
         {
           key: 'delete',
           label: 'Excluir',
         },
       ],
-      campaigns: {
-        perPage: 10,
-        currentPage: 1,
-        totalRows: 0,
-        search: '',
-        rows: [],
-        url: 'ncrlo/campaign/support',
-      },
-      vaccinations: {
-        perPage: 10,
-        currentPage: 1,
-        totalRows: 0,
-        search: '',
-        rows: [],
-        url: 'ncrlo/vaccination/support',
-      },
     };
   },
 
@@ -117,34 +184,55 @@ export default {
     welcomeMessage() {
       this.$store.commit(
         'layout/CHANGE_NAV_TITLE',
-        'Pontos de apoi a campanhas de vacinação'
+        'Pontos de apoio a campanhas de vacinação'
       );
     },
     async getDetailCampaign() {
+      this.campaignSupports = [];
+
       const response = await this.$axios.get(
-        `${this.url}/${this.$route.params.id}`
+        `${this.url}${this.$route.params.id}`
       );
       this.campaign = response.data;
 
       this.campaign.supports.forEach((supportPoint) => {
-        this.campaignSupports.push(supportPoint.support);
+        this.campaignSupports.push(supportPoint);
       });
     },
-    async getRows() {
-      try {
-        const response = await this.$axios.get(`${this.vaccination.url}`, {
-          params: {
-            per_page: this.perPage,
-            page: this.currentPage,
-          },
-        });
-        this.campaigns.rows = await response.data.data;
-        this.campaigns.totalRows = await response.data.total;
-      } catch (error) {
-        /* if(error.response.status === 401) {
-          this.$router.push('/');
-        } */
+    addSupport(support) {
+      this.newCampaignSupports.push({ ...support, _rowVariant: 'success' });
+    },
+    async saveSupport() {
+      for (let index = 0; index < this.newCampaignSupports.length; index++) {
+        const element = this.newCampaignSupports[index];
+
+        try {
+          await this.$axios.post(`${this.urlCampaignSupport}`, {
+            ...element,
+            campaign_id: this.$route.params.id,
+          });
+          this.$bvToast.toast('Cadastro efetuado!', {
+            title: 'Sucesso',
+            autoHideDelay: 5000,
+            variant: 'success',
+            solid: true,
+          });
+        } catch (errors) {
+          for (const prop in errors.response.data) {
+            errors.response.data[prop].forEach((element) => {
+              this.$bvToast.toast(element, {
+                title: 'Error',
+                autoHideDelay: 5000,
+                variant: 'danger',
+                solid: true,
+              });
+            });
+          }
+          continue;
+        }
       }
+      this.newCampaignSupports = [];
+      this.getDetailCampaign();
     },
   },
 };

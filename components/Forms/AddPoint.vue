@@ -22,7 +22,7 @@
               responsive
               hover
               :fields="fields"
-              :items="viccinationSupports"
+              :items="viccinationPoints"
               primary-key="id"
             >
               <template #cell(id)="data">
@@ -46,7 +46,9 @@
                 </NuxtLink>
               </template>
               <template #cell(add)="data">
-                <b-button variant="success" @click="addSupport(data.item)">Adicionar</b-button>
+                <b-button variant="success" @click="addSupport(data.item)"
+                  >Adicionar</b-button
+                >
               </template>
             </b-table>
           </b-card>
@@ -72,17 +74,17 @@ export default {
       type: String,
       required: true,
     },
-    currentCampaign: {
+    currentSupport: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
     return {
       id: null,
       show: false,
-      url: 'ncrlo/vaccination/support',
-      viccinationSupports: [],
+      url: 'ncrlo/vaccination/point',
+      viccinationPoints: [],
       fields: [
         {
           key: 'id',
@@ -120,23 +122,22 @@ export default {
     async getVaccinationSupports() {
       const response = await this.$axios.get(`${this.url}`, {
         params: {
-          campaign_id: this.currentCampaign.id
-        }
+          support_id: this.currentSupport.id,
+        },
       });
-      this.viccinationSupports = response.data;
+      this.viccinationPoints = response.data;
     },
     addSupport(support) {
       this.$emit('addSupport', support);
-      const index = this.viccinationSupports.findIndex((item) => {
-        if(item.id === support.id) {
+      const index = this.viccinationPoints.findIndex((item) => {
+        if (item.id === support.id) {
           return true;
         }
         return false;
       });
 
-      this.viccinationSupports.splice(index, 1);
-
-    }
+      this.viccinationPoints.splice(index, 1);
+    },
   },
 };
 </script>

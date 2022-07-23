@@ -1,11 +1,11 @@
 <template>
   <div>
     <b-button v-b-modal="`delete-modal-${item.id}`" variant="danger"
-      >Excluir</b-button
+      >{{ textButton }}</b-button
     >
 
-    <b-modal :id="`delete-modal-${item.id}`" title="Excluir item" hide-footer>
-      <p class="my-4">Deseja realmente deletar?</p>
+    <b-modal :id="`delete-modal-${item.id}`" :title="`${textButton} item`" hide-footer>
+      <p class="my-4">Deseja realmente {{ textButton }} ?</p>
       <b-button
         variant="success"
         class="mt-3"
@@ -14,7 +14,7 @@
         >Cancelar</b-button
       >
       <b-button variant="danger" class="mt-3" block @click="deleteItem"
-        >Deletar</b-button
+        >{{ textButton }}</b-button
       >
     </b-modal>
   </div>
@@ -32,6 +32,10 @@ export default {
       type: String,
       required: true,
     },
+    textButton: {
+      type: String,
+      default: 'Excluir'
+    }
   },
   methods: {
     async deleteItem() {

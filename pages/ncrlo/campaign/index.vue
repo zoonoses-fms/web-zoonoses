@@ -6,17 +6,19 @@
         <FormsVaccinationCampaign
           text-button="Cadastrar campanha"
           variant="primary"
+          @create="getRows"
         ></FormsVaccinationCampaign>
       </div>
     </div>
     <div class="row justify-content-between">
       <div class="col-12">
-        <b-card class="text-center">
+        <b-card>
           <b-table
             id="table-campaigns"
             striped
             responsive
             hover
+            small
             :fields="fields"
             :items="rows"
             primary-key="id"
@@ -30,7 +32,7 @@
             <template #cell(email)="data">
               {{ data.item.start }}
             </template>
-            <template #cell(support)="data">
+            <template #cell(details)="data">
               <NuxtLink
                 :to="`/ncrlo/campaign/${data.item.id}`"
                 class="btn btn-warning"
@@ -38,8 +40,21 @@
                 Detalhes
               </NuxtLink>
             </template>
+            <template #cell(edit)="data">
+              <FormsVaccinationCampaign
+                text-button="Editar"
+                variant="success"
+                :old-vaccination-campaign="data.item"
+                @update="getRows"
+              ></FormsVaccinationCampaign>
+            </template>
             <template #cell(delete)="data">
-              <ModalDelete :item="data.item" :url="url" @deletItem="getRows">
+              <ModalDelete
+                :item="data.item"
+                :url="url"
+                text-button="Excluir"
+                @deletItem="getRows"
+              >
               </ModalDelete>
             </template>
           </b-table>
@@ -51,7 +66,7 @@
 
 <script>
 export default {
-  name: 'VaccinationPage',
+  name: 'CampaignPage',
   data() {
     return {
       url: 'ncrlo/campaign/',
@@ -72,8 +87,12 @@ export default {
           sortable: true,
         },
         {
-          key: 'support',
-          label: 'Suporte',
+          key: 'details',
+          label: 'Detalhes',
+        },
+        {
+          key: 'edit',
+          label: 'Editar',
         },
         {
           key: 'delete',
