@@ -33,6 +33,7 @@
 
 <script>
 import Vue from 'vue';
+import hexToRgba from 'hex-to-rgba';
 
 export default {
   name: 'OlMapPoints',
@@ -69,6 +70,14 @@ export default {
         return [];
       },
     },
+    colorDefault: {
+      type: String,
+      default: '#e59238',
+    },
+    colorRadar: {
+      type: String,
+      default: '#dc3545',
+    },
   },
   data() {
     return {
@@ -94,10 +103,10 @@ export default {
       },
       styleDefault: new Vue.ol.style.Style({
         fill: new Vue.ol.style.Fill({
-          color: 'rgba(229, 146, 56, 0.2)',
+          color: hexToRgba(this.colorDefault, 0.2),
         }),
         stroke: new Vue.ol.style.Stroke({
-          color: 'rgba(229, 146, 56, 0.9)',
+          color: hexToRgba(this.colorDefault, 0.9),
           width: 2,
         }),
         text: new Vue.ol.style.Text({
@@ -112,22 +121,22 @@ export default {
         }),
         image: new Vue.ol.style.Circle({
           fill: new Vue.ol.style.Fill({
-            color: 'rgba(229, 146, 56, 0.9)',
+            color: hexToRgba(this.colorDefault, 0.9),
           }),
           stroke: new Vue.ol.style.Stroke({
-            color: 'rgba(229, 146, 56, 0.9)',
+            color: hexToRgba(this.colorDefault, 0.9),
             width: 2,
           }),
-          radius: 5,
+          radius: 8,
           points: 4,
         }),
       }),
       styleOver: new Vue.ol.style.Style({
         fill: new Vue.ol.style.Fill({
-          color: 'rgba(229, 146, 56, 0.6)',
+          color: hexToRgba(this.colorDefault, 0.9),
         }),
         stroke: new Vue.ol.style.Stroke({
-          color: 'rgba(229, 146, 56, 0.9)',
+          color: hexToRgba(this.colorDefault, 0.9),
           width: 2,
         }),
         text: new Vue.ol.style.Text({
@@ -174,7 +183,7 @@ export default {
       styleRadar: new Vue.ol.style.Style({
         image: new Vue.ol.style.Circle({
           stroke: new Vue.ol.style.Stroke({
-            color: 'red',
+            color: hexToRgba(this.colorRadar, 1),
             width: 2,
           }),
           radius: 60,

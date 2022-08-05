@@ -72,7 +72,7 @@ export default {
       type: String,
       required: true,
     },
-    currentCampaign: {
+    currentCycle: {
       type: Object,
       required: true,
     }
@@ -120,7 +120,7 @@ export default {
     async getVaccinationSupports() {
       const response = await this.$axios.get(`${this.url}`, {
         params: {
-          campaign_id: this.currentCampaign.id
+          campaign_cycle_id: this.currentCycle.id
         }
       });
       this.viccinationSupports = response.data;

@@ -40,6 +40,24 @@
                 Detalhes
               </NuxtLink>
             </template>
+            <template #cell(points)="data">
+              <NuxtLink
+                :to="`/ncrlo/campaign/map/points/${data.item.id}`"
+                class="btn btn-success"
+              >
+                <b-icon icon="map"></b-icon>
+                Ponto de Vacinação
+              </NuxtLink>
+            </template>
+            <template #cell(supports)="data">
+              <NuxtLink
+                :to="`/ncrlo/campaign/map/supports/${data.item.id}`"
+                class="btn btn-info"
+              >
+                <b-icon icon="map"></b-icon>
+                Ponto de Apoios
+              </NuxtLink>
+            </template>
             <template #cell(edit)="data">
               <FormsVaccinationCampaign
                 text-button="Editar"
@@ -89,6 +107,14 @@ export default {
         {
           key: 'details',
           label: 'Detalhes',
+        },
+        {
+          key: 'points',
+          label: 'Ponto de Vacinação',
+        },
+        {
+          key: 'supports',
+          label: 'Ponto de Apoios',
         },
         {
           key: 'edit',

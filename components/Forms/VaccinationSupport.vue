@@ -24,7 +24,7 @@
                   <div class="form-group border border-success rounded p-1">
                     <div class="input-group">
                       <input
-                        v-model="vaccinationSupport.name"
+                        v-model="support.name"
                         name="name-input"
                         class="form-control"
                         type="text"
@@ -53,7 +53,7 @@
                 </ValidationProvider>
               </div>
               <div
-                v-if="vaccinationSupport.geometry != null"
+                v-if="support.geometry != null"
                 class="col-6 col-md-4 col-lg-2 mb-2"
               >
                 <div class="border border-success rounded p-1">
@@ -73,7 +73,7 @@
               </div>
 
               <div
-                v-if="vaccinationSupport.geometry == null"
+                v-if="support.geometry == null"
                 class="col-6 col-md-4 col-lg-2 mb-2"
               >
                 <div class="border border-danger rounded p-1">
@@ -91,6 +91,14 @@
                   </div>
                 </div>
               </div>
+              <div class="col-6 col-md-4 mb-2">
+                <b-form-radio-group
+                  v-model="providerGeocoder"
+                  :options="searchEngine"
+                  size="sm"
+                  plain
+                ></b-form-radio-group>
+              </div>
             </div>
             <div class="row">
               <div class="col-9 col-md-5 col-lg-4 px-1">
@@ -102,7 +110,7 @@
                   <div class="form-group border border-warning rounded p-1">
                     <div class="input-group">
                       <input
-                        v-model="vaccinationSupport.address"
+                        v-model="support.address"
                         name="address-input"
                         class="form-control"
                         type="text"
@@ -124,7 +132,7 @@
                 <div class="form-group border border-warning rounded p-1">
                   <div class="input-group">
                     <input
-                      v-model="vaccinationSupport.number"
+                      v-model="support.number"
                       name="number-input"
                       class="form-control"
                       type="number"
@@ -137,7 +145,7 @@
                 <div class="form-group border border-warning rounded p-1">
                   <div class="input-group">
                     <input
-                      v-model="vaccinationSupport.address_complement"
+                      v-model="support.address_complement"
                       name="address-complement-input"
                       class="form-control"
                       type="text"
@@ -150,7 +158,7 @@
                 <div class="form-group border border-warning rounded p-1">
                   <div class="input-group">
                     <input
-                      v-model="vaccinationSupport.neighborhood"
+                      v-model="support.neighborhood"
                       name="neighborhood-input"
                       class="form-control"
                       type="text"
@@ -252,7 +260,7 @@ export default {
       type: String,
       required: true,
     },
-    oldVaccinationSupport: {
+    oldSupport: {
       type: Object,
       default() {
         return {
@@ -274,7 +282,13 @@ export default {
       show: false,
       url: 'ncrlo/vaccination/support/',
       providerGeocoder: 'nominatim',
-      vaccinationSupport: {
+      searchEngine: [
+        { text: 'OpenStreet', value: 'nominatim' },
+        { text: 'Google', value: 'google' },
+        { text: 'Google Locais', value: 'google_place' },
+      ],
+      // providerGeocoder: 'nominatim',
+      support: {
         type: Object,
         default() {
           return {
@@ -309,20 +323,18 @@ export default {
   },
   watch: {},
   created() {
-    this.id = this.oldVaccinationSupport.id;
+    this.id = this.oldSupport.id;
   },
   methods: {
     showForm() {
-      this.vaccinationSupport = { ...this.oldVaccinationSupport };
-      if (this.oldVaccinationSupport.geometry != null) {
-        this.selectedFeature = [
-          this.generateGeoJson(this.oldVaccinationSupport),
-        ];
+      this.support = { ...this.oldSupport };
+      if (this.oldSupport.geometry != null) {
+        this.selectedFeature = [this.generateGeoJson(this.oldSupport)];
       }
     },
     handleOk() {
       this.show = true;
-      if (this.vaccinationSupport.id) {
+      if (this.support.id) {
         this.update();
       } else {
         this.create();
@@ -334,11 +346,8 @@ export default {
     },
     async create() {
       try {
-        const response = await this.$axios.post(
-          `${this.url}`,
-          this.vaccinationSupport
-        );
-        this.vaccinationSupport = response.data;
+        const response = await this.$axios.post(`${this.url}`, this.support);
+        this.support = response.data;
         this.$emit('updateSupport');
         this.$bvToast.toast('Cadastro efetuado!', {
           title: 'Sucesso',
@@ -365,10 +374,10 @@ export default {
     async update() {
       try {
         const response = await this.$axios.put(
-          `${this.url}${this.vaccinationSupport.id}/`,
-          this.vaccinationSupport
+          `${this.url}${this.support.id}/`,
+          this.support
         );
-        this.vaccinationSupport = response.data;
+        this.support = response.data;
         this.$emit('updateSupport');
         this.$bvToast.toast('Cadastro atualizado!', {
           title: 'Sucesso',
@@ -394,23 +403,19 @@ export default {
     async getGeocodingByName() {
       this.show = true;
       this.geocodes = await this.getGeocoding(
-        this.vaccinationSupport.name,
+        this.support.name,
         this.providerGeocoder
       );
       this.show = false;
     },
     async getGeocodingByAddress() {
       let queryString = '';
-      queryString += this.vaccinationSupport.number
-        ? `${this.vaccinationSupport.number} `
-        : '';
+      queryString += this.support.number ? `${this.support.number} ` : '';
 
-      queryString += this.vaccinationSupport.address
-        ? `${this.vaccinationSupport.address} `
-        : '';
+      queryString += this.support.address ? `${this.support.address} ` : '';
 
-      queryString += this.vaccinationSupport.neighborhood
-        ? `${this.vaccinationSupport.neighborhood} `
+      queryString += this.support.neighborhood
+        ? `${this.support.neighborhood} `
         : '';
 
       this.show = true;
@@ -424,21 +429,21 @@ export default {
     onRowSelected(items) {
       if (items.length > 0) {
         this.selectedFeature = [...items];
-        this.vaccinationSupport.address = items[0].properties.address;
-        this.vaccinationSupport.number = items[0].properties.number;
-        this.vaccinationSupport.neighborhood = items[0].properties.neighborhood;
-        this.vaccinationSupport.geometry = items[0].geometry;
+        this.support.address = items[0].properties.address;
+        this.support.number = items[0].properties.number;
+        this.support.neighborhood = items[0].properties.neighborhood;
+        this.support.geometry = items[0].geometry;
       }
     },
     updateGeometry(featureCollection) {
       const collection = JSON.parse(featureCollection);
       // console.log(collection.features[0].geometry);
-      this.vaccinationSupport.geometry = collection.features[0].geometry;
+      this.support.geometry = collection.features[0].geometry;
     },
     addGeometry(featureCollection) {
       const collection = JSON.parse(featureCollection);
       // console.log(collection.features[0].geometry);
-      this.vaccinationSupport.geometry = collection.features[0].geometry;
+      this.support.geometry = collection.features[0].geometry;
       this.add = false;
       this.editable = true;
     },

@@ -79,7 +79,7 @@
               <FormsVaccinationSupport
                 text-button="Editar"
                 variant="success"
-                :old-vaccination-support="data.item"
+                :old-support="data.item"
                 @updateSupport="getRows"
               ></FormsVaccinationSupport>
             </template>

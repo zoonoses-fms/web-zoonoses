@@ -17,8 +17,8 @@
           @ok="handleOk"
         >
           <b-overlay :show="show" rounded="sm">
-            <div class="row p-2">
-              <div class="col-12 px-2 py-2 shadow bg-white rounded">
+            <div class="row p-3">
+              <div class="col-12 p-4 shadow bg-white rounded">
                 <div class="row">
                   <div class="col-4 px-1">
                     <ValidationProvider
@@ -31,7 +31,7 @@
                         <select
                           v-model="vaccinationCampaign.year"
                           name="year-input"
-                          class="form-control"
+                          class="form-control form-control-sm"
                         >
                           <option
                             v-for="(year, index) in years"
@@ -62,7 +62,7 @@
                         <input
                           v-model="vaccinationCampaign.start"
                           name="start-input"
-                          class="form-control"
+                          class="form-control form-control-sm"
                           type="date"
                         />
                         <div
@@ -81,7 +81,7 @@
                       <input
                         v-model="vaccinationCampaign.end"
                         name="end-input"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         type="date"
                       />
                     </div>
@@ -94,19 +94,31 @@
                       <input
                         v-model="vaccinationCampaign.goal"
                         name="goal-input"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         type="number"
                       />
                     </div>
                   </div>
                   <div class="col-3 px-1">
                     <div class="form-group">
-                      <label for="coordinator-cost-input">Coordinator:</label>
+                      <label for="coordinator-cost-input">Coordenador:</label>
                       <money
                         v-model="vaccinationCampaign.coordinator_cost"
                         v-bind="money"
                         name="coordinator-cost-input"
-                        class="form-control"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-3 px-1">
+                    <div class="form-group">
+                      <label for="assistant-cost-input">Auxiliar:</label>
+                      <money
+                        v-model="vaccinationCampaign.assistant_cost"
+                        v-bind="money"
+                        name="assistant-cost-input"
+                        class="form-control form-control-sm"
                         type="text"
                       />
                     </div>
@@ -118,19 +130,7 @@
                         v-model="vaccinationCampaign.supervisor_cost"
                         v-bind="money"
                         name="supervisor-cost-input"
-                        class="form-control"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-3 px-1">
-                    <div class="form-group">
-                      <label for="vaccinator-cost-input">Vacinador:</label>
-                      <money
-                        v-model="vaccinationCampaign.vaccinator_cost"
-                        v-bind="money"
-                        name="vaccinator-cost-input"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         type="text"
                       />
                     </div>
@@ -139,12 +139,24 @@
                 <div class="row">
                   <div class="col-3 px-1">
                     <div class="form-group">
+                      <label for="vaccinator-cost-input">Vacinador:</label>
+                      <money
+                        v-model="vaccinationCampaign.vaccinator_cost"
+                        v-bind="money"
+                        name="vaccinator-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-3 px-1">
+                    <div class="form-group">
                       <label for="vaccine-cost-input">Vacina:</label>
                       <money
                         v-model="vaccinationCampaign.vaccine_cost"
                         v-bind="money"
                         name="vaccine-cost-input"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         type="text"
                       />
                     </div>
@@ -156,7 +168,7 @@
                         v-model="vaccinationCampaign.mileage_cost"
                         v-bind="money"
                         name="mileage-cost-input"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         type="text"
                       />
                     </div>
@@ -168,7 +180,7 @@
                         v-model="vaccinationCampaign.driver_cost"
                         v-bind="money"
                         name="driver-cost-input"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         type="text"
                       />
                     </div>
@@ -220,6 +232,7 @@ export default {
           end: null,
           goal: 0,
           coordinator_cost: 0,
+          assistant_cost: 0,
           supervisor_cost: 0,
           vaccinator_cost: 0,
           vaccine_cost: 0,
@@ -245,6 +258,7 @@ export default {
         end: null,
         goal: 0,
         coordinator_cost: 0,
+        assistant_cost: 0,
         supervisor_cost: 0,
         vaccinator_cost: 0,
         vaccine_cost: 0,

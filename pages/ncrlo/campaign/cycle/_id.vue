@@ -1,43 +1,43 @@
 <template>
   <main class="container-fluid">
     <div class="row m-2 justify-content-between">
-      <div class="col-sm-12 col-md-6">
-        <NuxtLink to="/ncrlo/vaccination/point" class="btn btn-success">
-          Lista de todos pontos de vacinação
+      <div class="col-sm-12 col-md-6 d-flex justify-content-star">
+        <NuxtLink to="/ncrlo/vaccination/support" class="btn btn-success">
+          Todos os Pontos de Apoio
         </NuxtLink>
       </div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
-        <FormsAddPoint
-          text-button="Adicionar Ponto"
+        <FormsAddSupport
+          text-button="Adicionar Apoio"
           variant="primary"
-          :current-support.sync="support"
-          @addSupport="addPoint"
-        ></FormsAddPoint>
+          :current-cycle.sync="cycle"
+          @addSupport="addSupport"
+        ></FormsAddSupport>
       </div>
     </div>
-    <div v-if="newCampaignPoints.length > 0">
+    <div v-if="newSupports.length > 0">
       <div class="row justify-content-between">
         <div class="col-12">
           <b-card class="text-center">
             <template #header>
               <div class="row m-0">
                 <div class="col-sm-12 col-md-6 d-flex justify-content-start">
-                  <h5 class="mb-0">Novos Ponto de Vacinação</h5>
+                  <h5 class="mb-0">Novos Ponto de Apoio</h5>
                 </div>
                 <div class="col-sm-12 col-md-6 d-flex justify-content-end">
-                  <b-button variant="success" @click="savePoint">
+                  <b-button variant="success" @click="saveSupport">
                     Salvar
                   </b-button>
                 </div>
               </div>
             </template>
             <b-table
-              id="table-campaign-new-points"
+              id="table-cycle-supports"
               striped
               responsive
               hover
               :fields="fields"
-              :items="newCampaignPoints"
+              :items="newSupports"
               primary-key="id"
             >
               <template #cell(name)="data">
@@ -49,22 +49,8 @@
               <template #cell(number)="data">
                 {{ data.item.number }}
               </template>
-              <template #cell(support)="data">
-                <NuxtLink
-                  :to="`/ncrlo/campaign/support/${data.item.id}`"
-                  class="btn btn-warning"
-                >
-                  Detalhes
-                </NuxtLink>
-              </template>
-              <template #cell(delete)="data">
-                <ModalDelete
-                  :item="data.item"
-                  :url="urlCampaignPoint"
-                  text-button="Remover"
-                  @deletItem="getDetailSupport"
-                >
-                </ModalDelete>
+              <template #cell(neighborhood)="data">
+                {{ data.item.neighborhood_alias.name }}
               </template>
             </b-table>
           </b-card>
@@ -75,13 +61,13 @@
       <div class="col-12">
         <b-card>
           <b-table
-            id="table-campaign-points"
+            id="table-cycle-new-supports"
             striped
             responsive
             hover
             small
             :fields="fields"
-            :items="points"
+            :items="supports"
             primary-key="id"
           >
             <template #cell(pendency)="data">
@@ -101,30 +87,44 @@
               </div>
             </template>
             <template #cell(name)="data">
-              {{ data.item.point.name }}
+              {{ data.item.support.name }}
             </template>
             <template #cell(address)="data">
-              {{ data.item.point.address }}
+              {{ data.item.support.address }}
             </template>
             <template #cell(number)="data">
-              {{ data.item.point.number }}
+              {{ data.item.support.number }}
+            </template>
+            <template #cell(neighborhood)="data">
+              {{ data.item.support.neighborhood_alias.name }}
+            </template>
+            <template #cell(saad)="data">
+              <span v-for="saad in data.item.saads" :key="saad.id">
+                {{ saad.name }}
+              </span>
             </template>
             <template #cell(edit)="data">
-              <FormsCampaignPoint
+              <FormsCampaignSupport
                 text-button=""
                 variant="success"
-                :old-point="data.item"
-                :supervisors="support.supervisors"
-                :campaign-cycle-id="support.campaign_cycle_id"
-                @update="getDetailSupport"
-              ></FormsCampaignPoint>
+                :old-support="data.item"
+                @update="getDetailCycle"
+              ></FormsCampaignSupport>
+            </template>
+            <template #cell(details)="data">
+              <NuxtLink
+                :to="`/ncrlo/campaign/support/${data.item.id}`"
+                class="btn btn-warning"
+              >
+                <b-icon icon="search"></b-icon>
+              </NuxtLink>
             </template>
             <template #cell(delete)="data">
               <ModalDelete
                 :item="data.item"
-                :url="urlCampaignPoint"
+                :url="urlCampaignSupport"
                 text-button=""
-                @deletItem="getDetailSupport"
+                @deletItem="getDetailCycle"
               >
               </ModalDelete>
             </template>
@@ -137,14 +137,14 @@
 
 <script>
 export default {
-  name: 'SupportDetailsPage',
+  name: 'CycleDetailsPage',
   data() {
     return {
-      support: {},
-      points: [],
-      newCampaignPoints: [],
-      url: 'ncrlo/campaign/support/',
-      urlCampaignPoint: 'ncrlo/campaign/point',
+      cycle: {},
+      supports: [],
+      newSupports: [],
+      url: 'ncrlo/campaign/cycle/',
+      urlCampaignSupport: 'ncrlo/campaign/support/',
       fields: [
         {
           key: 'pendency',
@@ -166,8 +166,20 @@ export default {
           label: 'Número',
         },
         {
+          key: 'neighborhood',
+          label: 'Bairro',
+        },
+        {
+          key: 'saad',
+          label: 'SAAD'
+        },
+        {
           key: 'edit',
           label: 'Editar',
+        },
+        {
+          key: 'details',
+          label: 'Detalhes',
         },
         {
           key: 'delete',
@@ -176,42 +188,50 @@ export default {
       ],
     };
   },
+
   created() {
-    this.getDetailSupport();
+    this.getDetailCycle();
     this.welcomeMessage();
   },
   methods: {
     welcomeMessage() {
-      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Pontos de vacinação');
+      this.$store.commit(
+        'layout/CHANGE_NAV_TITLE',
+        'Pontos de apoio a campanhas de vacinação'
+      );
     },
-    async getDetailSupport() {
-      this.points = [];
+    async getDetailCycle() {
+      this.supports = [];
 
       const response = await this.$axios.get(
         `${this.url}${this.$route.params.id}`
       );
-      this.support = response.data;
+      this.cycle = response.data;
 
-      this.support.points.forEach((point) => {
-        point.pendency = false;
-        if (point.supervisor_id === null || point.vaccinators.length === 0) {
-          point._rowVariant = 'danger';
-          point.pendency = true;
+      this.cycle.supports.forEach((support) => {
+        support.pendency = false;
+        if (
+          support.coordinator_id === null ||
+          support.supervisors.length === 0 ||
+          support.drivers.length === 0
+        ) {
+          support._rowVariant = 'danger';
+          support.pendency = true;
         }
-        this.points.push(point);
+        this.supports.push(support);
       });
     },
-    addPoint(point) {
-      this.newCampaignPoints.push({ ...point, _rowVariant: 'success' });
+    addSupport(support) {
+      this.newSupports.push({ ...support, _rowVariant: 'success' });
     },
-    async savePoint() {
-      for (let index = 0; index < this.newCampaignPoints.length; index++) {
-        const element = this.newCampaignPoints[index];
+    async saveSupport() {
+      for (let index = 0; index < this.newSupports.length; index++) {
+        const element = this.newSupports[index];
 
         try {
-          await this.$axios.post(`${this.urlCampaignPoint}`, {
+          await this.$axios.post(`${this.urlCampaignSupport}`, {
             ...element,
-            campaing_support_id: this.$route.params.id,
+            campaign_cycle_id: this.$route.params.id,
           });
           this.$bvToast.toast('Cadastro efetuado!', {
             title: 'Sucesso',
@@ -233,8 +253,8 @@ export default {
           continue;
         }
       }
-      this.newCampaignPoints = [];
-      this.getDetailSupport();
+      this.newSupports = [];
+      this.getDetailCycle();
     },
   },
 };

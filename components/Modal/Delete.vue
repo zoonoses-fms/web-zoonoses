@@ -1,8 +1,9 @@
 <template>
   <div>
-    <b-button v-b-modal="`delete-modal-${item.id}`" variant="danger"
-      >{{ textButton }}</b-button
-    >
+    <b-button v-b-modal="`delete-modal-${item.id}`" variant="danger">
+      <b-icon icon="trash"></b-icon>
+      {{ textButton }}
+    </b-button>
 
     <b-modal :id="`delete-modal-${item.id}`" :title="`${textButton} item`" hide-footer>
       <p class="my-4">Deseja realmente {{ textButton }} ?</p>

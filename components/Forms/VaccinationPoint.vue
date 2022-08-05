@@ -2,6 +2,7 @@
   <div>
     <b-button v-b-modal="`modal-xl-${id}`" :variant="variant" @click="showForm">
       {{ textButton }}
+      <b-icon icon="pencil"></b-icon>
     </b-button>
     <ValidationObserver v-slot="{ invalid }">
       <b-modal
@@ -24,7 +25,7 @@
                   <div class="form-group border border-success rounded p-1">
                     <div class="input-group">
                       <input
-                        v-model="vaccinationSupport.name"
+                        v-model="point.name"
                         name="name-input"
                         class="form-control"
                         type="text"
@@ -53,7 +54,7 @@
                 </ValidationProvider>
               </div>
               <div
-                v-if="vaccinationSupport.geometry != null"
+                v-if="point.geometry != null"
                 class="col-6 col-md-4 col-lg-2 mb-2"
               >
                 <div class="border border-success rounded p-1">
@@ -73,7 +74,7 @@
               </div>
 
               <div
-                v-if="vaccinationSupport.geometry == null"
+                v-if="point.geometry == null"
                 class="col-6 col-md-4 col-lg-2 mb-2"
               >
                 <div class="border border-danger rounded p-1">
@@ -91,6 +92,14 @@
                   </div>
                 </div>
               </div>
+              <div class="col-6 col-md-4 mb-2">
+                <b-form-radio-group
+                  v-model="providerGeocoder"
+                  :options="searchEngine"
+                  size="sm"
+                  plain
+                ></b-form-radio-group>
+              </div>
             </div>
             <div class="row">
               <div class="col-9 col-md-5 col-lg-4 px-1">
@@ -102,7 +111,7 @@
                   <div class="form-group border border-warning rounded p-1">
                     <div class="input-group">
                       <input
-                        v-model="vaccinationSupport.address"
+                        v-model="point.address"
                         name="address-input"
                         class="form-control"
                         type="text"
@@ -124,7 +133,7 @@
                 <div class="form-group border border-warning rounded p-1">
                   <div class="input-group">
                     <input
-                      v-model="vaccinationSupport.number"
+                      v-model="point.number"
                       name="number-input"
                       class="form-control"
                       type="number"
@@ -137,7 +146,7 @@
                 <div class="form-group border border-warning rounded p-1">
                   <div class="input-group">
                     <input
-                      v-model="vaccinationSupport.address_complement"
+                      v-model="point.address_complement"
                       name="address-complement-input"
                       class="form-control"
                       type="text"
@@ -150,7 +159,7 @@
                 <div class="form-group border border-warning rounded p-1">
                   <div class="input-group">
                     <input
-                      v-model="vaccinationSupport.neighborhood"
+                      v-model="point.neighborhood"
                       name="neighborhood-input"
                       class="form-control"
                       type="text"
@@ -235,12 +244,14 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
+import geocode from '@/mixins/geocode';
 export default {
   name: 'FormVaccinationPoint',
   components: {
     ValidationObserver,
     ValidationProvider,
   },
+  mixins: [geocode],
   props: {
     textButton: {
       type: String,
@@ -250,7 +261,7 @@ export default {
       type: String,
       required: true,
     },
-    oldVaccinationSupport: {
+    oldPoint: {
       type: Object,
       default() {
         return {
@@ -271,10 +282,14 @@ export default {
       id: null,
       show: false,
       url: 'ncrlo/vaccination/point/',
-      urlNominatim: 'https://nominatim.openstreetmap.org/search/',
-      urlGoogleTextsearch: 'https://maps.googleapis.com/maps/api/place/textsearch/json',
-      urlGoogleGeocode: 'https://maps.googleapis.com/maps/api/geocode/json',
-      vaccinationSupport: {
+      providerGeocoder: 'nominatim',
+      searchEngine: [
+        { text: 'OpenStreet', value: 'nominatim' },
+        { text: 'Google', value: 'google' },
+        { text: 'Google Locais', value: 'google_place' },
+      ],
+      // providerGeocoder: 'nominatim',
+      point: {
         type: Object,
         default() {
           return {
@@ -309,32 +324,18 @@ export default {
   },
   watch: {},
   created() {
-    this.id = this.oldVaccinationSupport.id;
+    this.id = this.oldPoint.id;
   },
   methods: {
     showForm() {
-      this.vaccinationSupport = { ...this.oldVaccinationSupport };
-      if (this.oldVaccinationSupport.geometry != null) {
-        const feature = {
-          type: 'Feature',
-          id: this.oldVaccinationSupport.id,
-          geometry: JSON.parse(this.oldVaccinationSupport.geometry),
-          properties: {
-            name: this.oldVaccinationSupport.name,
-            address: this.oldVaccinationSupport.address,
-            number: this.oldVaccinationSupport.number,
-            address_complement: this.oldVaccinationSupport.address_complement,
-            neighborhood: this.oldVaccinationSupport.neighborhood,
-            neighborhood_alias_id:
-              this.oldVaccinationSupport.neighborhood_alias_id,
-          },
-        };
-        this.selectedFeature = [feature];
+      this.point = { ...this.oldPoint };
+      if (this.oldPoint.geometry != null) {
+        this.selectedFeature = [this.generateGeoJson(this.oldPoint)];
       }
     },
     handleOk() {
       this.show = true;
-      if (this.vaccinationSupport.id) {
+      if (this.point.id) {
         this.update();
       } else {
         this.create();
@@ -346,11 +347,8 @@ export default {
     },
     async create() {
       try {
-        const response = await this.$axios.post(
-          `${this.url}`,
-          this.vaccinationSupport
-        );
-        this.vaccinationSupport = response.data;
+        const response = await this.$axios.post(`${this.url}`, this.point);
+        this.point = response.data;
         this.$emit('updateSupport');
         this.$bvToast.toast('Cadastro efetuado!', {
           title: 'Sucesso',
@@ -377,10 +375,10 @@ export default {
     async update() {
       try {
         const response = await this.$axios.put(
-          `${this.url}${this.vaccinationSupport.id}/`,
-          this.vaccinationSupport
+          `${this.url}${this.point.id}/`,
+          this.point
         );
-        this.vaccinationSupport = response.data;
+        this.point = response.data;
         this.$emit('updateSupport');
         this.$bvToast.toast('Cadastro atualizado!', {
           title: 'Sucesso',
@@ -405,71 +403,48 @@ export default {
     },
     async getGeocodingByName() {
       this.show = true;
-      const response = await this.$axios.get(this.urlNominatim, {
-        params: {
-          q: `${this.vaccinationSupport.name}`,
-          format: 'geojson',
-          addressdetails: 1,
-          extratags: 1,
-          namedetails: 1,
-          email: this.$auth.user.email,
-        },
-      });
-
-      this.geocodes = response.data.features;
+      this.geocodes = await this.getGeocoding(
+        this.point.name,
+        this.providerGeocoder
+      );
       this.show = false;
     },
     async getGeocodingByAddress() {
-      let queryString = this.vaccinationSupport.address
-        ? `${this.vaccinationSupport.address} `
-        : '';
-      queryString += this.vaccinationSupport.number
-        ? `${this.vaccinationSupport.number} `
-        : '';
-      queryString += this.vaccinationSupport.address_complement
-        ? `${this.vaccinationSupport.address_complement} `
-        : '';
-      queryString += this.vaccinationSupport.neighborhood
-        ? `${this.vaccinationSupport.neighborhood} `
+      let queryString = '';
+      queryString += this.point.number ? `${this.point.number} ` : '';
+
+      queryString += this.point.address ? `${this.point.address} ` : '';
+
+      queryString += this.point.neighborhood
+        ? `${this.point.neighborhood} `
         : '';
 
       this.show = true;
-      const response = await this.$axios.get(this.urlNominatim, {
-        params: {
-          q: `${queryString}, Teresina, PI`,
-          format: 'geojson',
-          addressdetails: 1,
-          extratags: 1,
-          namedetails: 1,
-          email: this.$auth.user.email,
-        },
-      });
+      this.geocodes = await this.getGeocoding(
+        queryString,
+        this.providerGeocoder
+      );
 
-      this.geocodes = response.data.features;
       this.show = false;
     },
     onRowSelected(items) {
       if (items.length > 0) {
         this.selectedFeature = [...items];
-        const category = items[0].properties.category;
-        this.vaccinationSupport.name = items[0].properties.address[category];
-        this.vaccinationSupport.address = items[0].properties.address.road;
-        this.vaccinationSupport.number =
-          items[0].properties.address.house_number;
-        this.vaccinationSupport.neighborhood =
-          items[0].properties.address.suburb;
-        this.vaccinationSupport.geometry = items[0].geometry;
+        this.point.address = items[0].properties.address;
+        this.point.number = items[0].properties.number;
+        this.point.neighborhood = items[0].properties.neighborhood;
+        this.point.geometry = items[0].geometry;
       }
     },
     updateGeometry(featureCollection) {
       const collection = JSON.parse(featureCollection);
       // console.log(collection.features[0].geometry);
-      this.vaccinationSupport.geometry = collection.features[0].geometry;
+      this.point.geometry = collection.features[0].geometry;
     },
     addGeometry(featureCollection) {
       const collection = JSON.parse(featureCollection);
       // console.log(collection.features[0].geometry);
-      this.vaccinationSupport.geometry = collection.features[0].geometry;
+      this.point.geometry = collection.features[0].geometry;
       this.add = false;
       this.editable = true;
     },

@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-button v-b-modal="`modal-xl-${id}`" :variant="variant" @click="showForm">
+      <b-icon icon="pencil"></b-icon>
       {{ textButton }}
     </b-button>
     <ValidationObserver v-slot="{ invalid }">
@@ -9,47 +10,93 @@
         size="xl"
         scrollable
         :title="textButton"
-        class="shadow-lg"
         @ok="handleOk"
       >
         <b-overlay :show="show" rounded="sm">
-          <div class="row">
-            <div class="col-12 d-flex justify-content-end">
-              <NuxtLink to="/ncrlo/vaccination/worker" class="btn btn-success">
-                Lista Equipe
-              </NuxtLink>
-            </div>
-          </div>
-
-          <form ref="form" @submit.stop.prevent>
-            {{ support }}
-          </form>
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <div
-                class="form-group border border-success rounded p-1 overflow-auto workers"
-              >
-                <label>Selecione o Coordenador</label>
-                <FormsSelectWorker
-                  :campaign-id="support.campaign_id"
-                  :selected-worker="support.vaccination_worker_id"
-                  list-type="coordinator"
-                  @change="setCoordinator"
-                ></FormsSelectWorker>
+          <div class="">
+            <div class="row pb-1">
+              <div class="col-12 d-flex justify-content-end">
+                <NuxtLink
+                  to="/ncrlo/vaccination/worker"
+                  class="btn btn-success"
+                >
+                  Lista Equipe
+                </NuxtLink>
               </div>
             </div>
-            <div class="col-12 col-md-6">
-              <div
-                class="form-group border border-success rounded p-1 overflow-auto workers"
-              >
-                <label>Selecione os Supervisores</label>
-                <FormsSelectWorker
-                  :campaign-id="support.campaign_id"
-                  :selected-worker="support.supervisors"
-                  list-type="supervisors"
-                  :multiple="true"
-                  @change="setSupervisors"
-                ></FormsSelectWorker>
+
+            <form ref="form" @submit.stop.prevent></form>
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label for="goal-input">Meta:</label>
+                  <input
+                    v-model="support.goal"
+                    name="goal-input"
+                    class="form-control"
+                    type="number"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Selecione o Coordenador</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    :selected-worker="support.coordinator_id"
+                    list-type="coordinator"
+                    @change="setCoordinator"
+                  ></FormsSelectWorker>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Selecione os Supervisores</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    :selected-worker="support.supervisors"
+                    list-type="supervisors"
+                    :multiple="true"
+                    @change="setSupervisors"
+                  ></FormsSelectWorker>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Selecione os Motorista</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    :selected-worker="support.drivers"
+                    list-type="drivers"
+                    :multiple="true"
+                    @change="setDrivers"
+                  ></FormsSelectWorker>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Selecione os Auxiliares</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    :selected-worker="support.assistants"
+                    list-type="assistants"
+                    :multiple="true"
+                    @change="setAssistants"
+                  ></FormsSelectWorker>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Selecione os SAAD</label>
+                  <FormsSelectSaad
+                    :selected-saads="support.saads"
+                    :multiple="true"
+                    @change="setSaads"
+                  ></FormsSelectSaad>
+                </div>
               </div>
             </div>
           </div>
@@ -86,10 +133,13 @@ export default {
       default() {
         return {
           id: null,
-          campaign_id: null,
+          campaign_cycle_id: null,
           coordinator_id: null,
-          vaccination_worker_id: null,
+          vaccination_support_id: null,
+          goal: null,
+          drivers: [],
           supervisors: [],
+          assistants: [],
         };
       },
     },
@@ -104,10 +154,13 @@ export default {
         default() {
           return {
             id: null,
-            campaign_id: null,
+            campaign_cycle_id: null,
             coordinator_id: null,
-            vaccination_worker_id: null,
+            vaccination_support_id: null,
+            goal: null,
+            drivers: [],
             supervisors: [],
+            assistants: [],
           };
         },
       },
@@ -153,7 +206,7 @@ export default {
       try {
         const response = await this.$axios.post(`${this.url}`, this.support);
         this.support = response.data;
-        this.$emit('updateSupport');
+        this.$emit('create');
         this.$bvToast.toast('Cadastro efetuado!', {
           title: 'Sucesso',
           autoHideDelay: 5000,
@@ -183,7 +236,7 @@ export default {
           this.support
         );
         this.support = response.data;
-        this.$emit('updateSupport');
+        this.$emit('update');
         this.$bvToast.toast('Cadastro atualizado!', {
           title: 'Sucesso',
           autoHideDelay: 5000,
@@ -206,11 +259,20 @@ export default {
       }
     },
     setCoordinator(id) {
-      this.support.vaccination_worker_id = id;
+      this.support.coordinator_id = id;
     },
     setSupervisors(ids) {
       this.support.supervisors = ids;
     },
+    setDrivers(ids) {
+      this.support.drivers = ids;
+    },
+    setAssistants(ids) {
+      this.support.assistants = ids;
+    },
+    setSaads(ids) {
+      this.support.saads = ids;
+    }
   },
 };
 </script>
@@ -226,6 +288,6 @@ export default {
 }
 
 .workers {
-  max-height: 200px;
+  height: 80vh;
 }
 </style>

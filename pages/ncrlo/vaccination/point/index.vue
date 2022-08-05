@@ -77,9 +77,9 @@
             </template>
             <template #cell(edit)="data">
               <FormsVaccinationPoint
-                text-button="Editar"
+                text-button=""
                 variant="success"
-                :old-vaccination-support="data.item"
+                :old-point="data.item"
                 @updateSupport="getRows"
               ></FormsVaccinationPoint>
             </template>
@@ -87,7 +87,7 @@
               <ModalDelete
                 :item="data.item"
                 :url="url"
-                text-button="Remover"
+                text-button=""
                 @deletItem="getRows"
               >
               </ModalDelete>
@@ -160,7 +160,7 @@ export default {
     welcomeMessage() {
       this.$store.commit(
         'layout/CHANGE_NAV_TITLE',
-        'Lista de pontos de suporte cadastrados'
+        'Lista de pontos de vacinação'
       );
     },
     async getRows() {

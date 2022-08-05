@@ -28,23 +28,15 @@ import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 
 export default {
-  name: 'FormSelectWorker',
+  name: 'FormSelectSaad',
   components: {
     Multiselect,
   },
   props: {
-    campaignCycleId: {
-      type: [String, Number],
-      required: true,
-    },
-    selectedWorker: {
+    selectedSaads: {
       required: true,
       validator: (prop) =>
         typeof prop === 'number' || Array.isArray(prop) || prop === null,
-    },
-    listType: {
-      type: String,
-      required: true,
     },
     multiple: {
       type: Boolean,
@@ -61,7 +53,7 @@ export default {
     return {
       selected: null,
       listWorkers: [],
-      url: 'ncrlo/vaccination/worker/',
+      url: 'map/saad/',
       value: null,
     };
   },
@@ -83,55 +75,36 @@ export default {
   created() {
     if (this.preLoadingList.length > 0) {
       this.listWorkers = [...this.preLoadingList];
-      this.preSelectedWorker();
+      this.preSelectedSaad();
     } else {
-      this.getWorker();
+      this.getSaads();
     }
   },
   methods: {
-    async getWorker() {
+    async getSaads() {
       const params = {
-        campaign_cycle_id: this.campaignCycleId,
+        keyword: '',
       };
-
-      if (this.selectedWorker === null) {
-        params.list_type = 'free';
-      } else if (typeof this.selectedWorker === 'number') {
-        params.list_type = this.listType;
-        params.coordinator_id = this.selectedWorker;
-      } else if (Array.isArray(this.selectedWorker)) {
-        if (this.selectedWorker.length > 0) {
-          params.list_type = this.listType;
-
-          params.ids = [];
-          for (const worker of this.selectedWorker) {
-            params.ids.push(worker.id);
-          }
-        } else {
-          params.list_type = 'free';
-        }
-      }
 
       try {
         const response = await this.$axios.get(this.url, { params });
 
         this.listWorkers = response.data;
-        this.preSelectedWorker();
+        this.preSelectedSaad();
       } catch (error) {
         console.log(error);
       }
     },
-    preSelectedWorker() {
-      if (this.multiple && Array.isArray(this.selectedWorker)) {
+    preSelectedSaad() {
+      if (this.multiple && Array.isArray(this.selectedSaads)) {
         this.selected = this.listWorkers.filter((worker) => {
-          return this.selectedWorker.some((select) => {
+          return this.selectedSaads.some((select) => {
             return select.id === worker.id;
           });
         });
-      } else if (typeof this.selectedWorker === 'number') {
-        console.log(this.selectedWorker);
+      } else if (typeof this.selectedSaads === 'number') {
         this.selected = this.listWorkers.find((worker) => {
-          return worker.id === this.selectedWorker;
+          return worker.id === this.selectedSaads;
         });
       }
     },
