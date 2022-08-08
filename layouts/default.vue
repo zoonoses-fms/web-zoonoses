@@ -51,11 +51,7 @@
               NC
             </NuxtLink>
           </li>
-          <li
-            v-b-tooltip.hover
-            class="list-group-item"
-            title="Mapas"
-          >
+          <li v-b-tooltip.hover class="list-group-item" title="Mapas">
             <NuxtLink to="/maps" class="item">
               <b-icon icon="map"></b-icon>
               Mapas
@@ -77,40 +73,42 @@
 
             <b-collapse id="nav-collapse" is-nav>
               <!-- Right aligned nav items -->
-              <b-navbar-nav
-                v-show="$auth.loggedIn"
-                class="ml-auto justify-content-end"
-              >
-                <b-nav-item-dropdown right>
-                  <!-- Using 'button-content' slot -->
-                  <template #button-content>
-                    <em>Usuário</em>
-                    <b-avatar size="sm"></b-avatar>
-                  </template>
-                  <NuxtLink
-                    v-show="isAdmin"
-                    to="/admin/user"
-                    class="dropdown-item"
-                  >
-                    Usuários
-                  </NuxtLink>
-                  <NuxtLink
-                    v-show="isAdmin"
-                    to="/admin/team"
-                    class="dropdown-item"
-                  >
-                    Turmas
-                  </NuxtLink>
-                  <NuxtLink
-                    v-show="isAdmin"
-                    to="/auth/profile"
-                    class="dropdown-item"
-                  >
-                    Profile
-                  </NuxtLink>
-                  <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-                </b-nav-item-dropdown>
-              </b-navbar-nav>
+              <client-only>
+                <b-navbar-nav
+                  v-if="$auth.loggedIn"
+                  class="ml-auto justify-content-end"
+                >
+                  <b-nav-item-dropdown right>
+                    <!-- Using 'button-content' slot -->
+                    <template #button-content>
+                      <em>{{ $auth.user.name }}</em>
+                      <b-avatar size="sm"></b-avatar>
+                    </template>
+                    <NuxtLink
+                      v-show="isAdmin"
+                      to="/admin/user"
+                      class="dropdown-item"
+                    >
+                      Usuários
+                    </NuxtLink>
+                    <NuxtLink
+                      v-show="isAdmin"
+                      to="/admin/team"
+                      class="dropdown-item"
+                    >
+                      Turmas
+                    </NuxtLink>
+                    <NuxtLink
+                      v-show="isAdmin"
+                      to="/auth/profile"
+                      class="dropdown-item"
+                    >
+                      Profile
+                    </NuxtLink>
+                    <b-dropdown-item @click="logout">Logout</b-dropdown-item>
+                  </b-nav-item-dropdown>
+                </b-navbar-nav>
+              </client-only>
             </b-collapse>
 
             <NuxtLink

@@ -178,7 +178,6 @@ export default {
   },
   computed: {},
   created() {
-    console.log(this.oldCampaignCycle);
     this.id = this.oldCampaignCycle.id;
   },
   methods: {

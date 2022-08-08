@@ -34,7 +34,7 @@ export default {
   },
   props: {
     campaignCycleId: {
-      type: [String, Number],
+      type: [String, Number, null],
       required: true,
     },
     selectedWorker: {
@@ -133,7 +133,6 @@ export default {
           });
         });
       } else if (typeof this.selectedWorker === 'number') {
-        console.log(this.selectedWorker);
         this.selected = this.listWorkers.find((worker) => {
           return worker.id === this.selectedWorker;
         });

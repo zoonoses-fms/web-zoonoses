@@ -407,7 +407,6 @@ export default {
   methods: {
     showForm() {
       this.point = { ...this.oldPoint };
-      console.log(this.campaignCycleId);
     },
     handleOk() {
       this.show = true;

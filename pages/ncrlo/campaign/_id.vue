@@ -43,6 +43,9 @@
             <template #cell(number)="data">
               {{ data.item.number }}
             </template>
+            <template #cell(description)="data">
+              {{ data.item.description }}
+            </template>
             <template #cell(start)="data">
               {{ data.item.start }}
             </template>
@@ -88,7 +91,7 @@ export default {
   data() {
     return {
       campaign: {
-        year: ''
+        year: '',
       },
       cycles: [],
       url: 'ncrlo/campaign/',
@@ -97,6 +100,11 @@ export default {
         {
           key: 'number',
           label: 'Número',
+          sortable: true,
+        },
+        {
+          key: 'description',
+          label: 'Descrição',
           sortable: true,
         },
         {

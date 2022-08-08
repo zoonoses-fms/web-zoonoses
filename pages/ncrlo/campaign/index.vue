@@ -3,11 +3,11 @@
     <div class="row m-2 justify-content-between">
       <div class="col-sm-12 col-md-6"></div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
-        <FormsVaccinationCampaign
+        <FormsCampaign
           text-button="Cadastrar campanha"
           variant="primary"
           @create="getRows"
-        ></FormsVaccinationCampaign>
+        ></FormsCampaign>
       </div>
     </div>
     <div class="row justify-content-between">
@@ -37,7 +37,7 @@
                 :to="`/ncrlo/campaign/${data.item.id}`"
                 class="btn btn-warning"
               >
-                Detalhes
+                <b-icon icon="search"></b-icon>
               </NuxtLink>
             </template>
             <template #cell(points)="data">
@@ -46,7 +46,6 @@
                 class="btn btn-success"
               >
                 <b-icon icon="map"></b-icon>
-                Ponto de Vacinação
               </NuxtLink>
             </template>
             <template #cell(supports)="data">
@@ -55,22 +54,21 @@
                 class="btn btn-info"
               >
                 <b-icon icon="map"></b-icon>
-                Ponto de Apoios
               </NuxtLink>
             </template>
             <template #cell(edit)="data">
-              <FormsVaccinationCampaign
-                text-button="Editar"
+              <FormsCampaign
+                text-button=""
                 variant="success"
                 :old-vaccination-campaign="data.item"
                 @update="getRows"
-              ></FormsVaccinationCampaign>
+              ></FormsCampaign>
             </template>
             <template #cell(delete)="data">
               <ModalDelete
                 :item="data.item"
                 :url="url"
-                text-button="Excluir"
+                text-button=""
                 @deletItem="getRows"
               >
               </ModalDelete>
