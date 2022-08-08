@@ -4,7 +4,7 @@
       <div class="col-sm-12 col-md-6 d-flex justify-content-star"></div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
         <FormsCampaignCycle
-          text-button="Adicionar Apoio"
+          text-button="Cadastrar Etapa"
           variant="primary"
           :current-campaign.sync="campaign"
           @create="getDetailCampaign"
@@ -133,7 +133,7 @@ export default {
     welcomeMessage() {
       this.$store.commit(
         'layout/CHANGE_NAV_TITLE',
-        `Ciclos da Campanha ${this.campaign.year}`
+        `Etapas da Campanha ${this.campaign.year}`
       );
     },
     async getDetailCampaign() {

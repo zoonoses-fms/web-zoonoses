@@ -21,16 +21,40 @@
             <div class="row p-3">
               <div class="col-12 p-4 shadow bg-white rounded">
                 <div class="row">
-                  <div class="col-4 px-1">
+                  <div class="col-2 px-1">
                     <ValidationProvider
                       v-slot="{ errors }"
-                      name="Ano"
+                      name="Número"
                       :rules="{ required: true, numeric: true }"
                     >
                       <div class="form-group">
                         <label for="number-input">Número</label>
                         <input
                           v-model="campaignCycle.number"
+                          name="number-input"
+                          class="form-control form-control-sm"
+                          type="text"
+                        />
+                        <div
+                          v-for="(error, index) in errors"
+                          :key="index"
+                          class="invalid-feedback d-block"
+                        >
+                          {{ error }}
+                        </div>
+                      </div>
+                    </ValidationProvider>
+                  </div>
+                  <div class="col-10 px-1">
+                    <ValidationProvider
+                      v-slot="{ errors }"
+                      name="Descrição"
+                      :rules="{ required: true }"
+                    >
+                      <div class="form-group">
+                        <label for="number-input">Descrição</label>
+                        <input
+                          v-model="campaignCycle.description"
                           name="number-input"
                           class="form-control form-control-sm"
                           type="text"
@@ -121,6 +145,7 @@ export default {
         return {
           id: null,
           number: null,
+          description: null,
           start: null,
           end: null,
           campaign_id: null,
@@ -144,6 +169,7 @@ export default {
       campaignCycle: {
         id: null,
         number: null,
+        description: null,
         start: null,
         end: null,
         campaign_id: null,

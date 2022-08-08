@@ -90,26 +90,30 @@ export default {
   },
   methods: {
     async getWorker() {
-      const params = {
-        campaign_cycle_id: this.campaignCycleId,
-      };
+      const params = {};
 
-      if (this.selectedWorker === null) {
-        params.list_type = 'free';
-      } else if (typeof this.selectedWorker === 'number') {
-        params.list_type = this.listType;
-        params.coordinator_id = this.selectedWorker;
-      } else if (Array.isArray(this.selectedWorker)) {
-        if (this.selectedWorker.length > 0) {
-          params.list_type = this.listType;
+      if (this.campaignCycleId != null) {
+        params.campaign_cycle_id = this.campaignCycleId;
 
-          params.ids = [];
-          for (const worker of this.selectedWorker) {
-            params.ids.push(worker.id);
-          }
-        } else {
+        if (this.selectedWorker === null) {
           params.list_type = 'free';
+        } else if (typeof this.selectedWorker === 'number') {
+          params.list_type = this.listType;
+          params.coordinator_id = this.selectedWorker;
+        } else if (Array.isArray(this.selectedWorker)) {
+          if (this.selectedWorker.length > 0) {
+            params.list_type = this.listType;
+
+            params.ids = [];
+            for (const worker of this.selectedWorker) {
+              params.ids.push(worker.id);
+            }
+          } else {
+            params.list_type = 'free';
+          }
         }
+      } else {
+        params.list_type = 'all';
       }
 
       try {

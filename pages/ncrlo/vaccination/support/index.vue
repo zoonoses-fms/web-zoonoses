@@ -35,7 +35,7 @@
       </div>
       <div class="col-sm-12 col-md-4 col-lg-3 d-flex justify-content-end">
         <FormsVaccinationSupport
-          text-button="Cadastrar ponto de suporte"
+          text-button="Cadastrar ponto de apoio"
           variant="success"
           @updateSupport="getRows"
         ></FormsVaccinationSupport>

@@ -17,6 +17,16 @@
           @ok="handleOk"
         >
           <b-overlay :show="show" rounded="sm">
+            <div class="row pb-1">
+              <div class="col-12 d-flex justify-content-end">
+                <NuxtLink
+                  to="/ncrlo/vaccination/worker"
+                  class="btn btn-success"
+                >
+                  Lista Equipe
+                </NuxtLink>
+              </div>
+            </div>
             <div class="row p-3">
               <div class="col-12 p-4 shadow bg-white rounded">
                 <div class="row">
@@ -186,6 +196,16 @@
                     </div>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-12">
+                    <FormsSelectWorker
+                      :campaign-cycle-id="null"
+                      :selected-worker="vaccinationCampaign.coordinator_id"
+                      list-type="all"
+                      @change="setCoordinator"
+                    ></FormsSelectWorker>
+                  </div>
+                </div>
               </div>
             </div>
           </b-overlay>
@@ -238,6 +258,7 @@ export default {
           vaccine_cost: 0,
           mileage_cost: 0,
           driver_cost: 0,
+          coordinator_id: null,
         };
       },
     },
@@ -264,6 +285,7 @@ export default {
         vaccine_cost: 0,
         mileage_cost: 0,
         driver_cost: 0,
+        coordinator_id: null,
       },
       money: {
         decimal: ',',
@@ -368,6 +390,9 @@ export default {
         // this.$bvModal.hide(`modal-xl-${this.id}`);
       });
       this.show = false;
+    },
+    setCoordinator(id) {
+      this.vaccinationCampaign.coordinator_id = id;
     },
   },
 };
