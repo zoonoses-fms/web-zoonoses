@@ -35,7 +35,7 @@
       </div>
       <div class="col-sm-12 col-md-4 col-lg-3 d-flex justify-content-end">
         <FormsVaccinationSupport
-          text-button="Cadastrar ponto de apoio"
+          text-button="Cadastrar Ponto de Apoio"
           variant="success"
           @updateSupport="getRows"
         ></FormsVaccinationSupport>
@@ -160,7 +160,7 @@ export default {
     welcomeMessage() {
       this.$store.commit(
         'layout/CHANGE_NAV_TITLE',
-        'Lista de pontos de suporte cadastrados'
+        'Lista de Ponto de Apoio cadastrados'
       );
     },
     async getRows() {

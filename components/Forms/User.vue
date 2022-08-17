@@ -79,14 +79,14 @@
                       :rules="{ required: true, min: 3 }"
                     >
                       <b-form-group label="Telefone" label-for="fone-input">
-                        <b-form-input
+                        <input
                           v-model="user.phone"
+                          v-mask="['(##) ####-####', '(##) #####-####']"
                           name="fone-input"
                           type="text"
                           label="Telefone"
                           placeholder="Telefone"
-                        >
-                        </b-form-input>
+                        />
                         <div
                           v-for="(error, index) in errors"
                           :key="index"
@@ -259,6 +259,7 @@
 </template>
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
+import { mask } from 'vue-the-mask';
 import is from '@/mixins/is';
 export default {
   name: 'FormsUser',
@@ -266,6 +267,7 @@ export default {
     ValidationObserver,
     ValidationProvider,
   },
+  directives: { mask },
   mixins: [is],
   props: {
     textButton: {

@@ -40,7 +40,7 @@ export default {
     welcomeMessage() {
       this.$store.commit(
         'layout/CHANGE_NAV_TITLE',
-        'Pontos de apoi a campanhas de vacinação'
+        'Pontos de Apoio a campanhas de vacinação'
       );
     },
     async getRows() {

@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     welcomeMessage() {
-      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Mapa de Pontos de Apoios');
+      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Mapa de Pontos de Apoio');
     },
     async getPoints() {
       const params = {

@@ -108,11 +108,11 @@ export default {
         },
         {
           key: 'points',
-          label: 'Ponto de Vacinação',
+          label: 'Postos',
         },
         {
           key: 'supports',
-          label: 'Ponto de Apoios',
+          label: 'Pontos de Apoios',
         },
         {
           key: 'edit',

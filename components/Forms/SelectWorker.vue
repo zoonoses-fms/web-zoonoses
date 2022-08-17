@@ -34,8 +34,9 @@ export default {
   },
   props: {
     campaignCycleId: {
-      type: [String, Number, null],
       required: true,
+      validator: (prop) =>
+        typeof prop === 'number' || typeof prop === 'string' || prop === null,
     },
     selectedWorker: {
       required: true,

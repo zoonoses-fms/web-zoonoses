@@ -217,6 +217,28 @@
               </div>
               <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
+                  <div class="form-row">
+                    <div class="col-12 col-md-6">
+                      <label for="order-input">Ordem:</label>
+                      <input
+                        v-model="point.order"
+                        name="order-input"
+                        class="form-control form-control-sm"
+                        type="number"
+                      />
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label for="area-input">Área:</label>
+                      <input
+                        v-model="point.area"
+                        name="area-input"
+                        class="form-control form-control-sm"
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group border border-success rounded p-1">
                   <label>Selecione o Supervisor</label>
                   <FormsSelectWorker
                     :campaign-cycle-id="campaignCycleId"
@@ -297,9 +319,7 @@
                       />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label for="bottle-lost-input"
-                        >Extraviados:</label
-                      >
+                      <label for="bottle-lost-input">Extraviados:</label>
                       <input
                         v-model="point.bottle_lost"
                         name="bottle-lost-input"
@@ -348,7 +368,32 @@ export default {
           campaing_support_id: null,
           vaccination_point_id: null,
           supervisor_id: null,
+          order: null,
+          area: null,
           goal: null,
+          male_dog_under_4m: null,
+          female_dog_under_4m: null,
+          male_dog_major_4m_under_1y: null,
+          female_dog_major_4m_under_1y: null,
+          male_dog_major_1y_under_2y: null,
+          female_dog_major_1y_under_2y: null,
+          male_dog_major_2y_under_4y: null,
+          female_dog_major_2y_under_4y: null,
+          male_dog_major_4y: null,
+          female_dog_major_4y: null,
+          male_dogs: null,
+          female_dogs: null,
+          total_of_dogs: null,
+          male_cat: null,
+          female_cat: null,
+          total_of_cats: null,
+          total: null,
+          bottle_received: null,
+          bottle_used_completely: null,
+          bottle_used_partially: null,
+          bottle_returned_completely: null,
+          bottle_returned_partially: null,
+          bottle_lost: null,
           vaccinators: [],
         };
       },
@@ -377,7 +422,32 @@ export default {
             campaing_support_id: null,
             vaccination_point_id: null,
             supervisor_id: null,
+            order: null,
+            area: null,
             goal: null,
+            male_dog_under_4m: null,
+            female_dog_under_4m: null,
+            male_dog_major_4m_under_1y: null,
+            female_dog_major_4m_under_1y: null,
+            male_dog_major_1y_under_2y: null,
+            female_dog_major_1y_under_2y: null,
+            male_dog_major_2y_under_4y: null,
+            female_dog_major_2y_under_4y: null,
+            male_dog_major_4y: null,
+            female_dog_major_4y: null,
+            male_dogs: null,
+            female_dogs: null,
+            total_of_dogs: null,
+            male_cat: null,
+            female_cat: null,
+            total_of_cats: null,
+            total: null,
+            bottle_received: null,
+            bottle_used_completely: null,
+            bottle_used_partially: null,
+            bottle_returned_completely: null,
+            bottle_returned_partially: null,
+            bottle_lost: null,
             vaccinators: [],
           };
         },
@@ -400,7 +470,57 @@ export default {
       add: false,
     };
   },
-  watch: {},
+  watch: {
+    'point.male_dog_under_4m'() {
+      this.calcMaleDogs();
+    },
+    'point.male_dog_major_4m_under_1y'() {
+      this.calcMaleDogs();
+    },
+    'point.male_dog_major_1y_under_2y'() {
+      this.calcMaleDogs();
+    },
+    'point.male_dog_major_2y_under_4y'() {
+      this.calcMaleDogs();
+    },
+    'point.male_dog_major_4y'() {
+      this.calcMaleDogs();
+    },
+    'point.female_dog_under_4m'() {
+      this.calcFemaleDogs();
+    },
+    'point.female_dog_major_4m_under_1y'() {
+      this.calcFemaleDogs();
+    },
+    'point.female_dog_major_1y_under_2y'() {
+      this.calcFemaleDogs();
+    },
+    'point.female_dog_major_2y_under_4y'() {
+      this.calcFemaleDogs();
+    },
+    'point.female_dog_major_4y'() {
+      this.calcFemaleDogs();
+    },
+    'point.male_dogs'() {
+      this.calcTotalDogs();
+    },
+    'point.female_dogs'() {
+      this.calcTotalDogs();
+    },
+    'point.total_of_dogs'() {
+      this.calcTotal();
+    },
+    'point.total_of_cats'() {
+      this.calcTotal();
+    },
+    'point.male_cat'() {
+      this.calcTotalCats();
+    },
+    'point.female_cat'() {
+      this.calcTotalCats();
+    },
+    deep: true,
+  },
   created() {
     this.id = this.oldPoint.id;
   },
@@ -481,6 +601,74 @@ export default {
     },
     setVaccinators(ids) {
       this.point.vaccinators = ids;
+    },
+    calcMaleDogs() {
+      let total = 0;
+      total +=
+        this.point.male_dog_under_4m !== null
+          ? +this.point.male_dog_under_4m
+          : 0;
+      total +=
+        this.point.male_dog_major_4m_under_1y !== null
+          ? +this.point.male_dog_major_4m_under_1y
+          : 0;
+      total +=
+        this.point.male_dog_major_1y_under_2y !== null
+          ? +this.point.male_dog_major_1y_under_2y
+          : 0;
+      total +=
+        this.point.male_dog_major_2y_under_4y !== null
+          ? +this.point.male_dog_major_2y_under_4y
+          : 0;
+      total +=
+        this.point.male_dog_major_4y !== null
+          ? +this.point.male_dog_major_4y
+          : 0;
+      this.point.male_dogs = total;
+    },
+    calcFemaleDogs() {
+      let total = 0;
+      total +=
+        this.point.female_dog_under_4m !== null
+          ? +this.point.female_dog_under_4m
+          : 0;
+      total +=
+        this.point.female_dog_major_4m_under_1y !== null
+          ? +this.point.female_dog_major_4m_under_1y
+          : 0;
+      total +=
+        this.point.female_dog_major_1y_under_2y !== null
+          ? +this.point.female_dog_major_1y_under_2y
+          : 0;
+      total +=
+        this.point.female_dog_major_2y_under_4y !== null
+          ? +this.point.female_dog_major_2y_under_4y
+          : 0;
+      total +=
+        this.point.female_dog_major_4y !== null
+          ? +this.point.female_dog_major_4y
+          : 0;
+      this.point.female_dogs = total;
+    },
+    calcTotalDogs() {
+      let total = 0;
+      total += this.point.male_dogs !== null ? +this.point.male_dogs : 0;
+      total += this.point.female_dogs !== null ? +this.point.female_dogs : 0;
+      this.point.total_of_dogs = total;
+    },
+    calcTotal() {
+      let total = 0;
+      total +=
+        this.point.total_of_dogs !== null ? +this.point.total_of_dogs : 0;
+      total +=
+        this.point.total_of_cats !== null ? +this.point.total_of_cats : 0;
+      this.point.total = total;
+    },
+    calcTotalCats() {
+      let total = 0;
+      total += this.point.male_cat !== null ? +this.point.male_cat : 0;
+      total += this.point.female_cat !== null ? +this.point.female_cat : 0;
+      this.point.total_of_cats = total;
     },
   },
 };

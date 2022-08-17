@@ -11,7 +11,7 @@
       :id="`modal-xl-${id}`"
       size="xl"
       scrollable
-      title="Adicionar ponto de suporte"
+      title="Adicionar Ponto de Apoio"
     >
       <div class="row justify-content-between">
         <div class="col-12">

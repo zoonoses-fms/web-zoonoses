@@ -22,7 +22,7 @@
             <template #header>
               <div class="row m-0">
                 <div class="col-sm-12 col-md-6 d-flex justify-content-start">
-                  <h5 class="mb-0">Novos Ponto de Apoio</h5>
+                  <h5 class="mb-0">Novos Pontos de Apoio</h5>
                 </div>
                 <div class="col-sm-12 col-md-6 d-flex justify-content-end">
                   <b-button variant="success" @click="saveSupport">
@@ -197,7 +197,7 @@ export default {
     welcomeMessage() {
       this.$store.commit(
         'layout/CHANGE_NAV_TITLE',
-        'Pontos de apoio a campanhas de vacinação'
+        'Pontos de apoio a campanha de vacinação'
       );
     },
     async getDetailCycle() {

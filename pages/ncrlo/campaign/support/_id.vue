@@ -3,12 +3,12 @@
     <div class="row m-2 justify-content-between">
       <div class="col-sm-12 col-md-6">
         <NuxtLink to="/ncrlo/vaccination/point" class="btn btn-success">
-          Lista de todos pontos de vacinação
+          Lista de todos os Postos
         </NuxtLink>
       </div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
         <FormsAddPoint
-          text-button="Adicionar Ponto"
+          text-button="Adicionar Posto"
           variant="primary"
           :current-support.sync="support"
           @addSupport="addPoint"
@@ -22,7 +22,7 @@
             <template #header>
               <div class="row m-0">
                 <div class="col-sm-12 col-md-6 d-flex justify-content-start">
-                  <h5 class="mb-0">Novos Ponto de Vacinação</h5>
+                  <h5 class="mb-0">Novos Postos</h5>
                 </div>
                 <div class="col-sm-12 col-md-6 d-flex justify-content-end">
                   <b-button variant="success" @click="savePoint">
@@ -48,23 +48,6 @@
               </template>
               <template #cell(number)="data">
                 {{ data.item.number }}
-              </template>
-              <template #cell(support)="data">
-                <NuxtLink
-                  :to="`/ncrlo/campaign/support/${data.item.id}`"
-                  class="btn btn-warning"
-                >
-                  Detalhes
-                </NuxtLink>
-              </template>
-              <template #cell(delete)="data">
-                <ModalDelete
-                  :item="data.item"
-                  :url="urlCampaignPoint"
-                  text-button="Remover"
-                  @deletItem="getDetailSupport"
-                >
-                </ModalDelete>
               </template>
             </b-table>
           </b-card>
@@ -108,6 +91,14 @@
             </template>
             <template #cell(number)="data">
               {{ data.item.point.number }}
+            </template>
+            <template #cell(neighborhood)="data">
+              {{ data.item.point.neighborhood_alias.name }}
+            </template>
+            <template #cell(saad)="data">
+              <span v-for="saad in data.item.saads" :key="saad.id">
+                {{ saad.name }}
+              </span>
             </template>
             <template #cell(edit)="data">
               <FormsCampaignPoint
@@ -166,6 +157,14 @@ export default {
           label: 'Número',
         },
         {
+          key: 'neighborhood',
+          label: 'Bairro',
+        },
+        {
+          key: 'saad',
+          label: 'SAAD',
+        },
+        {
           key: 'edit',
           label: 'Editar',
         },
@@ -182,7 +181,7 @@ export default {
   },
   methods: {
     welcomeMessage() {
-      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Pontos de vacinação');
+      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Postos');
     },
     async getDetailSupport() {
       this.points = [];
