@@ -331,6 +331,7 @@ export default {
       this.point = { ...this.oldPoint };
       if (this.oldPoint.geometry != null) {
         this.selectedFeature = [this.generateGeoJson(this.oldPoint)];
+        this.point.geometry = this.generateGeoJson(this.oldPoint).geometry;
       }
     },
     handleOk() {

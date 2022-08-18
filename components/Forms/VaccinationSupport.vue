@@ -330,6 +330,7 @@ export default {
       this.support = { ...this.oldSupport };
       if (this.oldSupport.geometry != null) {
         this.selectedFeature = [this.generateGeoJson(this.oldSupport)];
+        this.point.geometry = this.generateGeoJson(this.oldPoint).geometry;
       }
     },
     handleOk() {
