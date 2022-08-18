@@ -273,18 +273,9 @@ export default {
 
       this.source.addFeatures(this.features);
 
-
       this.features.forEach(async (feature) => {
-        await setTimeout(() => {
-          for (let i = 1; i <= 7; i++) {
-            setTimeout(() => {
-              this.pulse(feature, this.durationAnimate * i+1);
-            }, i+1 * 1000);
-          }
-          return true;
-        }, 500);
+        await this.setPulses(feature);
       });
-
 
       /*
       for (const feature of this.features) {
@@ -366,7 +357,13 @@ export default {
         new Vue.ol.format.GeoJSON().writeFeatures([this.featureInfo])
       );
     },
-    pulse(f, duration) {
+    setPulses(f) {
+      for (let i = 1; i <= 7; i++) {
+        this.setPulse(f, this.durationAnimate * i + 1);
+      }
+      return true;
+    },
+    setPulse(f, duration) {
       const feature = new Vue.ol.Feature(
         new Vue.ol.geom.Point(f.getGeometry().getCoordinates())
       );

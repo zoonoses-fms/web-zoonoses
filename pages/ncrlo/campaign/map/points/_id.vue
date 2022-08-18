@@ -4,7 +4,7 @@
       <OlMapViewPoints
         height="80"
         :map-features.sync="points"
-        :zoom-out="16"
+        :zoom-out="14"
         color-radar="#198754"
         color-default="#28a745"
       >
