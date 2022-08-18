@@ -1,8 +1,14 @@
 <template>
   <div class="map-points col-12">
     <client-only placeholder="Loading...">
-      <OlMapPoints height="80" :map-features.sync="supports" :zoom-out="16" color-radar="#17a2b8" color-default="#17a2b8">
-      </OlMapPoints>
+      <OlMapViewPoints
+        height="80"
+        :map-features.sync="supports"
+        :zoom-out="16"
+        color-radar="#0d6efd"
+        color-default="#17a2b8"
+      >
+      </OlMapViewPoints>
     </client-only>
   </div>
 </template>
@@ -30,18 +36,19 @@ export default {
     },
     async getSupports() {
       const params = {
-        map: 'support'
+        map: 'support',
       };
 
       const response = await this.$axios.get(`${this.url}${this.id}`, {
-        params
+        params,
       });
 
       const campaign = response.data;
-
-      for (const item of campaign.supports) {
-        if (item.support.geometry != null) {
-          this.supports.push(this.generateGeoJson(item.support));
+      for (const cycle of campaign.cycles) {
+        for (const item of cycle.supports) {
+          if (item.support.geometry != null) {
+            this.supports.push(this.generateGeoJson(item.support));
+          }
         }
       }
     },

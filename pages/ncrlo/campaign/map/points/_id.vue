@@ -1,14 +1,14 @@
 <template>
   <div class="map-points col-12">
     <client-only placeholder="Loading...">
-      <OlMapPoints
+      <OlMapViewPoints
         height="80"
         :map-features.sync="points"
         :zoom-out="16"
-        color-radar="#28a745"
+        color-radar="#198754"
         color-default="#28a745"
       >
-      </OlMapPoints>
+      </OlMapViewPoints>
     </client-only>
   </div>
 </template>
@@ -45,10 +45,12 @@ export default {
 
       const campaign = response.data;
 
-      for (const support of campaign.supports) {
-        for (const item of support.points) {
-          if (item.point.geometry != null) {
-            this.points.push(this.generateGeoJson(item.point));
+      for (const cycle of campaign.cycles) {
+        for (const support of cycle.supports) {
+          for (const item of support.points) {
+            if (item.point.geometry != null) {
+              this.points.push(this.generateGeoJson(item.point));
+            }
           }
         }
       }

@@ -15,7 +15,7 @@
         >Cancelar</b-button
       >
       <b-button variant="danger" class="mt-3" block @click="deleteItem"
-        >{{ textButton }}</b-button
+        >Excluir</b-button
       >
     </b-modal>
   </div>

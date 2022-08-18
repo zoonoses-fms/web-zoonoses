@@ -135,7 +135,7 @@ export default {
       points: [],
       newCampaignPoints: [],
       url: 'ncrlo/campaign/support/',
-      urlCampaignPoint: 'ncrlo/campaign/point',
+      urlCampaignPoint: 'ncrlo/campaign/point/',
       fields: [
         {
           key: 'pendency',
