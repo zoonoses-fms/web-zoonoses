@@ -138,7 +138,7 @@ export default {
       prefix: 'auth.',
       options: {
         path: '/',
-        domain: 'localhost',
+        domain: process.env.DOMAIN,
         secure: true,
       },
     },

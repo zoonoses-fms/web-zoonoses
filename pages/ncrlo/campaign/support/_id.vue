@@ -83,6 +83,12 @@
                 ></b-icon>
               </div>
             </template>
+            <template #cell(area)="data">
+              {{ data.item.area }}
+            </template>
+            <template #cell(order)="data">
+              {{ data.item.order }}
+            </template>
             <template #cell(name)="data">
               {{ data.item.point.name }}
             </template>
@@ -104,6 +110,7 @@
               <FormsCampaignPoint
                 text-button=""
                 variant="success"
+                :title="data.item.point.name"
                 :old-point="data.item"
                 :supervisors="support.supervisors"
                 :campaign-cycle-id="support.campaign_cycle_id"
@@ -140,6 +147,16 @@ export default {
         {
           key: 'pendency',
           label: 'Pendência',
+          sortable: true,
+        },
+        {
+          key: 'area',
+          label: 'Área',
+          sortable: true,
+        },
+        {
+          key: 'order',
+          label: 'Ordem',
           sortable: true,
         },
         {
