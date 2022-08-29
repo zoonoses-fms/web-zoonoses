@@ -171,7 +171,7 @@ export default {
         },
         {
           key: 'saad',
-          label: 'SAAD'
+          label: 'SAAD',
         },
         {
           key: 'edit',
@@ -224,9 +224,10 @@ export default {
     addSupport(support) {
       this.newSupports.push({ ...support, _rowVariant: 'success' });
     },
-    async saveSupport() {
-      for (let index = 0; index < this.newSupports.length; index++) {
-        const element = this.newSupports[index];
+    saveSupport() {
+      let counter = 0;
+      const i = setInterval(async () => {
+        const element = this.newSupports[counter];
 
         try {
           await this.$axios.post(`${this.urlCampaignSupport}`, {
@@ -250,11 +251,15 @@ export default {
               });
             });
           }
-          continue;
         }
-      }
-      this.newSupports = [];
-      this.getDetailCycle();
+
+        counter++;
+        if (counter === this.newSupports.length) {
+          this.newSupports = [];
+          this.getDetailCycle();
+          clearInterval(i);
+        }
+      }, 1000);
     },
   },
 };

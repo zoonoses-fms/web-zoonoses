@@ -220,10 +220,10 @@ export default {
     addPoint(point) {
       this.newCampaignPoints.push({ ...point, _rowVariant: 'success' });
     },
-    async savePoint() {
-      for (let index = 0; index < this.newCampaignPoints.length; index++) {
-        const element = this.newCampaignPoints[index];
-
+    savePoint() {
+      let counter = 0;
+      const i = setInterval(async () => {
+        const element = this.newCampaignPoints[counter];
         try {
           await this.$axios.post(`${this.urlCampaignPoint}`, {
             ...element,
@@ -246,11 +246,15 @@ export default {
               });
             });
           }
-          continue;
         }
-      }
-      this.newCampaignPoints = [];
-      this.getDetailSupport();
+
+        counter++;
+        if (counter === this.newCampaignPoints.length) {
+          this.newCampaignPoints = [];
+          this.getDetailSupport();
+          clearInterval(i);
+        }
+      }, 1000);
     },
   },
 };
