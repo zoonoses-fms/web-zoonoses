@@ -330,7 +330,7 @@ export default {
               radius: 8,
               stroke: new Vue.ol.style.Stroke({
                 color: hexToRgba(this.palette[i], 0.9),
-                width: 1,
+                width: 2,
               }),
               angle: Math.PI / 1,
               fill: new Vue.ol.style.Fill({
