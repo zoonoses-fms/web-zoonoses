@@ -52,6 +52,22 @@
             <template #cell(end)="data">
               {{ data.item.end }}
             </template>
+            <template #cell(points)="data">
+              <NuxtLink
+                :to="`/ncrlo/campaign/cycle/map/points/${data.item.id}`"
+                class="btn btn-success"
+              >
+                <b-icon icon="map"></b-icon>
+              </NuxtLink>
+            </template>
+            <template #cell(supports)="data">
+              <NuxtLink
+                :to="`/ncrlo/campaign/cycle/map/supports/${data.item.id}`"
+                class="btn btn-info"
+              >
+                <b-icon icon="map"></b-icon>
+              </NuxtLink>
+            </template>
             <template #cell(edit)="data">
               <FormsCampaignCycle
                 text-button=""
@@ -116,6 +132,14 @@ export default {
           key: 'end',
           label: 'Fim',
           sortable: true,
+        },
+        {
+          key: 'points',
+          label: 'Postos',
+        },
+        {
+          key: 'supports',
+          label: 'Pontos de Apoios',
         },
         {
           key: 'edit',

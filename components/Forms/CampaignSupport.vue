@@ -27,12 +27,23 @@
 
             <form ref="form" @submit.stop.prevent></form>
             <div class="row">
-              <div class="col-12 col-md-6">
+              <div class="col-6 col-md-3">
                 <div class="form-group">
                   <label for="goal-input">Meta:</label>
                   <input
                     v-model="support.goal"
                     name="goal-input"
+                    class="form-control"
+                    type="number"
+                  />
+                </div>
+              </div>
+              <div class="col-6 col-md-3">
+                <div class="form-group">
+                  <label for="mileage-input">Quilometragem:</label>
+                  <input
+                    v-model="support.mileage"
+                    name="mileage-input"
                     class="form-control"
                     type="number"
                   />

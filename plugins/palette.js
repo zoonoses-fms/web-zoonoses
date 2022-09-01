@@ -50,15 +50,14 @@ Vue.palette.pastels = [
 ];
 
 Vue.palette.brewer1 = [
-  '#a6cee3',
+  '#6a3d9a',
   '#1f78b4',
-  '#b2df8a',
   '#33a02c',
-  '#fb9a99',
   '#e31a1c',
-  '#fdbf6f',
   '#ff7f00',
-  '#cab2d6',
+  '#7c1158',
+  '#4421af',
+  '#1a53ff',
 ];
 
 Vue.palette.brewer2 = [
@@ -134,3 +133,4 @@ Vue.palette.sunSet = [
   '#130025',
   '#0b0015',
 ];
+

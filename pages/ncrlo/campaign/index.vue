@@ -40,22 +40,6 @@
                 <b-icon icon="search"></b-icon>
               </NuxtLink>
             </template>
-            <template #cell(points)="data">
-              <NuxtLink
-                :to="`/ncrlo/campaign/map/points/${data.item.id}`"
-                class="btn btn-success"
-              >
-                <b-icon icon="map"></b-icon>
-              </NuxtLink>
-            </template>
-            <template #cell(supports)="data">
-              <NuxtLink
-                :to="`/ncrlo/campaign/map/supports/${data.item.id}`"
-                class="btn btn-info"
-              >
-                <b-icon icon="map"></b-icon>
-              </NuxtLink>
-            </template>
             <template #cell(edit)="data">
               <FormsCampaign
                 text-button=""
@@ -105,14 +89,6 @@ export default {
         {
           key: 'details',
           label: 'Detalhes',
-        },
-        {
-          key: 'points',
-          label: 'Postos',
-        },
-        {
-          key: 'supports',
-          label: 'Pontos de Apoios',
         },
         {
           key: 'edit',

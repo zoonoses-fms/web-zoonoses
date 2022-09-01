@@ -13,6 +13,7 @@ import Text from 'ol/style/Text';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Circle from 'ol/style/Circle';
+import RegularShape from 'ol/style/RegularShape';
 import MVT from 'ol/format/MVT';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
@@ -33,6 +34,9 @@ import 'ol-ext/render/AnimExtent';
 
 import Zoom from 'ol-ext/featureanimation/Zoom';
 import None from 'ol-ext/featureanimation/None';
+import LegendControl from 'ol-ext/control/Legend';
+import Legend from 'ol-ext/legend/Legend';
+import LegendItem from 'ol-ext/legend/Item';
 // import Null from 'ol-ext/featureanimation/Null';
 
 Vue.ol = {
@@ -59,6 +63,7 @@ Vue.ol = {
     Fill,
     Stroke,
     Circle,
+    RegularShape
   },
   format: {
     MVT,
@@ -82,4 +87,9 @@ Vue.ol = {
   geom: {
     Point,
   },
+  legend: {
+    Legend,
+    LegendItem,
+    LegendControl
+  }
 };
