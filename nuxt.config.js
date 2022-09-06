@@ -139,7 +139,7 @@ export default {
       options: {
         path: '/',
         domain: process.env.DOMAIN,
-        secure: true,
+        secure: false,
       },
     },
     redirect: {
