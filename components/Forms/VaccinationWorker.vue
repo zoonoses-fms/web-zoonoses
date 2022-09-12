@@ -1,7 +1,13 @@
 <template>
   <div>
-    <b-button v-b-modal="`modal-md-${id}`" :variant="variant" @click="showForm">
+    <b-button
+      v-b-modal="`modal-md-${id}`"
+      :variant="variant"
+      class="mt-1"
+      @click="showForm"
+    >
       {{ textButton }}
+      <slot name="button"> </slot>
     </b-button>
     <ValidationObserver v-slot="{ valid }">
       <b-modal
@@ -88,6 +94,32 @@
                 />
               </div>
             </div>
+            <b-form-radio-group
+              v-slot="{ ariaDescribedby }"
+              label="Tipo"
+            >
+              <b-form-radio
+                v-model="worker.type"
+                :aria-describedby="ariaDescribedby"
+                name="type-worker"
+                value="fms"
+                >FMS
+              </b-form-radio>
+              <b-form-radio
+                v-model="worker.type"
+                :aria-describedby="ariaDescribedby"
+                name="type-worker"
+                value="ace"
+                >ACE
+              </b-form-radio>
+              <b-form-radio
+                v-model="worker.type"
+                :aria-describedby="ariaDescribedby"
+                name="type-worker"
+                value="acs"
+                >ACS
+              </b-form-radio>
+            </b-form-radio-group>
           </form>
         </b-overlay>
         <template #modal-footer="{ ok, cancel }">
@@ -116,6 +148,10 @@ export default {
   },
   directives: { mask },
   props: {
+    nameModal: {
+      type: String,
+      default: null,
+    },
     textButton: {
       type: String,
       required: true,
@@ -133,6 +169,7 @@ export default {
           phone: null,
           cpf: null,
           registration: null,
+          type: null,
         };
       },
     },
@@ -154,6 +191,7 @@ export default {
             phone: null,
             cpf: null,
             registration: null,
+            type: null,
           };
         },
       },
@@ -173,9 +211,17 @@ export default {
       add: false,
     };
   },
-  watch: {},
+  watch: {
+    'worker.registration'(value) {
+      // console.log(value);
+    },
+  },
   created() {
-    this.id = this.oldWorker.id;
+    if (this.nameModal != null) {
+      this.id = this.nameModal;
+    } else {
+      this.id = this.oldWorker.id;
+    }
   },
   methods: {
     showForm() {
@@ -197,7 +243,7 @@ export default {
       try {
         const response = await this.$axios.post(`${this.url}`, this.worker);
         this.worker = response.data;
-        this.$emit('create');
+        this.$emit('create', this.worker);
         this.$bvToast.toast('Cadastro efetuado!', {
           title: 'Sucesso',
           autoHideDelay: 5000,

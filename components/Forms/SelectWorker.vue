@@ -1,25 +1,40 @@
 <template>
-  <div>
-    <multiselect
-      v-model="selected"
-      :options.sync="listWorkers"
-      :searchable="true"
-      :close-on-select="!multiple"
-      :show-labels="true"
-      deselect-label="Clique para remover"
-      select-label="Clique para selecionar"
-      selected-label="Selecionado"
-      :multiple="multiple"
-      track-by="id"
-      label="name"
-      placeholder="Selecione"
-      :allow-empty="true"
-    >
-      <template slot="singleLabel" slot-scope="{ option }">
-        <strong>{{ option.name }}</strong> Matrícula
-        <strong>{{ option.registration }}</strong>
-      </template>
-    </multiselect>
+  <div class="d-flex">
+    <div class="flex-grow-1">
+      <multiselect
+        v-model="selected"
+        :options.sync="listWorkers"
+        :searchable="true"
+        :close-on-select="!multiple"
+        :show-labels="true"
+        deselect-label="Clique para remover"
+        select-label="Clique para selecionar"
+        selected-label="Selecionado"
+        :multiple="multiple"
+        track-by="id"
+        label="name"
+        placeholder="Selecione"
+        :allow-empty="true"
+      >
+        <template slot="singleLabel" slot-scope="{ option }">
+          <strong>{{ option.name }}</strong> Matrícula
+          <strong>{{ option.registration }}</strong>
+        </template>
+      </multiselect>
+    </div>
+    <div v-if="preLoadingList === null" class="align-self-stretch">
+      <FormsVaccinationWorker
+        :name-modal="listType"
+        text-button=""
+        variant="success"
+        :url="url"
+        @create="setWorker"
+      >
+        <template #button>
+          <b-icon icon="person-plus" />
+        </template>
+      </FormsVaccinationWorker>
+    </div>
   </div>
 </template>
 
@@ -54,7 +69,7 @@ export default {
     preLoadingList: {
       type: Array,
       default() {
-        return [];
+        return null;
       },
     },
   },
@@ -82,7 +97,7 @@ export default {
     },
   },
   created() {
-    if (this.preLoadingList.length > 0) {
+    if (Array.isArray(this.preLoadingList)) {
       this.listWorkers = [...this.preLoadingList];
       this.preSelectedWorker();
     } else {
@@ -139,6 +154,9 @@ export default {
         });
       }
     },
+    setWorker(worker) {
+      this.selected.push(worker);
+    }
   },
 };
 </script>
@@ -148,6 +166,7 @@ export default {
   z-index: -1;
   position: fixed;
   width: 78%;
+  display: contents;
 }
 
 @media (min-width: 768px) {

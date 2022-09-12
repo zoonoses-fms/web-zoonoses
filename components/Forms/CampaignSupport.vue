@@ -20,7 +20,7 @@
                   to="/ncrlo/vaccination/worker"
                   class="btn btn-success"
                 >
-                  Lista Equipe
+                  Lista da equipe
                 </NuxtLink>
               </div>
             </div>

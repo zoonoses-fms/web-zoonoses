@@ -107,15 +107,30 @@
               </span>
             </template>
             <template #cell(edit)="data">
-              <FormsCampaignPoint
-                text-button=""
-                variant="success"
-                :title="data.item.point.name"
-                :old-point="data.item"
-                :supervisors="support.supervisors"
-                :campaign-cycle-id="support.campaign_cycle_id"
-                @update="getDetailSupport"
-              ></FormsCampaignPoint>
+              <div class="d-flex">
+                <div class="mx-1">
+                  <FormsCampaignPoint
+                    text-button=""
+                    variant="success"
+                    :title="data.item.point.name"
+                    :old-point="data.item"
+                    :supervisors="support.supervisors"
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    @update="getDetailSupport"
+                  />
+                </div>
+                <div>
+                  <FormsCampaignPointPeople
+                    text-button=""
+                    variant="info"
+                    :title="data.item.point.name"
+                    :old-point="data.item"
+                    :supervisors="support.supervisors"
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    @update="getDetailSupport"
+                  />
+                </div>
+              </div>
             </template>
             <template #cell(delete)="data">
               <ModalDelete

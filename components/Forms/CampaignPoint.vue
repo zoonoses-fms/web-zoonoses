@@ -14,17 +14,6 @@
       >
         <b-overlay :show="show" rounded="sm">
           <div class="">
-            <div class="row pb-1">
-              <div class="col-12 d-flex justify-content-end">
-                <NuxtLink
-                  to="/ncrlo/vaccination/worker"
-                  class="btn btn-success"
-                >
-                  Lista Equipe
-                </NuxtLink>
-              </div>
-            </div>
-
             <form ref="form" @submit.stop.prevent></form>
             <div class="row">
               <div class="col-12 col-lg-6">
@@ -187,6 +176,8 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1 w-100">
                   <label>Gatos:</label>
                   <div class="form-row mb-1">
@@ -213,50 +204,6 @@
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <div class="form-row">
-                    <div class="col-12 col-md-6">
-                      <label for="order-input">Ordem:</label>
-                      <input
-                        v-model="point.order"
-                        name="order-input"
-                        class="form-control form-control-sm"
-                        type="number"
-                      />
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <label for="area-input">Área:</label>
-                      <input
-                        v-model="point.area"
-                        name="area-input"
-                        class="form-control form-control-sm"
-                        type="number"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group border border-success rounded p-1">
-                  <label>Selecione o Supervisor</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="campaignCycleId"
-                    :selected-worker="point.supervisor_id"
-                    list-type="supervisor"
-                    :pre-loading-list="supervisors"
-                    @change="setSupervisor"
-                  ></FormsSelectWorker>
-                </div>
-                <div class="form-group border border-success rounded p-1">
-                  <label>Selecione os Vacinadores</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="campaignCycleId"
-                    :selected-worker="point.vaccinators"
-                    list-type="vaccinators"
-                    :multiple="true"
-                    @change="setVaccinators"
-                  ></FormsSelectWorker>
                 </div>
                 <div class="form-group border border-success rounded p-1 w-100">
                   <label>Frascos</label>
@@ -395,6 +342,7 @@ export default {
           bottle_returned_partially: null,
           bottle_lost: null,
           vaccinators: [],
+          annotators: [],
         };
       },
     },
@@ -453,6 +401,7 @@ export default {
             bottle_returned_partially: null,
             bottle_lost: null,
             vaccinators: [],
+            annotators: [],
           };
         },
       },
