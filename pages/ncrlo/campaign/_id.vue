@@ -68,6 +68,15 @@
                 <b-icon icon="map"></b-icon>
               </NuxtLink>
             </template>
+            <template #cell(report)="data">
+              <b-button
+                class="mt-0"
+                variant="warning"
+                @click="reportPdf(data.item)"
+              >
+                <b-icon icon="printer"></b-icon>
+              </b-button>
+            </template>
             <template #cell(edit)="data">
               <FormsCampaignCycle
                 text-button=""
@@ -142,6 +151,10 @@ export default {
           label: 'Pontos de Apoios',
         },
         {
+          key: 'report',
+          label: 'Relatório',
+        },
+        {
           key: 'edit',
           label: 'Editar',
         },
@@ -177,6 +190,32 @@ export default {
       this.campaign = response.data;
 
       this.cycles = this.campaign.cycles;
+    },
+    async reportPdf(cycle) {
+      try {
+        const response = await this.$axios.get(
+          `${this.urlCampaignCycle}report/${cycle.id}`,
+          {
+            responseType: 'blob',
+          }
+        );
+        const today = new Date().toISOString().slice(0, 10);
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        // const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = '_blank';
+        link.download = `${today}-Relatório de Locação de Pessoal.pdf`;
+        link.click();
+        // window.open(url);
+        // console.log(response);
+      } catch (error) {
+        const message =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+        console.log(message);
+      }
     },
   },
 };

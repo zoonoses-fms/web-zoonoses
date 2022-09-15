@@ -5,6 +5,7 @@
         <NuxtLink to="/ncrlo/vaccination/support" class="btn btn-success">
           Todos os Pontos de Apoio
         </NuxtLink>
+        <ModalSearchWorker :cycle-id="cycle.id"> </ModalSearchWorker>
       </div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
         <FormsAddSupport

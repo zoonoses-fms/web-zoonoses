@@ -109,6 +109,18 @@
                   ></FormsSelectSaad>
                 </div>
               </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Selecione os Vacinadores Resesva</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    :selected-worker="support.vaccinators"
+                    list-type="vaccinators"
+                    :multiple="true"
+                    @change="setVaccinators"
+                  ></FormsSelectWorker>
+                </div>
+              </div>
             </div>
           </div>
         </b-overlay>
@@ -151,6 +163,7 @@ export default {
           drivers: [],
           supervisors: [],
           assistants: [],
+          vaccinators: []
         };
       },
     },
@@ -172,6 +185,7 @@ export default {
             drivers: [],
             supervisors: [],
             assistants: [],
+            vaccinators: []
           };
         },
       },
@@ -281,9 +295,12 @@ export default {
     setAssistants(ids) {
       this.support.assistants = ids;
     },
+    setVaccinators(ids) {
+      this.support.vaccinators = ids;
+    },
     setSaads(ids) {
       this.support.saads = ids;
-    }
+    },
   },
 };
 </script>
