@@ -104,13 +104,18 @@ export default {
       this.$store.commit('layout/CHANGE_NAV_TITLE', 'Usuários');
     },
     async getRows() {
+      const params = {
+        per_page: this.perPage,
+        page: this.currentPage,
+      };
+
+      if (this.search.length > 3) {
+        params.keyword = this.search;
+      }
+
       try {
         const response = await this.$axios.get(`user/`, {
-          params: {
-            per_page: this.perPage,
-            page: this.currentPage,
-            search: this.search.length > 3 ? this.search : '',
-          },
+          params,
         });
         this.listUsers = await response.data.data;
         this.totalRows = await response.data.total;

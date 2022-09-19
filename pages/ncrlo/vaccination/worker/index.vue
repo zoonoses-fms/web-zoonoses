@@ -165,17 +165,17 @@ export default {
 
       if (this.search.length > 3) {
         params.keyword = this.search;
-        try {
-          const response = await this.$axios.get(`${this.url}`, {
-            params,
-          });
-          this.rows = await response.data.data;
-          this.totalRows = await response.data.total;
-        } catch (error) {
-          /* if(error.response.status === 401) {
+      }
+      try {
+        const response = await this.$axios.get(`${this.url}`, {
+          params,
+        });
+        this.rows = await response.data.data;
+        this.totalRows = await response.data.total;
+      } catch (error) {
+        /* if(error.response.status === 401) {
                   this.$router.push('/');
                 } */
-        }
       }
     },
   },

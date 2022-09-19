@@ -75,58 +75,62 @@
 
 <script>
 export default {
-    name: "AdminPage",
-    data() {
-        return {
-            fields: [
-                { key: "id", label: "Id", sortable: true },
-                { key: "core.name", label: "Núcleo", sortable: true },
-                { key: "number", label: "Turma", sortable: true },
-                { key: "edit", label: "Editar" },
-                { key: "delete", label: "Excluir" },
-            ],
-            perPage: 10,
-            currentPage: 1,
-            totalRows: 0,
-            search: "",
-            listTeams: [],
-        };
+  name: 'AdminPage',
+  data() {
+    return {
+      fields: [
+        { key: 'id', label: 'Id', sortable: true },
+        { key: 'core.name', label: 'Núcleo', sortable: true },
+        { key: 'number', label: 'Turma', sortable: true },
+        { key: 'edit', label: 'Editar' },
+        { key: 'delete', label: 'Excluir' },
+      ],
+      perPage: 10,
+      currentPage: 1,
+      totalRows: 0,
+      search: '',
+      listTeams: [],
+    };
+  },
+  fetch() {
+    // this.getRows();
+  },
+  created() {
+    this.getRows();
+    this.welcomeMessage();
+  },
+  methods: {
+    welcomeMessage() {
+      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Usuários');
     },
-    fetch() {
-        // this.getRows();
-    },
-    created() {
-        this.getRows();
-        this.welcomeMessage();
-    },
-    methods: {
-        welcomeMessage() {
-            this.$store.commit("layout/CHANGE_NAV_TITLE", "Usuários");
-        },
-        async getRows() {
-            try {
-                const response = await this.$axios.get(`team/`, {
-                    params: {
-                        per_page: this.perPage,
-                        page: this.currentPage,
-                        search: this.search.length > 3 ? this.search : "",
-                    },
-                });
-                this.listTeams = await response.data.data;
-                this.totalRows = await response.data.total;
-            }
-            catch (error) {
-                /* if(error.response.status === 401) {
+    async getRows() {
+      const params = {
+        per_page: this.perPage,
+        page: this.currentPage,
+      };
+
+      if (this.search.length > 3) {
+        params.keyword = this.search;
+      }
+
+      try {
+        const response = await this.$axios.get(`team/`, {
+          params,
+        });
+        this.listTeams = await response.data.data;
+        this.totalRows = await response.data.total;
+      } catch (error) {
+        /* if(error.response.status === 401) {
                   this.$router.push('/');
                 } */
-            }
-        },
-        searchHandler() {
-            if (this.search.length > 3) {
-                this.getRows();
-            }
-        },
+      }
     },
+    searchHandler() {
+      if (this.search.length > 3) {
+        this.getRows();
+      }
+    },
+  },
 };
 </script>
 
