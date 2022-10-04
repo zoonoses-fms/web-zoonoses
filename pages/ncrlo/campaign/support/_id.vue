@@ -99,7 +99,9 @@
               {{ data.item.point.number }}
             </template>
             <template #cell(neighborhood)="data">
-              {{ data.item.point.neighborhood_alias.name }}
+              <div v-if="data.item.point.neighborhood_alias !== null">
+                {{ data.item.point.neighborhood_alias.name }}
+              </div>
             </template>
             <template #cell(saad)="data">
               <span v-for="saad in data.item.saads" :key="saad.id">
