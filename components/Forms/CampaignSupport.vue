@@ -49,7 +49,44 @@
                   />
                 </div>
               </div>
+              <div class="col-12 col-md-6">
+                <b-form-checkbox
+                  id="checkbox-is-rural"
+                  v-model="support.is_rural"
+                  name="is_rural"
+                >
+                  Área Rural?
+                </b-form-checkbox>
+              </div>
+            </div>
+            <div v-show="support.is_rural" class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Supervisores Rural</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    :selected-worker="support.rural_supervisors"
+                    list-type="rural_supervisors"
+                    :multiple="true"
+                    @change="setRuralSupervisors"
+                  ></FormsSelectWorker>
+                </div>
+              </div>
 
+              <div class="col-12 col-md-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Auxiliar Rural</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="support.campaign_cycle_id"
+                    :selected-worker="support.rural_assistants"
+                    list-type="rural_assistants"
+                    :multiple="true"
+                    @change="setRuralAssistants"
+                  ></FormsSelectWorker>
+                </div>
+              </div>
+            </div>
+            <div v-show="!support.is_rural" class="row">
               <div class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione o Coordenador</label>
@@ -61,8 +98,7 @@
                   ></FormsSelectWorker>
                 </div>
               </div>
-            </div>
-            <div class="row">
+
               <div class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os Supervisores</label>
@@ -75,6 +111,8 @@
                   ></FormsSelectWorker>
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os Motorista</label>
@@ -87,9 +125,9 @@
                   ></FormsSelectWorker>
                 </div>
               </div>
-              <div class="col-12 col-md-6">
+              <div v-show="!support.is_rural" class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
-                  <label>Selecione os Auxiliares</label>
+                  <label>Selecione os Apoiadores</label>
                   <FormsSelectWorker
                     :campaign-cycle-id="support.campaign_cycle_id"
                     :selected-worker="support.assistants"
@@ -109,7 +147,7 @@
                   ></FormsSelectSaad>
                 </div>
               </div>
-              <div class="col-12 col-md-6">
+              <div v-show="!support.is_rural" class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os Vacinadores Resesva</label>
                   <FormsSelectWorker
@@ -163,7 +201,10 @@ export default {
           drivers: [],
           supervisors: [],
           assistants: [],
-          vaccinators: []
+          vaccinators: [],
+          is_rural: false,
+          rural_supervisors: [],
+          rural_assistants: [],
         };
       },
     },
@@ -185,7 +226,10 @@ export default {
             drivers: [],
             supervisors: [],
             assistants: [],
-            vaccinators: []
+            vaccinators: [],
+            is_rural: false,
+            rural_supervisors: [],
+            rural_assistants: [],
           };
         },
       },
@@ -297,6 +341,12 @@ export default {
     },
     setVaccinators(ids) {
       this.support.vaccinators = ids;
+    },
+    setRuralSupervisors(ids) {
+      this.support.rural_supervisors = ids;
+    },
+    setRuralAssistants(ids) {
+      this.support.rural_assistants = ids;
     },
     setSaads(ids) {
       this.support.saads = ids;

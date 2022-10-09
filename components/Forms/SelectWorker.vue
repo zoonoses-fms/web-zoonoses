@@ -156,19 +156,12 @@ export default {
     },
     setWorker(worker) {
       this.selected.push(worker);
-    }
+    },
   },
 };
 </script>
 <style>
 /* stylelint-disable-line */
-.multiselect__content-wrapper {
-  z-index: -1;
-  position: fixed;
-  width: 78%;
-  display: contents;
-}
-
 @media (min-width: 768px) {
   .multiselect__content-wrapper {
     width: 36%;

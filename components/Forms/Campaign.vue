@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-button
-      v-b-modal="`modal-md-${id}`"
+      v-b-modal="`modal-lg-${id}`"
       :variant="variant"
       @click="setCampaign"
     >
@@ -11,8 +11,8 @@
     <ValidationObserver v-slot="{ valid }">
       <form @submit.prevent="handleOk">
         <b-modal
-          :id="`modal-md-${id}`"
-          size="md"
+          :id="`modal-lg-${id}`"
+          size="lg"
           scrollable
           :title="vaccinationCampaign.year ? `${vaccinationCampaign.year}` : ``"
           @ok="handleOk"
@@ -124,18 +124,6 @@
                   </div>
                   <div class="col-3 px-1">
                     <div class="form-group">
-                      <label for="assistant-cost-input">Auxiliar:</label>
-                      <money
-                        v-model="vaccinationCampaign.assistant_cost"
-                        v-bind="money"
-                        name="assistant-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-3 px-1">
-                    <div class="form-group">
                       <label for="supervisor-cost-input">Supervisor:</label>
                       <money
                         v-model="vaccinationCampaign.supervisor_cost"
@@ -146,9 +134,21 @@
                       />
                     </div>
                   </div>
+                  <div class="col-3 px-1">
+                    <div class="form-group">
+                      <label for="assistant-cost-input">Apoiador:</label>
+                      <money
+                        v-model="vaccinationCampaign.assistant_cost"
+                        v-bind="money"
+                        name="assistant-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div class="row">
-                  <div class="col-3 px-1">
+                  <div class="col-4 px-1">
                     <div class="form-group">
                       <label for="vaccinator-cost-input">Vacinador:</label>
                       <money
@@ -160,6 +160,60 @@
                       />
                     </div>
                   </div>
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="vaccinator-cost-input">Anotador:</label>
+                      <money
+                        v-model="vaccinationCampaign.annotator_cost"
+                        v-bind="money"
+                        name="vaccinator-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="driver-cost-input">Motorista:</label>
+                      <money
+                        v-model="vaccinationCampaign.driver_cost"
+                        v-bind="money"
+                        name="driver-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6 px-1">
+                    <div class="form-group">
+                      <label for="supervisor-cost-input"
+                        >Supervisor Rural:</label
+                      >
+                      <money
+                        v-model="vaccinationCampaign.rural_supervisor_cost"
+                        v-bind="money"
+                        name="supervisor-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 px-1">
+                    <div class="form-group">
+                      <label for="assistant-cost-input">Auxiliar Rural:</label>
+                      <money
+                        v-model="vaccinationCampaign.rural_assistant_cost"
+                        v-bind="money"
+                        name="assistant-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-3 px-1">
                     <div class="form-group">
                       <label for="vaccine-cost-input">Vacina:</label>
@@ -179,18 +233,6 @@
                         v-model="vaccinationCampaign.mileage_cost"
                         v-bind="money"
                         name="mileage-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-3 px-1">
-                    <div class="form-group">
-                      <label for="driver-cost-input">Motorista:</label>
-                      <money
-                        v-model="vaccinationCampaign.driver_cost"
-                        v-bind="money"
-                        name="driver-cost-input"
                         class="form-control form-control-sm"
                         type="text"
                       />
@@ -256,6 +298,9 @@ export default {
           assistant_cost: 0,
           supervisor_cost: 0,
           vaccinator_cost: 0,
+          annotator_cost: 0,
+          rural_supervisor_cost: 0,
+          rural_assistant_cost: 0,
           vaccine_cost: 0,
           mileage_cost: 0,
           driver_cost: 0,
@@ -283,6 +328,9 @@ export default {
         assistant_cost: 0,
         supervisor_cost: 0,
         vaccinator_cost: 0,
+        annotator_cost: 0,
+        rural_supervisor_cost: 0,
+        rural_assistant_cost: 0,
         vaccine_cost: 0,
         mileage_cost: 0,
         driver_cost: 0,
