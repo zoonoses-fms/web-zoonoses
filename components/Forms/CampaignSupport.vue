@@ -59,7 +59,7 @@
                 </b-form-checkbox>
               </div>
             </div>
-            <div v-show="support.is_rural" class="row">
+            <div v-if="support.is_rural" class="row">
               <div class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Supervisores Rural</label>
@@ -86,7 +86,7 @@
                 </div>
               </div>
             </div>
-            <div v-show="!support.is_rural" class="row">
+            <div v-if="!support.is_rural" class="row">
               <div class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione o Coordenador</label>
@@ -125,7 +125,7 @@
                   ></FormsSelectWorker>
                 </div>
               </div>
-              <div v-show="!support.is_rural" class="col-12 col-md-6">
+              <div v-if="!support.is_rural" class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os Apoiadores</label>
                   <FormsSelectWorker
@@ -149,10 +149,10 @@
               </div>
               <div class="col-12 col-md-6">
                 <div class="form-group border border-success rounded p-1">
-                  <label v-show="!support.is_rural">
+                  <label v-if="!support.is_rural">
                     Selecione os Vacinadores Resesva
                   </label>
-                  <label v-show="support.is_rural">
+                  <label v-if="support.is_rural">
                     Selecione os Vacinadores
                   </label>
                   <FormsSelectWorker
