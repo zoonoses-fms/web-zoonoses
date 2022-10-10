@@ -37,7 +37,7 @@
               striped
               responsive
               hover
-              :fields="fields"
+              :fields="fieldsListAdd"
               :items="newSupports"
               primary-key="id"
             >
@@ -49,11 +49,6 @@
               </template>
               <template #cell(number)="data">
                 {{ data.item.number }}
-              </template>
-              <template #cell(neighborhood)="data">
-                <div v-if="data.item.neighborhood_alias !== null">
-                  {{ data.item.neighborhood_alias.name }}
-                </div>
               </template>
             </b-table>
           </b-card>
@@ -99,9 +94,7 @@
               {{ data.item.support.number }}
             </template>
             <template #cell(neighborhood)="data">
-              <div
-                v-if="data.item.support.neighborhood_alias !== null"
-              >
+              <div v-if="data.item.support.neighborhood_alias !== null">
                 {{ data.item.support.neighborhood_alias.name }}
               </div>
             </template>
@@ -152,6 +145,22 @@ export default {
       newSupports: [],
       url: 'ncrlo/campaign/cycle/',
       urlCampaignSupport: 'ncrlo/campaign/support/',
+      fieldsListAdd: [
+        {
+          key: 'name',
+          label: 'Name',
+          sortable: true,
+        },
+        {
+          key: 'address',
+          label: 'Endereço',
+          sortable: true,
+        },
+        {
+          key: 'number',
+          label: 'Número',
+        },
+      ],
       fields: [
         {
           key: 'pendency',
