@@ -162,6 +162,9 @@ export default {
 </script>
 <style>
 /* stylelint-disable-line */
+.multiselect__content-wrapper {
+  display: contents;
+}
 @media (min-width: 768px) {
   .multiselect__content-wrapper {
     width: 36%;
