@@ -226,15 +226,6 @@ export default {
 
       this.cycle.supports.forEach((support) => {
         support.pendency = false;
-        console.log(support.is_rural);
-        console.log('Supervisor rural');
-        console.log(support.rural_supervisors.length === 0);
-        console.log('Auxiliar rural');
-        console.log(support.rural_assistants.length === 0);
-        console.log('Vacinadores');
-        console.log(support.vaccinators.length === 0);
-        console.log('Motorista');
-        console.log(support.drivers.length === 0);
         if (
           support.is_rural &&
           (support.rural_supervisors.length === 0 ||
@@ -252,8 +243,6 @@ export default {
         ) {
           support._rowVariant = 'danger';
           support.pendency = true;
-        } else {
-          console.log('rural');
         }
 
         this.supports.push(support);
