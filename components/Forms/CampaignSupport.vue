@@ -60,7 +60,7 @@
               </div>
             </div>
             <div v-if="support.is_rural" class="row">
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Supervisores Rural</label>
                   <FormsSelectWorker
@@ -73,7 +73,7 @@
                 </div>
               </div>
 
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Auxiliar Rural</label>
                   <FormsSelectWorker
@@ -87,7 +87,7 @@
               </div>
             </div>
             <div v-if="!support.is_rural" class="row">
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione o Coordenador</label>
                   <FormsSelectWorker
@@ -99,7 +99,7 @@
                 </div>
               </div>
 
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os Supervisores</label>
                   <FormsSelectWorker
@@ -113,7 +113,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os Motorista</label>
                   <FormsSelectWorker
@@ -125,7 +125,7 @@
                   ></FormsSelectWorker>
                 </div>
               </div>
-              <div v-if="!support.is_rural" class="col-12 col-md-6">
+              <div v-if="!support.is_rural" class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os Apoiadores</label>
                   <FormsSelectWorker
@@ -138,7 +138,7 @@
                 </div>
               </div>
 
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os SAAD</label>
                   <FormsSelectSaad
@@ -148,7 +148,7 @@
                   ></FormsSelectSaad>
                 </div>
               </div>
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label v-if="!support.is_rural">
                     Selecione os Vacinadores Resesva

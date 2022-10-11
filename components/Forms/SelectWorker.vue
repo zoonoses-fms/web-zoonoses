@@ -20,6 +20,9 @@
           <strong>{{ option.name }}</strong> Matrícula
           <strong>{{ option.registration }}</strong>
         </template>
+        <template slot="noResult">
+          <span>Oops! Sem resultados</span>
+        </template>
       </multiselect>
     </div>
     <div v-if="preLoadingList === null" class="align-self-stretch">
