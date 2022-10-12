@@ -146,6 +146,7 @@ export default {
     },
     preSelectedWorker() {
       if (this.multiple && Array.isArray(this.selectedWorker)) {
+        console.log(this.listWorkers);
         this.selected = this.listWorkers.filter((worker) => {
           return this.selectedWorker.some((select) => {
             return select.id === worker.id;

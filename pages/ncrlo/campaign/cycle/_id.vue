@@ -108,6 +108,7 @@
                 text-button=""
                 variant="success"
                 :old-support="data.item"
+                :title="data.item.support.name"
                 @update="getDetailCycle"
               ></FormsCampaignSupport>
             </template>

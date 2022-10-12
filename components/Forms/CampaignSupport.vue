@@ -9,7 +9,7 @@
         :id="`modal-xl-${id}`"
         size="xl"
         scrollable
-        :title="textButton"
+        :title="title"
         @ok="handleOk"
       >
         <b-overlay :show="show" rounded="sm">
@@ -213,6 +213,10 @@ export default {
           rural_assistants: [],
         };
       },
+    },
+    title: {
+      type: String,
+      default: '',
     },
   },
   data() {
