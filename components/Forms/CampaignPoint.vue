@@ -99,7 +99,7 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-3">
                         <label for="male-dog-major-2y-under-4y-input"
-                          >1A &lt; 2A:</label
+                          >2A &lt; 4A:</label
                         >
                         <input
                           v-model="point.male_dog_major_2y_under_4y"
@@ -155,7 +155,7 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-3">
                         <label for="female-dog-major-2y-under-4y-input"
-                          >1A &lt; 2A:</label
+                          >2A &lt; 4A:</label
                         >
                         <input
                           v-model="point.female_dog_major_2y_under_4y"
