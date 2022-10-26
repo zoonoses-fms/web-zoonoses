@@ -103,6 +103,15 @@
                 {{ saad.name }}
               </span>
             </template>
+            <template #cell(report)="data">
+              <b-button
+                class="mt-0"
+                variant="warning"
+                @click="reportPdf(data.item)"
+              >
+                <b-icon icon="printer"></b-icon>
+              </b-button>
+            </template>
             <template #cell(edit)="data">
               <FormsCampaignSupport
                 text-button=""
@@ -189,6 +198,10 @@ export default {
         {
           key: 'saad',
           label: 'SAAD',
+        },
+        {
+          key: 'report',
+          label: 'Relatório',
         },
         {
           key: 'edit',
@@ -288,6 +301,32 @@ export default {
           clearInterval(i);
         }
       }, 1000);
+    },
+    async reportPdf(support) {
+      try {
+        const response = await this.$axios.get(
+          `${this.urlCampaignSupport}report/${support.id}`,
+          {
+            responseType: 'blob',
+          }
+        );
+        const today = new Date().toISOString().slice(0, 10);
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        // const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = '_blank';
+        link.download = `${today}-Relatório de Locação de Pessoal.pdf`;
+        link.click();
+        // window.open(url);
+        // console.log(response);
+      } catch (error) {
+        const message =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+        console.log(message);
+      }
     },
   },
 };

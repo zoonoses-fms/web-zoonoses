@@ -132,7 +132,7 @@ export default {
       runtimeCaching: [
         {
           urlPattern: `${process.env.API_BASE_URL}/api/.*`,
-          handler: 'StaleWhileRevalidate',
+          // handler: 'StaleWhileRevalidate',
           strategyOptions: {
             cacheName: 'api-cache',
           },
