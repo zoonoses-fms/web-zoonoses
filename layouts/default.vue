@@ -70,46 +70,51 @@
             class="d-flex justify-content-end"
           >
             <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
-
-            <b-collapse id="nav-collapse" is-nav>
-              <!-- Right aligned nav items -->
-              <client-only>
-                <b-navbar-nav
-                  v-if="$auth.loggedIn"
-                  class="ml-auto justify-content-end"
-                >
-                  <b-nav-item-dropdown right>
-                    <!-- Using 'button-content' slot -->
-                    <template #button-content>
-                      <em>{{ $auth.user.name }}</em>
-                      <b-avatar size="sm"></b-avatar>
-                    </template>
-                    <NuxtLink
-                      v-show="isAdmin"
-                      to="/admin/user"
-                      class="dropdown-item"
-                    >
-                      Usuários
-                    </NuxtLink>
-                    <NuxtLink
-                      v-show="isAdmin"
-                      to="/admin/team"
-                      class="dropdown-item"
-                    >
-                      Turmas
-                    </NuxtLink>
-                    <NuxtLink
-                      v-show="isAdmin"
-                      to="/auth/profile"
-                      class="dropdown-item"
-                    >
-                      Profile
-                    </NuxtLink>
-                    <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-                  </b-nav-item-dropdown>
-                </b-navbar-nav>
-              </client-only>
-            </b-collapse>
+            <b-navbar-nav class="ml-auto">
+              <b-button-group class="mx-1">
+                <b-button variant="success" @click="goToPrev">&#8249;</b-button>
+                <b-button variant="success" @click="goToNext">&#8250;</b-button>
+              </b-button-group>
+              <b-collapse id="nav-collapse" is-nav>
+                <!-- Right aligned nav items -->
+                <client-only>
+                  <b-navbar-nav
+                    v-if="$auth.loggedIn"
+                    class="ml-auto justify-content-end"
+                  >
+                    <b-nav-item-dropdown right>
+                      <!-- Using 'button-content' slot -->
+                      <template #button-content>
+                        <em>{{ $auth.user.name }}</em>
+                        <b-avatar size="sm"></b-avatar>
+                      </template>
+                      <NuxtLink
+                        v-show="isAdmin"
+                        to="/admin/user"
+                        class="dropdown-item"
+                      >
+                        Usuários
+                      </NuxtLink>
+                      <NuxtLink
+                        v-show="isAdmin"
+                        to="/admin/team"
+                        class="dropdown-item"
+                      >
+                        Turmas
+                      </NuxtLink>
+                      <NuxtLink
+                        v-show="isAdmin"
+                        to="/auth/profile"
+                        class="dropdown-item"
+                      >
+                        Profile
+                      </NuxtLink>
+                      <b-dropdown-item @click="logout">Logout</b-dropdown-item>
+                    </b-nav-item-dropdown>
+                  </b-navbar-nav>
+                </client-only>
+              </b-collapse>
+            </b-navbar-nav>
 
             <NuxtLink
               v-show="!$auth.loggedIn"
@@ -188,6 +193,12 @@ export default {
     },
     async logout() {
       await this.$auth.logout();
+    },
+    goToPrev() {
+      this.$router.go(-1);
+    },
+    goToNext() {
+      this.$router.go(1);
     },
   },
 };
