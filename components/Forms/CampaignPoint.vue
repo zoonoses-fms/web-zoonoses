@@ -526,6 +526,17 @@ export default {
           `${this.url}${this.point.id}/`,
           this.point
         );
+
+        if (process.client) {
+          if (navigator.serviceWorker) {
+            const msg = {
+              type: 'points',
+              data: this.point,
+            };
+            navigator.serviceWorker.controller.postMessage(msg);
+          }
+        }
+
         this.point = response.data;
         this.$emit('update');
         this.$bvToast.toast('Cadastro atualizado!', {

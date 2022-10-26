@@ -1,9 +1,11 @@
+// import path from 'path';
+// import fs from 'fs';
 export default {
   env: {
     apiUrl: process.env.API_BASE_URL,
     baseUrl: process.env.BASE_URL,
     platformUuid: process.env.PLATFORM_UUID,
-    platformPassword: process.env.PLATFORM_PASSWORD
+    platformPassword: process.env.PLATFORM_PASSWORD,
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -18,13 +20,11 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    'assets/scss/style.scss'
-  ],
+  css: ['assets/scss/style.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~plugins/axios.js'},
+    { src: '~plugins/axios.js' },
     { src: '~plugins/filter' },
     { src: '~/plugins/apexcharts', mode: 'client' },
     { src: '~/plugins/autocomplete-vue', mode: 'client' },
@@ -34,6 +34,7 @@ export default {
     { src: '~/plugins/locale' },
     { src: '~/plugins/palette' },
     { src: '~/plugins/simple-statistics' },
+    // { src: '~/plugins/offline.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -57,7 +58,9 @@ export default {
       },
     ],
     // https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    // https://go.nuxtjs.dev/pwa
+    '@nuxtjs/pwa',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -66,8 +69,6 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
     // https://github.com/lewyuburi/nuxt-validate
     '@nuxtjs/auth-next',
     [
@@ -99,7 +100,7 @@ export default {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
     icons: true,
     bootstrapCSS: false, // Or `css: false`
-    bootstrapVueCSS: false
+    bootstrapVueCSS: false,
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -112,8 +113,32 @@ export default {
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
-    manifest: {
+    meta: {
+      mobileAppIOS: true,
+      name: 'Zoonoses',
+      author: 'Thiago Pinto Dias',
       lang: 'pt-BR',
+    },
+    manifest: {
+      name: 'Zoonoses',
+      lang: 'pt-BR',
+      background_color: '#fff',
+    },
+
+    workbox: {
+      dev: true,
+      debug: true,
+      // importScripts: ['sw/storage.js'],
+      runtimeCaching: [
+        {
+          urlPattern: `${process.env.API_BASE_URL}/api/.*`,
+          handler: 'StaleWhileRevalidate',
+          strategyOptions: {
+            cacheName: 'api-cache',
+          },
+          method: 'GET',
+        },
+      ],
     },
   },
 
@@ -182,11 +207,19 @@ export default {
     // linkExactActiveClass: 'active',
     middleware: ['auth'],
     extendRoutes(routes, resolve) {
-/*       routes.push({
+      /*       routes.push({
         name: 'datasets-loads',
         path: '/datasets/load/:source/:system/:initial',
         component: '~/pages/datasets/_load.vue',
       }); */
     },
   },
+  /*
+  server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem')),
+    },
+  },
+  */
 };
