@@ -126,8 +126,8 @@ export default {
     },
 
     workbox: {
-      dev: true,
-      debug: true,
+      // dev: true,
+      // debug: true,
       // importScripts: ['sw/storage.js'],
       runtimeCaching: [
         {

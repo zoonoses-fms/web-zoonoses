@@ -82,6 +82,7 @@
                         <input
                           v-model="user.phone"
                           v-mask="['(##) ####-####', '(##) #####-####']"
+                          class="form-control"
                           name="fone-input"
                           type="text"
                           label="Telefone"
@@ -135,11 +136,7 @@
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Senha"
-                      :rules="{
-                        regex:
-                          /^(?=.*[0-9])(?=.*[a-z]).{6,}$/,
-                        required: true,
-                      }"
+                      :rules="{ required: true, min: 5 }"
                     >
                       <b-form-group label="Senha" label-for="password-input">
                         <b-form-input

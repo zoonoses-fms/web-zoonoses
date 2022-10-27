@@ -165,7 +165,7 @@ export default {
     return {
       id: null,
       show: false,
-      url: 'ncrlo/campaign/cycle',
+      url: 'ncrlo/campaign/cycle/',
       campaignCycle: {
         id: null,
         number: null,
@@ -223,7 +223,7 @@ export default {
     async update() {
       try {
         const response = await this.$axios.put(
-          `${this.url}${this.campaignCycle.id}/`,
+          `${this.url}${this.campaignCycle.id}`,
           this.campaignCycle
         );
         this.$bvToast.toast('Cadastro atualizado!', {

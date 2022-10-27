@@ -103,13 +103,13 @@
                 {{ saad.name }}
               </span>
             </template>
-            <template #cell(report)="data">
+            <template #cell(frequency)="data">
               <b-button
                 class="mt-0"
                 variant="warning"
                 @click="reportPdf(data.item)"
               >
-                <b-icon icon="printer"></b-icon>
+                <b-icon icon="person-badge-fill"></b-icon>
               </b-button>
             </template>
             <template #cell(edit)="data">
@@ -200,8 +200,8 @@ export default {
           label: 'SAAD',
         },
         {
-          key: 'report',
-          label: 'Relatório',
+          key: 'frequency',
+          label: 'Frequência',
         },
         {
           key: 'edit',
