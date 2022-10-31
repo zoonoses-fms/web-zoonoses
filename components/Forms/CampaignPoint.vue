@@ -521,6 +521,8 @@ export default {
       }
     },
     async update() {
+      this.setVaccinators();
+      this.setAnnotators();
       try {
         const response = await this.$axios.put(
           `${this.url}${this.point.id}/`,
@@ -563,8 +565,19 @@ export default {
     setSupervisor(id) {
       this.point.supervisor_id = id;
     },
-    setVaccinators(ids) {
+    setVaccinators() {
+      const ids = [];
+      this.point.vaccinators.forEach((vaccinator) => {
+        ids.push(vaccinator.id);
+      });
       this.point.vaccinators = ids;
+    },
+    setAnnotators() {
+      const ids = [];
+      this.point.annotators.forEach((annotator) => {
+        ids.push(annotator.id);
+      });
+      this.point.annotators = ids;
     },
     calcMaleDogs() {
       let total = 0;

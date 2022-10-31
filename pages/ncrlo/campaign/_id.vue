@@ -72,7 +72,17 @@
               <b-button
                 class="mt-0"
                 variant="warning"
-                @click="reportPdf(data.item)"
+                :to="`/ncrlo/campaign/cycle/report/${data.item.id}`"
+              >
+                <b-icon icon="bar-chart"></b-icon>
+
+              </b-button>
+            </template>
+            <template #cell(allocation)="data">
+              <b-button
+                class="mt-0"
+                variant="warning"
+                @click="allocationPdf(data.item)"
               >
                 <b-icon icon="printer"></b-icon>
               </b-button>
@@ -148,7 +158,11 @@ export default {
         },
         {
           key: 'supports',
-          label: 'Pontos de Apoios',
+          label: 'PA',
+        },
+        {
+          key: 'allocation',
+          label: 'Alocação',
         },
         {
           key: 'report',
@@ -191,10 +205,10 @@ export default {
 
       this.cycles = this.campaign.cycles;
     },
-    async reportPdf(cycle) {
+    async allocationPdf(cycle) {
       try {
         const response = await this.$axios.get(
-          `${this.urlCampaignCycle}report/${cycle.id}`,
+          `${this.urlCampaignCycle}allocation/${cycle.id}`,
           {
             responseType: 'blob',
           }

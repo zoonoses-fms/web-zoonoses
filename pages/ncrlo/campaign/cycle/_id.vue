@@ -107,7 +107,7 @@
               <b-button
                 class="mt-0"
                 variant="warning"
-                @click="reportPdf(data.item)"
+                @click="allocationPdf(data.item)"
               >
                 <b-icon icon="person-badge-fill"></b-icon>
               </b-button>
@@ -302,10 +302,10 @@ export default {
         }
       }, 1000);
     },
-    async reportPdf(support) {
+    async allocationPdf(support) {
       try {
         const response = await this.$axios.get(
-          `${this.urlCampaignSupport}report/${support.id}`,
+          `${this.urlCampaignSupport}allocation/${support.id}`,
           {
             responseType: 'blob',
           }
@@ -316,7 +316,7 @@ export default {
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.target = '_blank';
-        link.download = `${today}-Relatório de Locação de Pessoal.pdf`;
+        link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
         link.click();
         // window.open(url);
         // console.log(response);
