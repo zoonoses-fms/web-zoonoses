@@ -35,6 +35,13 @@
           bordered
         >
           <template #thead-top> </template>
+          <template #cell(goal)="data">
+            {{
+              data.item.goal > 0 && data.item.total > 0
+                ? data.item.total / (data.item.goal / 100) + '%'
+                : data.item.goal + '%'
+            }}
+          </template>
         </b-table>
       </b-card>
     </div>
@@ -59,6 +66,13 @@
           bordered
         >
           <template #thead-top> </template>
+          <template #cell(goal)="data">
+            {{
+              data.item.goal > 0 && data.item.total > 0
+                ? data.item.total / (data.item.goal / 100) + '%'
+                : data.item.goal + '%'
+            }}
+          </template>
         </b-table>
 
         <b-table
@@ -72,6 +86,13 @@
           bordered
         >
           <template #thead-top> </template>
+          <template #cell(goal)="data">
+            {{
+              data.item.goal > 0 && data.item.total > 0
+                ? data.item.total / (data.item.goal / 100) + '%'
+                : data.item.goal + '%'
+            }}
+          </template>
         </b-table>
       </b-card>
     </div>
@@ -94,6 +115,7 @@ export default {
         { key: 'female_cat', label: 'Gatas', sortable: true },
         { key: 'total_of_cats', label: 'Total Gatos', sortable: true },
         { key: 'total', label: 'Total', sortable: true },
+        { key: 'goal', label: 'Cobertura', sortable: true },
       ],
       consolidatedFields: [
         { key: 'male_dogs', label: 'Cães', sortable: true },
@@ -103,6 +125,7 @@ export default {
         { key: 'female_cat', label: 'Gatas', sortable: true },
         { key: 'total_of_cats', label: 'Total Gatos', sortable: true },
         { key: 'total', label: 'Total', sortable: true },
+        { key: 'goal', label: 'Cobertura', sortable: true },
       ],
     };
   },
