@@ -49,9 +49,6 @@
             <template #cell(start)="data">
               {{ data.item.start }}
             </template>
-            <template #cell(end)="data">
-              {{ data.item.end }}
-            </template>
             <template #cell(points)="data">
               <NuxtLink
                 :to="`/ncrlo/campaign/cycle/map/points/${data.item.id}`"
@@ -85,6 +82,15 @@
                 @click="allocationPdf(data.item)"
               >
                 <b-icon icon="printer"></b-icon>
+              </b-button>
+            </template>
+            <template #cell(frequency)="data">
+              <b-button
+                class="mt-0"
+                variant="warning"
+                @click="frequencyPdf(data.item)"
+              >
+                <b-icon icon="person-badge-fill"></b-icon>
               </b-button>
             </template>
             <template #cell(edit)="data">
@@ -148,11 +154,6 @@ export default {
           sortable: true,
         },
         {
-          key: 'end',
-          label: 'Fim',
-          sortable: true,
-        },
-        {
           key: 'points',
           label: 'Postos',
         },
@@ -162,11 +163,15 @@ export default {
         },
         {
           key: 'allocation',
-          label: 'Alocação',
+          label: 'Aloc.',
         },
         {
           key: 'report',
-          label: 'Relatório',
+          label: 'Relat.',
+        },
+        {
+          key: 'frequency',
+          label: 'Freq.',
         },
         {
           key: 'edit',
@@ -220,6 +225,32 @@ export default {
         link.href = window.URL.createObjectURL(blob);
         link.target = '_blank';
         link.download = `${today}-Relatório de Locação de Pessoal.pdf`;
+        link.click();
+        // window.open(url);
+        // console.log(response);
+      } catch (error) {
+        const message =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+        console.log(message);
+      }
+    },
+    async frequencyPdf(support) {
+      try {
+        const response = await this.$axios.get(
+          `${this.urlCampaignCycle}frequency/${support.id}`,
+          {
+            responseType: 'blob',
+          }
+        );
+        const today = new Date().toISOString().slice(0, 10);
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        // const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = '_blank';
+        link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
         link.click();
         // window.open(url);
         // console.log(response);

@@ -107,7 +107,7 @@
               <b-button
                 class="mt-0"
                 variant="warning"
-                @click="allocationPdf(data.item)"
+                @click="frequencyPdf(data.item)"
               >
                 <b-icon icon="person-badge-fill"></b-icon>
               </b-button>
@@ -201,7 +201,7 @@ export default {
         },
         {
           key: 'frequency',
-          label: 'Frequência',
+          label: 'Freq.',
         },
         {
           key: 'edit',
@@ -302,10 +302,10 @@ export default {
         }
       }, 1000);
     },
-    async allocationPdf(support) {
+    async frequencyPdf(support) {
       try {
         const response = await this.$axios.get(
-          `${this.urlCampaignSupport}allocation/${support.id}`,
+          `${this.urlCampaignSupport}frequency/${support.id}`,
           {
             responseType: 'blob',
           }
