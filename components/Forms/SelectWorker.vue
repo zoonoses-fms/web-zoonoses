@@ -75,6 +75,10 @@ export default {
         return null;
       },
     },
+    index: {
+      type: Number,
+      default: null,
+    }
   },
   data() {
     return {
@@ -91,7 +95,7 @@ export default {
         for (const item of value) {
           itens.push(item.id);
         }
-        this.$emit('change', itens);
+        this.$emit('change', itens, this.listType);
       } else if (value === null) {
         this.$emit('change', null);
       } else {

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-parsing-error -->
 <template>
   <div>
     <b-button
@@ -99,16 +100,13 @@
                     </div>
                   </div>
                 </ValidationProvider>
-              </div>
-              <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
-                  <label>Folha de pagamento</label>
+                  <label>Coordenador Estatística</label>
                   <FormsSelectWorker
                     :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.payrolls"
-                    list-type="payrolls"
-                    :multiple="true"
-                    @change="setPayrolls"
+                    :selected-worker="cycle.statistic_coordinator_id"
+                    list-type="statistic_coordinator"
+                    @change="setStatisticCoordinator"
                   ></FormsSelectWorker>
                 </div>
                 <div class="form-group border border-success rounded p-1">
@@ -122,7 +120,7 @@
                   ></FormsSelectWorker>
                 </div>
                 <div class="form-group border border-success rounded p-1">
-                  <label>Apoio NUTRANS/GEZOON</label>
+                  <label>Apoio NUTRANS</label>
                   <FormsSelectWorker
                     :campaign-cycle-id="cycle.id"
                     :selected-worker="cycle.transports"
@@ -132,12 +130,57 @@
                   ></FormsSelectWorker>
                 </div>
                 <div class="form-group border border-success rounded p-1">
-                  <label>Rede de Frio</label>
+                  <label>Apoio ZOONOSES</label>
                   <FormsSelectWorker
                     :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.cold_chains"
-                    list-type="cold_chains"
+                    :selected-worker="cycle.zoonoses"
+                    list-type="zoonoses"
                     :multiple="true"
+                    @change="setZoonoses"
+                  ></FormsSelectWorker>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6">
+                <div class="form-group border border-success rounded p-1">
+                  <label>Coordenador Rede de Frio</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="cycle.id"
+                    :selected-worker="cycle.cold_chain_coordinator_id"
+                    list-type="cold_chain_coordinator"
+                    @change="setColdChainCoordinator"
+                  ></FormsSelectWorker>
+                </div>
+                <div class="form-group border border-success rounded p-1">
+                  <label>Enfermeira Rede de Frio</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="cycle.id"
+                    :selected-worker="cycle.cold_chain_nurse_id"
+                    list-type="cold_chain_nurse"
+                    @change="setColdChainNurse"
+                  ></FormsSelectWorker>
+                </div>
+                <div class="form-group border border-success rounded p-1">
+                  <label>Motorista Rede de Frio</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="cycle.id"
+                    :selected-worker="cycle.driver_cold_chains"
+                    list-type="driver_cold_chains"
+                    :multiple="true"
+                    @change="setDriverColdChains"
+                  ></FormsSelectWorker>
+                </div>
+                <div
+                  v-for="(item, index) in datesColdChains"
+                  :key="index"
+                  class="form-group border border-success rounded p-1"
+                >
+                  <label>Rede de Frio {{ item.date }}</label>
+                  <FormsSelectWorker
+                    :campaign-cycle-id="cycle.id"
+                    :selected-worker="cycle[item.name]"
+                    :list-type="item.name"
+                    :multiple="true"
+                    :index="index"
                     @change="setColdChains"
                   ></FormsSelectWorker>
                 </div>
@@ -185,10 +228,12 @@ export default {
           start: null,
           end: null,
           campaign_id: null,
-          payrolls: [],
+          statistic_coordinator_id: null,
           statistics: [],
+          cold_chain_coordinator_id: null,
+          cold_chain_nurse_id: null,
+          cold_chains: [],
           transports: [],
-          cold_chains: []
         };
       },
     },
@@ -213,16 +258,32 @@ export default {
         start: null,
         end: null,
         campaign_id: null,
-        payrolls: [],
+        statistic_coordinator_id: null,
         statistics: [],
+        cold_chain_coordinator_id: null,
+        cold_chain_nurse_id: null,
+        cold_chains: [],
         transports: [],
-        cold_chains: []
       },
+      datesColdChains: [],
     };
   },
   computed: {},
   created() {
     this.id = this.oldCampaignCycle.id;
+    const start = new Date(this.oldCampaignCycle.start);
+    const before = new Date(this.oldCampaignCycle.start);
+
+    before.setDate(start.getDate() - 1);
+
+    this.datesColdChains.push({
+      name: 'before_cold_chains',
+      date: before.toLocaleDateString('pt-BR'),
+    });
+    this.datesColdChains.push({
+      name: 'start_cold_chains',
+      date: start.toLocaleDateString('pt-BR'),
+    });
   },
   methods: {
     setCampaign() {
@@ -302,8 +363,8 @@ export default {
       });
       this.show = false;
     },
-    setPayrolls(ids) {
-      this.cycle.payrolls = ids;
+    setStatisticCoordinator(id) {
+      this.cycle.statistic_coordinator_id = id;
     },
     setStatistics(ids) {
       this.cycle.statistics = ids;
@@ -311,9 +372,25 @@ export default {
     setTransports(ids) {
       this.cycle.transports = ids;
     },
-    setColdChains(ids) {
-      this.cycle.cold_chains = ids;
-    }
+    setZoonoses(ids) {
+      this.cycle.zoonoses = ids;
+    },
+    setColdChains(ids, listType) {
+      if (listType === 'before_cold_chains') {
+        this.cycle.before_cold_chains = ids;
+      } else {
+        this.cycle.start_cold_chains = ids;
+      }
+    },
+    setColdChainCoordinator(id) {
+      this.cycle.cold_chain_coordinator_id = id;
+    },
+    setColdChainNurse(id) {
+      this.cycle.cold_chain_nurse_id = id;
+    },
+    setDriverColdChains(ids) {
+      this.cycle.driver_cold_chains = ids;
+    },
   },
 };
 </script>

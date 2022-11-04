@@ -35,12 +35,8 @@
           bordered
         >
           <template #thead-top> </template>
-          <template #cell(goal)="data">
-            {{
-              data.item.goal > 0 && data.item.total > 0
-                ? data.item.total / (data.item.goal / 100) + '%'
-                : data.item.goal + '%'
-            }}
+          <template #cell(calcGoal)="data">
+            {{ calcGoal(data.item) }}
           </template>
         </b-table>
       </b-card>
@@ -66,12 +62,8 @@
           bordered
         >
           <template #thead-top> </template>
-          <template #cell(goal)="data">
-            {{
-              data.item.goal > 0 && data.item.total > 0
-                ? data.item.total / (data.item.goal / 100) + '%'
-                : data.item.goal + '%'
-            }}
+          <template #cell(calcGoal)="data">
+            {{ calcGoal(data.item) }}
           </template>
         </b-table>
 
@@ -86,12 +78,8 @@
           bordered
         >
           <template #thead-top> </template>
-          <template #cell(goal)="data">
-            {{
-              data.item.goal > 0 && data.item.total > 0
-                ? data.item.total / (data.item.goal / 100) + '%'
-                : data.item.goal + '%'
-            }}
+          <template #cell(calcGoal)="data">
+            {{ calcGoal(data.item) }}
           </template>
         </b-table>
       </b-card>
@@ -115,7 +103,8 @@ export default {
         { key: 'female_cat', label: 'Gatas', sortable: true },
         { key: 'total_of_cats', label: 'Total Gatos', sortable: true },
         { key: 'total', label: 'Total', sortable: true },
-        { key: 'goal', label: 'Cobertura', sortable: true },
+        { key: 'goal', label: 'Meta', sortable: true },
+        { key: 'calcGoal', label: 'Cobertura', sortable: true },
       ],
       consolidatedFields: [
         { key: 'male_dogs', label: 'Cães', sortable: true },
@@ -125,7 +114,8 @@ export default {
         { key: 'female_cat', label: 'Gatas', sortable: true },
         { key: 'total_of_cats', label: 'Total Gatos', sortable: true },
         { key: 'total', label: 'Total', sortable: true },
-        { key: 'goal', label: 'Cobertura', sortable: true },
+        { key: 'goal', label: 'Meta', sortable: true },
+        { key: 'calcGoal', label: 'Cobertura', sortable: true },
       ],
     };
   },
@@ -160,6 +150,17 @@ export default {
           error.message ||
           error.toString();
         console.log(message);
+      }
+    },
+    calcGoal(item) {
+      if (item.total > 0 && item.goal) {
+        const percent = item.total / (item.goal / 100);
+        return `${percent.toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}%`;
+      } else {
+        return '0%';
       }
     },
   },
