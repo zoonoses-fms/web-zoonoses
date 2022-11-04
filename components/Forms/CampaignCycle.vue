@@ -120,7 +120,7 @@
                   ></FormsSelectWorker>
                 </div>
                 <div class="form-group border border-success rounded p-1">
-                  <label>Apoio NUTRANS</label>
+                  <label>Apoio GETRANS</label>
                   <FormsSelectWorker
                     :campaign-cycle-id="cycle.id"
                     :selected-worker="cycle.transports"
