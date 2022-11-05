@@ -183,7 +183,7 @@ export default {
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.target = '_blank';
-        link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
+        link.download = `${today}-Relatório de vacinação.pdf`;
         link.click();
         // window.open(url);
         // console.log(response);

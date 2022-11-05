@@ -39,6 +39,21 @@
             {{ calcGoal(data.item) }}
           </template>
         </b-table>
+        <b-table
+          striped
+          responsive
+          hover
+          small
+          sticky-header
+          :fields="saadFields"
+          :items="Object.keys(cycle.saads).map((key) => cycle.saads[key])"
+          bordered
+        >
+          <template #thead-top> </template>
+          <template #cell(calcGoal)="data">
+            {{ calcGoal(data.item) }}
+          </template>
+        </b-table>
       </b-card>
     </div>
     <div
@@ -106,6 +121,18 @@ export default {
         { key: 'goal', label: 'Meta', sortable: true },
         { key: 'calcGoal', label: 'Cobertura', sortable: true },
       ],
+      saadFields: [
+        { key: 'name', label: 'Nome', sortable: true },
+        { key: 'male_dogs', label: 'Cães', sortable: true },
+        { key: 'female_dogs', label: 'Cadelas', sortable: true },
+        { key: 'total_of_dogs', label: 'Total Cães', sortable: true },
+        { key: 'male_cat', label: 'Gatos', sortable: true },
+        { key: 'female_cat', label: 'Gatas', sortable: true },
+        { key: 'total_of_cats', label: 'Total Gatos', sortable: true },
+        { key: 'total', label: 'Total', sortable: true },
+        { key: 'goal', label: 'Meta', sortable: true },
+        { key: 'calcGoal', label: 'Cobertura', sortable: true },
+      ],
       consolidatedFields: [
         { key: 'male_dogs', label: 'Cães', sortable: true },
         { key: 'female_dogs', label: 'Cadelas', sortable: true },
@@ -127,7 +154,12 @@ export default {
       const response = await this.$axios.get(
         `${this.url}${this.$route.params.id}`
       );
+
       this.cycle = response.data;
+
+      const saads = Object.keys(this.cycle.saads).map((key) => this.cycle.saads[key]);
+      console.log(saads);
+
     },
     async reportPdf(support) {
       try {
@@ -140,7 +172,7 @@ export default {
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.target = '_blank';
-        link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
+        link.download = `${today}-Relatório de vacinação.pdf`;
         link.click();
         // window.open(url);
         // console.log(response);
