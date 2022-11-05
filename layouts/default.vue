@@ -28,7 +28,7 @@
           >
             <NuxtLink to="/ncrlo" class="item">
               <b-icon icon="clipboard-check"></b-icon>
-              NCRLO
+              NCRLOZ
             </NuxtLink>
           </li>
           <li

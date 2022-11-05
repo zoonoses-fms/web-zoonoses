@@ -11,7 +11,7 @@
             :to="`/ncrlo/campaign/cycle/report/details/${cycle.id}`"
             class="btn btn-warning"
           >
-            Faixa Etária de Cachorros
+            Faixa Etária de Canino
           </NuxtLink>
           <b-button class="mt-0" variant="warning" @click="reportPdf(cycle)">
             <b-icon icon="printer"></b-icon>
@@ -63,7 +63,7 @@
     >
       <b-card class="col-12">
         <template #header>
-          <h5 class="mb-0">{{ support.support.name }}</h5>
+          <h5 class="mb-0">{{ support.support.name }} - {{ support.saads[0].name}}</h5>
         </template>
 
         <b-table
