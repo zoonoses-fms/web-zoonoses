@@ -78,7 +78,7 @@ export default {
     index: {
       type: Number,
       default: null,
-    }
+    },
   },
   data() {
     return {
@@ -119,7 +119,11 @@ export default {
         params.campaign_cycle_id = this.campaignCycleId;
 
         if (this.selectedWorker === null) {
-          params.list_type = 'free';
+          if (this.listType === 'rural_supervisors') {
+            params.list_type = this.listType;
+          } else {
+            params.list_type = 'free';
+          }
         } else if (typeof this.selectedWorker === 'number') {
           params.list_type = this.listType;
           params.coordinator_id = this.selectedWorker;

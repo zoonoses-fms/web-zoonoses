@@ -186,7 +186,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-6 px-1">
+                  <div class="col-4 px-1">
                     <div class="form-group">
                       <label for="supervisor-cost-input"
                         >Supervisor Rural:</label
@@ -200,13 +200,115 @@
                       />
                     </div>
                   </div>
-                  <div class="col-6 px-1">
+                  <div class="col-4 px-1">
                     <div class="form-group">
                       <label for="assistant-cost-input">Auxiliar Rural:</label>
                       <money
                         v-model="vaccinationCampaign.rural_assistant_cost"
                         v-bind="money"
                         name="assistant-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="assistant-cost-input">Enfermeira:</label>
+                      <money
+                        v-model="vaccinationCampaign.cold_chain_nurse_cost"
+                        v-bind="money"
+                        name="cold-chain-nurse-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="supervisor-cost-input"
+                        >Coordenador da Estatística:</label
+                      >
+                      <money
+                        v-model="vaccinationCampaign.statistic_coordinator_cost"
+                        v-bind="money"
+                        name="statistic-coordinator-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="assistant-cost-input"
+                        >Equipe de Estatística:</label
+                      >
+                      <money
+                        v-model="vaccinationCampaign.statistic_cost"
+                        v-bind="money"
+                        name="statistic-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="assistant-cost-input"
+                        >Equipe da GEZOON:</label
+                      >
+                      <money
+                        v-model="vaccinationCampaign.zoonoses_cost"
+                        v-bind="money"
+                        name="zoonoses-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="supervisor-cost-input"
+                        >Coordenador da Rede de Frio:</label
+                      >
+                      <money
+                        v-model="
+                          vaccinationCampaign.cold_chain_coordinator_cost
+                        "
+                        v-bind="money"
+                        name="cold-chain-coordinator-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="assistant-cost-input"
+                        >Equipe da Rede de Frio:</label
+                      >
+                      <money
+                        v-model="vaccinationCampaign.cold_chain_cost"
+                        v-bind="money"
+                        name="cold-chain-cost-input"
+                        class="form-control form-control-sm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-4 px-1">
+                    <div class="form-group">
+                      <label for="assistant-cost-input"
+                        >Equipe da GETRANS:</label
+                      >
+                      <money
+                        v-model="vaccinationCampaign.transport_cost"
+                        v-bind="money"
+                        name="transport-cost-input"
                         class="form-control form-control-sm"
                         type="text"
                       />
@@ -304,6 +406,13 @@ export default {
           vaccine_cost: 0,
           mileage_cost: 0,
           driver_cost: 0,
+          cold_chain_nurse_cost: 0,
+          statistic_coordinator_cost: 0,
+          statistic_cost: 0,
+          zoonoses_cost: 0,
+          cold_chain_coordinator_cost: 0,
+          cold_chain_cost: 0,
+          transport_cost: 0,
           coordinator_id: null,
         };
       },
@@ -334,6 +443,13 @@ export default {
         vaccine_cost: 0,
         mileage_cost: 0,
         driver_cost: 0,
+        cold_chain_nurse_cost: 0,
+        statistic_coordinator_cost: 0,
+        statistic_cost: 0,
+        zoonoses_cost: 0,
+        cold_chain_coordinator_cost: 0,
+        cold_chain_cost: 0,
+        transport_cost: 0,
         coordinator_id: null,
       },
       money: {
