@@ -27,7 +27,18 @@
 
             <form ref="form" @submit.stop.prevent></form>
             <div class="row">
-              <div class="col-6 col-md-3">
+              <div class="col-4 col-md-2">
+                <div class="form-group">
+                  <label for="goal-input">Ordem:</label>
+                  <input
+                    v-model="support.order"
+                    name="goal-input"
+                    class="form-control"
+                    type="number"
+                  />
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
                 <div class="form-group">
                   <label for="goal-input">Meta:</label>
                   <input
@@ -38,7 +49,7 @@
                   />
                 </div>
               </div>
-              <div class="col-6 col-md-3">
+              <div class="col-4 col-md-2">
                 <div class="form-group">
                   <label for="mileage-input">Quilometragem:</label>
                   <input
@@ -203,6 +214,7 @@ export default {
           campaign_cycle_id: null,
           coordinator_id: null,
           vaccination_support_id: null,
+          order: null,
           goal: null,
           drivers: [],
           supervisors: [],
@@ -232,6 +244,7 @@ export default {
             campaign_cycle_id: null,
             coordinator_id: null,
             vaccination_support_id: null,
+            order: null,
             goal: null,
             drivers: [],
             supervisors: [],

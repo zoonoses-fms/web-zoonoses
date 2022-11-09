@@ -178,6 +178,11 @@ export default {
           sortable: true,
         },
         {
+          key: 'order',
+          label: 'Ordem',
+          sortable: true,
+        },
+        {
           key: 'name',
           label: 'Name',
           sortable: true,
