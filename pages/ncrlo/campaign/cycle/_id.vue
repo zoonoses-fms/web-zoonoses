@@ -85,16 +85,22 @@
               </div>
             </template>
             <template #cell(name)="data">
-              {{ data.item.support.name }}
+              <div v-if="data.item.support !== null">
+                {{ data.item.support.name }}
+              </div>
             </template>
             <template #cell(address)="data">
-              {{ data.item.support.address }}
+              <div v-if="data.item.support !== null">
+                {{ data.item.support.address }}
+              </div>
             </template>
             <template #cell(number)="data">
-              {{ data.item.support.number }}
+              <div v-if="data.item.support !== null">
+                {{ data.item.support.number }}
+              </div>
             </template>
             <template #cell(neighborhood)="data">
-              <div v-if="data.item.support.neighborhood_alias !== null">
+              <div v-if="data.item.support !== null && data.item.support.neighborhood_alias !== null">
                 {{ data.item.support.neighborhood_alias.name }}
               </div>
             </template>
@@ -117,7 +123,7 @@
                 text-button=""
                 variant="success"
                 :old-support="data.item"
-                :title="data.item.support.name"
+                :title="data.item.support ? data.item.support.name : ''"
                 @update="getDetailCycle"
               ></FormsCampaignSupport>
             </template>
