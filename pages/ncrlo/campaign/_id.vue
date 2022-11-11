@@ -93,6 +93,15 @@
                 <b-icon icon="person-badge-fill"></b-icon>
               </b-button>
             </template>
+            <template #cell(payroll)="data">
+              <b-button
+                class="mt-0"
+                variant="warning"
+                @click="payrollPdf(data.item)"
+              >
+                $
+              </b-button>
+            </template>
             <template #cell(edit)="data">
               <FormsCampaignCycle
                 text-button=""
@@ -174,6 +183,10 @@ export default {
           label: 'Freq.',
         },
         {
+          key: 'payroll',
+          label: 'Folha',
+        },
+        {
           key: 'edit',
           label: 'Editar',
         },
@@ -251,6 +264,32 @@ export default {
         link.href = window.URL.createObjectURL(blob);
         link.target = '_blank';
         link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
+        link.click();
+        // window.open(url);
+        // console.log(response);
+      } catch (error) {
+        const message =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+        console.log(message);
+      }
+    },
+    async payrollPdf(support) {
+      try {
+        const response = await this.$axios.get(
+          `${this.urlCampaignCycle}payroll/${support.id}`,
+          {
+            responseType: 'blob',
+          }
+        );
+        const today = new Date().toISOString().slice(0, 10);
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        // const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = '_blank';
+        link.download = `${today}-Folha de pagamento.pdf`;
         link.click();
         // window.open(url);
         // console.log(response);

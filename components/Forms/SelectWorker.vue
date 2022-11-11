@@ -96,7 +96,7 @@ export default {
           itens.push(item.id);
         }
         this.$emit('change', itens, this.listType);
-      } else if (value === null) {
+      } else if (value === undefined || value === null) {
         this.$emit('change', null);
       } else {
         this.$emit('change', value.id);
@@ -121,6 +121,7 @@ export default {
         if (this.selectedWorker === null) {
           params.list_type = 'free';
         } else if (typeof this.selectedWorker === 'number') {
+
           params.list_type = this.listType;
           params.coordinator_id = this.selectedWorker;
         } else if (Array.isArray(this.selectedWorker)) {

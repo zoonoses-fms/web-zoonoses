@@ -119,26 +119,82 @@
                     @change="setStatistics"
                   ></FormsSelectWorker>
                 </div>
-                <div class="form-group border border-success rounded p-1">
-                  <label>Apoio GETRANS</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.transports"
-                    list-type="transports"
-                    :multiple="true"
-                    @change="setTransports"
-                  ></FormsSelectWorker>
-                </div>
-                <div class="form-group border border-success rounded p-1">
-                  <label>Apoio ZOONOSES</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.zoonoses"
-                    list-type="zoonoses"
-                    :multiple="true"
-                    @change="setZoonoses"
-                  ></FormsSelectWorker>
-                </div>
+
+                <b-card no-body class="mb-1">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button
+                      :class="visibleTransports ? null : 'collapsed'"
+                      :aria-expanded="visibleTransports ? 'true' : 'false'"
+                      aria-controls="accordion-transports"
+                      block
+                      variant="success"
+                      @click="visibleTransports = !visibleTransports"
+                      >Apoio GETRANS</b-button
+                    >
+                  </b-card-header>
+                  <b-collapse
+                    id="accordion-transports"
+                    v-model="visibleTransports"
+                    accordion="accordion-transports"
+                    role="tabpanel"
+                  >
+                    <b-card-body v-if="visibleTransports">
+                      <div
+                        v-for="(item, index) in datesTransports"
+                        :key="`${item.name}-${index}`"
+                        class="form-group border border-success rounded p-1"
+                      >
+                        <label>Apoio GETRANS {{ item.date }}</label>
+                        <FormsSelectWorker
+                          :campaign-cycle-id="cycle.id"
+                          :selected-worker="cycle[item.name]"
+                          :list-type="item.name"
+                          :multiple="true"
+                          :index="index"
+                          @change="setTransports"
+                        ></FormsSelectWorker>
+                      </div>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+
+                <b-card no-body class="mb-1">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button
+                      :class="visibleZoonoses ? null : 'collapsed'"
+                      :aria-expanded="visibleZoonoses ? 'true' : 'false'"
+                      aria-controls="accordion-zoonoses"
+                      block
+                      variant="success"
+                      @click="visibleZoonoses = !visibleZoonoses"
+                      >Apoio ZOONOSES
+                    </b-button>
+                  </b-card-header>
+                  <b-collapse
+                    id="accordion-zoonoses"
+                    v-model="visibleZoonoses"
+                    accordion="accordion-zoonoses"
+                    role="tabpanel"
+                  >
+                    <b-card-body v-if="visibleZoonoses">
+                      <div
+                        v-for="(item, index) in datesZoonoses"
+                        :key="`${item.name}-${index}`"
+                        class="form-group border border-success rounded p-1"
+                      >
+                        <label>Apoio ZOONOSES {{ item.date }}</label>
+                        <FormsSelectWorker
+                          :campaign-cycle-id="cycle.id"
+                          :selected-worker="cycle[item.name]"
+                          :list-type="item.name"
+                          :multiple="true"
+                          :index="index"
+                          @change="setZoonoses"
+                        ></FormsSelectWorker>
+                      </div>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
               </div>
               <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
@@ -159,31 +215,90 @@
                     @change="setColdChainNurse"
                   ></FormsSelectWorker>
                 </div>
-                <div class="form-group border border-success rounded p-1">
-                  <label>Motorista Rede de Frio</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.driver_cold_chains"
-                    list-type="driver_cold_chains"
-                    :multiple="true"
-                    @change="setDriverColdChains"
-                  ></FormsSelectWorker>
-                </div>
-                <div
-                  v-for="(item, index) in datesColdChains"
-                  :key="index"
-                  class="form-group border border-success rounded p-1"
-                >
-                  <label>Rede de Frio {{ item.date }}</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle[item.name]"
-                    :list-type="item.name"
-                    :multiple="true"
-                    :index="index"
-                    @change="setColdChains"
-                  ></FormsSelectWorker>
-                </div>
+
+                <b-card no-body class="mb-1">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button
+                      :class="visibleDriverColdChains ? null : 'collapsed'"
+                      :aria-expanded="
+                        visibleDriverColdChains ? 'true' : 'false'
+                      "
+                      aria-controls="accordion-driver-cold-chains"
+                      block
+                      variant="success"
+                      @click="
+                        visibleDriverColdChains = !visibleDriverColdChains
+                      "
+                      >Motorista Rede de Frio
+                    </b-button>
+                  </b-card-header>
+                  <b-collapse
+                    id="accordion-driver-cold-chains"
+                    v-model="visibleDriverColdChains"
+                    accordion="accordion-driver-cold-chains"
+                    role="tabpanel"
+                  >
+                    <b-card-body v-if="visibleDriverColdChains">
+                      <div
+                        v-for="(item, index) in datesDriverColdChains"
+                        :key="`${item.name}-${index}`"
+                        class="form-group border border-success rounded p-1"
+                      >
+                        <label>Motorista Rede de Frio {{ item.date }}</label>
+                        <FormsSelectWorker
+                          :campaign-cycle-id="cycle.id"
+                          :selected-worker="cycle[item.name]"
+                          :list-type="item.name"
+                          :multiple="true"
+                          :index="index"
+                          @change="setDriverColdChains"
+                        ></FormsSelectWorker>
+                      </div>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+
+                <b-card no-body class="mb-1">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-button
+                      :class="visibleColdChains ? null : 'collapsed'"
+                      :aria-expanded="
+                        visibleColdChains ? 'true' : 'false'
+                      "
+                      aria-controls="accordion-cold-chains"
+                      block
+                      variant="success"
+                      @click="
+                        visibleColdChains = !visibleColdChains
+                      "
+                      >Equipe Rede de Frio
+                    </b-button>
+                  </b-card-header>
+                  <b-collapse
+                    id="accordion-cold-chains"
+                    v-model="visibleColdChains"
+                    accordion="accordion-cold-chains"
+                    role="tabpanel"
+                  >
+                    <b-card-body v-if="visibleColdChains">
+                      <div
+                        v-for="(item, index) in datesColdChains"
+                        :key="`${item.name}-${index}`"
+                        class="form-group border border-success rounded p-1"
+                      >
+                        <label>Rede de Frio {{ item.date }}</label>
+                        <FormsSelectWorker
+                          :campaign-cycle-id="cycle.id"
+                          :selected-worker="cycle[item.name]"
+                          :list-type="item.name"
+                          :multiple="true"
+                          :index="index"
+                          @change="setColdChains"
+                        ></FormsSelectWorker>
+                      </div>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
               </div>
             </div>
           </b-overlay>
@@ -232,8 +347,14 @@ export default {
           statistics: [],
           cold_chain_coordinator_id: null,
           cold_chain_nurse_id: null,
-          cold_chains: [],
-          transports: [],
+          before_driver_cold_chains: [],
+          start_driver_cold_chains: [],
+          before_cold_chains: [],
+          start_cold_chains: [],
+          before_transports: [],
+          start_transports: [],
+          before_zoonoses: [],
+          start_zoonoses: [],
         };
       },
     },
@@ -262,19 +383,41 @@ export default {
         statistics: [],
         cold_chain_coordinator_id: null,
         cold_chain_nurse_id: null,
-        cold_chains: [],
-        transports: [],
+        before_driver_cold_chains: [],
+        start_driver_cold_chains: [],
+        before_cold_chains: [],
+        start_cold_chains: [],
+        before_transports: [],
+        start_transports: [],
+        before_zoonoses: [],
+        start_zoonoses: [],
       },
+      datesDriverColdChains: [],
       datesColdChains: [],
+      datesTransports: [],
+      datesZoonoses: [],
+      visibleTransports: false,
+      visibleZoonoses: false,
+      visibleDriverColdChains: false,
+      visibleColdChains: false,
     };
   },
   computed: {},
   created() {
     this.id = this.oldCampaignCycle.id;
-    const start = new Date(this.oldCampaignCycle.start);
-    const before = new Date(this.oldCampaignCycle.start);
+    const start = new Date(`${this.oldCampaignCycle.start}T00:00:00`);
+    const before = new Date(`${this.oldCampaignCycle.start}T00:00:00`);
 
     before.setDate(start.getDate() - 1);
+
+    this.datesDriverColdChains.push({
+      name: 'before_driver_cold_chains',
+      date: before.toLocaleDateString('pt-BR'),
+    });
+    this.datesDriverColdChains.push({
+      name: 'start_driver_cold_chains',
+      date: start.toLocaleDateString('pt-BR'),
+    });
 
     this.datesColdChains.push({
       name: 'before_cold_chains',
@@ -284,13 +427,28 @@ export default {
       name: 'start_cold_chains',
       date: start.toLocaleDateString('pt-BR'),
     });
+
+    this.datesTransports.push({
+      name: 'before_transports',
+      date: before.toLocaleDateString('pt-BR'),
+    });
+    this.datesTransports.push({
+      name: 'start_transports',
+      date: start.toLocaleDateString('pt-BR'),
+    });
+
+    this.datesZoonoses.push({
+      name: 'before_zoonoses',
+      date: before.toLocaleDateString('pt-BR'),
+    });
+    this.datesZoonoses.push({
+      name: 'start_zoonoses',
+      date: start.toLocaleDateString('pt-BR'),
+    });
   },
   methods: {
     setCampaign() {
       this.cycle = { ...this.oldCampaignCycle };
-      if (this.cycle.id) {
-        console.log(this.cycle.payrolls);
-      }
     },
     async create() {
       try {
@@ -350,6 +508,110 @@ export default {
     },
     handleOk() {
       this.show = true;
+
+      const statistics = [];
+      const beforeColdChains = [];
+      const startColdChains = [];
+      const beforeDriverColdChains = [];
+      const startDriverColdChains = [];
+      const beforeTransports = [];
+      const startTransports = [];
+      const beforeZoonoses = [];
+      const startZoonoses = [];
+
+      // before_driver_cold_chains
+
+      this.cycle.statistics.forEach((statistic) => {
+        if (typeof statistic === 'object') {
+          statistics.push(statistic.id);
+        }
+      });
+
+      if (statistics.length > 0) {
+        this.cycle.statistics = statistics;
+      }
+
+      this.cycle.before_cold_chains.forEach((beforeColdChain) => {
+        if (typeof beforeColdChain === 'object') {
+          beforeColdChains.push(beforeColdChain.id);
+        }
+      });
+
+      if (beforeColdChains.length > 0) {
+        this.cycle.before_cold_chains = beforeColdChains;
+      }
+
+      this.cycle.start_cold_chains.forEach((startColdChain) => {
+        if (typeof startColdChain === 'object') {
+          startColdChains.push(startColdChain.id);
+        }
+      });
+
+      if (startColdChains.length > 0) {
+        this.cycle.start_cold_chains = startColdChains;
+      }
+
+      this.cycle.before_driver_cold_chains.forEach((beforeDriverColdChain) => {
+        if (typeof beforeDriverColdChain === 'object') {
+          beforeDriverColdChains.push(beforeDriverColdChain.id);
+        }
+      });
+
+      if (beforeDriverColdChains.length > 0) {
+        this.cycle.before_driver_cold_chains = beforeDriverColdChains;
+      }
+
+      this.cycle.start_driver_cold_chains.forEach((startDriverColdChain) => {
+        if (typeof startDriverColdChain === 'object') {
+          startDriverColdChains.push(startDriverColdChain.id);
+        }
+      });
+
+      if (startDriverColdChains.length > 0) {
+        this.cycle.start_driver_cold_chains = startDriverColdChains;
+      }
+
+      this.cycle.before_transports.forEach((beforeTransport) => {
+        console.log(typeof beforeColdChain);
+        if (typeof beforeTransport === 'object') {
+          beforeTransports.push(beforeTransport.id);
+        }
+      });
+
+      if (beforeTransports.length > 0) {
+        this.cycle.before_transports = beforeTransports;
+      }
+
+      this.cycle.start_transports.forEach((startTransport) => {
+        if (typeof startTransport === 'object') {
+          startTransports.push(startTransport.id);
+        }
+      });
+
+      if (startTransports.length > 0) {
+        this.cycle.start_transports = startTransports;
+      }
+
+      this.cycle.before_zoonoses.forEach((beforeZoonose) => {
+        if (typeof beforeZoonose === 'object') {
+          beforeZoonoses.push(beforeZoonose.id);
+        }
+      });
+
+      if (beforeZoonoses.length > 0) {
+        this.cycle.before_zoonoses = beforeZoonoses;
+      }
+
+      this.cycle.start_zoonoses.forEach((startZoonose) => {
+        if (typeof startZoonose === 'object') {
+          startZoonoses.push(startZoonose.id);
+        }
+      });
+
+      if (startZoonoses.length > 0) {
+        this.cycle.start_zoonoses = startZoonoses;
+      }
+
       this.handleSubmit();
     },
     handleSubmit() {
@@ -369,11 +631,19 @@ export default {
     setStatistics(ids) {
       this.cycle.statistics = ids;
     },
-    setTransports(ids) {
-      this.cycle.transports = ids;
+    setTransports(ids, listType) {
+      if (listType === 'before_transports') {
+        this.cycle.before_transports = ids;
+      } else {
+        this.cycle.start_transports = ids;
+      }
     },
-    setZoonoses(ids) {
-      this.cycle.zoonoses = ids;
+    setZoonoses(ids, listType) {
+      if (listType === 'before_zoonoses') {
+        this.cycle.before_zoonoses = ids;
+      } else {
+        this.cycle.start_zoonoses = ids;
+      }
     },
     setColdChains(ids, listType) {
       if (listType === 'before_cold_chains') {
@@ -388,8 +658,12 @@ export default {
     setColdChainNurse(id) {
       this.cycle.cold_chain_nurse_id = id;
     },
-    setDriverColdChains(ids) {
-      this.cycle.driver_cold_chains = ids;
+    setDriverColdChains(ids, listType) {
+      if (listType === 'before_driver_cold_chains') {
+        this.cycle.before_driver_cold_chains = ids;
+      } else {
+        this.cycle.start_driver_cold_chains = ids;
+      }
     },
   },
 };
