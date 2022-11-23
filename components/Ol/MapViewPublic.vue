@@ -384,7 +384,6 @@ export default {
               'EPSG:3857',
               'EPSG:4326'
             );
-            console.log(this.featureInfo.coordsDestination.getCoordinates()[1]);
           } else {
             this.featureInfo = {
               values_: {

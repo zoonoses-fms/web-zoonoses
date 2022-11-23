@@ -10,15 +10,34 @@
             class="d-flex justify-content-end"
           >
             <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
+            <b-navbar-nav class="ml-auto">
+              <b-collapse id="nav-collapse" is-nav>
+                <!-- Right aligned nav items -->
+                <client-only>
+                  <b-navbar-nav class="ml-auto">
+                    <b-nav-item to="/"
+                      ><b-icon-house></b-icon-house
+                    ></b-nav-item>
+                    <b-nav-item to="/systemz">SystemZ</b-nav-item>
+                    <b-nav-item to="/dashboards">Dashboards</b-nav-item>
+                  </b-navbar-nav>
+                </client-only>
+              </b-collapse>
+            </b-navbar-nav>
 
-            <b-collapse id="nav-collapse" is-nav>
-              <!-- Right aligned nav items -->
-              <b-navbar-nav class="ml-auto">
-                <b-nav-item to="/"><b-icon-house></b-icon-house></b-nav-item>
-                <b-nav-item to="/systemz">SystemZ</b-nav-item>
-                <b-nav-item to="/dashboards">Dashboards</b-nav-item>
-              </b-navbar-nav>
-            </b-collapse>
+
+            <b-navbar-toggle
+              v-show="$auth.loggedIn"
+              target="nav-collapse"
+            ></b-navbar-toggle>
+            <button
+              v-show="!show"
+              type="button"
+              class="btn btn-primary"
+              @click="switchShow"
+            >
+              <b-icon icon="layout-text-sidebar"></b-icon>
+            </button>
           </b-navbar>
         </div>
       </div>
@@ -50,8 +69,8 @@ export default {
     // window.removeEventListener('resize', this.onResize)
   },
   methods: {
-    async logout() {
-      await this.$auth.logout();
+    switchShow() {
+      this.show = !this.show;
     },
   },
 };

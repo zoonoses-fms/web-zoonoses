@@ -44,7 +44,6 @@
 <script>
 export default {
   name: 'IndexPage',
-  auth: false,
   mounted() {
     // this.$auth.refreshTokens();
   },

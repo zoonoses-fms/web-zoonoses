@@ -60,7 +60,7 @@ export default {
         }
       }
       this.supports = [...supports];
-      this.$store.commit('layout/CHANGE_NAV_TITLE', `Posto de Vacina ${cycle.description} ${moment(String(cycle.start)).format('DD/MM/YYYY')}`);
+      this.$store.commit('layout/CHANGE_NAV_TITLE', `${cycle.description} ${moment(String(cycle.start)).format('DD/MM/YYYY')}`);
     },
   },
 };

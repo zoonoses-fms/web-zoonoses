@@ -121,7 +121,7 @@ export default {
         this.$auth.setUser(response.data.user);
         // Refresh tokens
         this.$auth.refreshTokens();
-        this.$router.push('/');
+        this.$router.push('/systemz');
       } catch (errors) {
         // const erros = error.response.data.data;
         console.log(errors.response.data.data);

@@ -103,10 +103,14 @@
                 {{ data.item.point.neighborhood_alias.name }}
               </div>
             </template>
-            <template #cell(saad)="data">
-              <span v-for="saad in data.item.saads" :key="saad.id">
-                {{ saad.name }}
-              </span>
+            <template #cell(frequency)="data">
+              <b-button
+                class="mt-0"
+                variant="warning"
+                @click="frequencyPdf(data.item)"
+              >
+                <b-icon icon="person-badge-fill"></b-icon>
+              </b-button>
             </template>
             <template #cell(edit)="data">
               <div class="d-flex">
@@ -195,8 +199,8 @@ export default {
           label: 'Bairro',
         },
         {
-          key: 'saad',
-          label: 'SAAD',
+          key: 'frequency',
+          label: 'Freq.',
         },
         {
           key: 'edit',
@@ -272,6 +276,32 @@ export default {
           clearInterval(i);
         }
       }, 1000);
+    },
+    async frequencyPdf(point) {
+      try {
+        const response = await this.$axios.get(
+          `${this.urlCampaignPoint}frequency/${point.id}`,
+          {
+            responseType: 'blob',
+          }
+        );
+        const today = new Date().toISOString().slice(0, 10);
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        // const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = '_blank';
+        link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
+        link.click();
+        // window.open(url);
+        // console.log(response);
+      } catch (error) {
+        const message =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+        console.log(message);
+      }
     },
   },
 };

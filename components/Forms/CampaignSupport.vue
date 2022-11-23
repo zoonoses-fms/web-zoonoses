@@ -162,7 +162,7 @@
               <div class="col-12 col-lg-6">
                 <div class="form-group border border-success rounded p-1">
                   <label v-if="!support.is_rural">
-                    Selecione os Vacinadores Resesva
+                    Selecione os Vacinadores Reserva
                   </label>
                   <label v-if="support.is_rural">
                     Selecione os Vacinadores
