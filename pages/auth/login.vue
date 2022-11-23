@@ -85,6 +85,7 @@ export default {
     ValidationObserver,
     ValidationProvider,
   },
+  layout: 'simple',
   data() {
     return {
       show: true,

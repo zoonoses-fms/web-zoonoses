@@ -14,6 +14,7 @@ import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Circle from 'ol/style/Circle';
 import RegularShape from 'ol/style/RegularShape';
+import Icon from 'ol/style/Icon';
 import MVT from 'ol/format/MVT';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
@@ -63,7 +64,8 @@ Vue.ol = {
     Fill,
     Stroke,
     Circle,
-    RegularShape
+    RegularShape,
+    Icon
   },
   format: {
     MVT,

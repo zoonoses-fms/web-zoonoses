@@ -13,56 +13,12 @@
 
             <b-collapse id="nav-collapse" is-nav>
               <!-- Right aligned nav items -->
-              <client-only>
-                <b-navbar-nav
-                  v-if="$auth.loggedIn"
-                  class="ml-auto justify-content-end"
-                >
-                  <b-nav-item-dropdown right>
-                    <!-- Using 'button-content' slot -->
-                    <template #button-content>
-                      <em>{{ $auth.user.name }}</em>
-                      <b-avatar size="sm"></b-avatar>
-                    </template>
-                    <NuxtLink
-                      v-show="isAdmin"
-                      to="/admin/user"
-                      class="dropdown-item"
-                    >
-                      Usuários
-                    </NuxtLink>
-                    <NuxtLink
-                      v-show="isAdmin"
-                      to="/admin/team"
-                      class="dropdown-item"
-                    >
-                      Turmas
-                    </NuxtLink>
-                    <NuxtLink
-                      v-show="isAdmin"
-                      to="/auth/profile"
-                      class="dropdown-item"
-                    >
-                      Profile
-                    </NuxtLink>
-                    <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-                  </b-nav-item-dropdown>
-                </b-navbar-nav>
-              </client-only>
+              <b-navbar-nav class="ml-auto">
+                <b-nav-item to="/"><b-icon-house></b-icon-house></b-nav-item>
+                <b-nav-item to="/systemz">SystemZ</b-nav-item>
+                <b-nav-item to="/dashboards">Dashboards</b-nav-item>
+              </b-navbar-nav>
             </b-collapse>
-
-            <NuxtLink
-              v-show="!$auth.loggedIn"
-              to="/auth/login"
-              class="btn btn-warning"
-            >
-              <b-icon icon="arrow-return-right"></b-icon>
-              Login
-            </NuxtLink>
-            <b-navbar-toggle
-              v-show="$auth.loggedIn"
-              target="nav-collapse"
-            ></b-navbar-toggle>
           </b-navbar>
         </div>
       </div>
@@ -89,8 +45,7 @@ export default {
       return this.$store.state.layout.title;
     },
   },
-  mounted() {
-  },
+  mounted() {},
   destroy() {
     // window.removeEventListener('resize', this.onResize)
   },
@@ -113,6 +68,6 @@ export default {
   margin-top: 5px;
   margin-bottom: 5 px;
   width: 100%;
+  min-height: 100vh;
 }
-
 </style>

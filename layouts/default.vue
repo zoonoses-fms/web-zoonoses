@@ -17,7 +17,7 @@
         <ul class="list-group list-group-flush mt-2">
           <li class="list-group-item">
             <NuxtLink to="/" class="item">
-              <b-icon icon="bookmark"></b-icon>
+              <b-icon-bookmark></b-icon-bookmark>
               Home
             </NuxtLink>
           </li>
@@ -27,7 +27,7 @@
             title="Núcleo de Controle da Raiva, Leishmaniose e Outras Zoonoses"
           >
             <NuxtLink to="/ncrlo" class="item">
-              <b-icon icon="clipboard-check"></b-icon>
+              <b-icon-clipboard-check></b-icon-clipboard-check>
               NCRLOZ
             </NuxtLink>
           </li>
@@ -37,7 +37,7 @@
             title="Núcleo de Controle de Roedores e Vetores"
           >
             <NuxtLink to="/ncrv" class="item">
-              <b-icon icon="clipboard-check"></b-icon>
+              <b-icon-clipboard-check></b-icon-clipboard-check>
               NCRV
             </NuxtLink>
           </li>
@@ -47,14 +47,20 @@
             title="Núcleo de Correição"
           >
             <NuxtLink to="/nc" class="item">
-              <b-icon icon="clipboard-check"></b-icon>
+              <b-icon-clipboard-check></b-icon-clipboard-check>
               NC
             </NuxtLink>
           </li>
           <li v-b-tooltip.hover class="list-group-item" title="Mapas">
             <NuxtLink to="/maps" class="item">
-              <b-icon icon="map"></b-icon>
+              <b-icon-map></b-icon-map>
               Mapas
+            </NuxtLink>
+          </li>
+          <li v-b-tooltip.hover class="list-group-item" title="Mapas">
+            <NuxtLink to="/datasets" class="item">
+              <b-icon-pie-chart></b-icon-pie-chart>
+              Datasets
             </NuxtLink>
           </li>
         </ul>
@@ -71,13 +77,16 @@
           >
             <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
             <b-navbar-nav class="ml-auto">
-              <b-button-group class="mx-1">
-                <b-button variant="success" @click="goToPrev">&#8249;</b-button>
-                <b-button variant="success" @click="goToNext">&#8250;</b-button>
-              </b-button-group>
               <b-collapse id="nav-collapse" is-nav>
                 <!-- Right aligned nav items -->
                 <client-only>
+                  <b-navbar-nav class="ml-auto">
+                    <b-nav-item to="/"
+                      ><b-icon-house></b-icon-house
+                    ></b-nav-item>
+                    <b-nav-item to="/systemz">SystemZ</b-nav-item>
+                    <b-nav-item to="/dashboards">Dashboards</b-nav-item>
+                  </b-navbar-nav>
                   <b-navbar-nav
                     v-if="$auth.loggedIn"
                     class="ml-auto justify-content-end"
@@ -111,6 +120,14 @@
                       </NuxtLink>
                       <b-dropdown-item @click="logout">Logout</b-dropdown-item>
                     </b-nav-item-dropdown>
+                    <b-button-group class="mx-1">
+                      <b-button variant="success" class="mx-1" @click="goToPrev"
+                        >&#8249;</b-button
+                      >
+                      <b-button variant="success" class="mx-1" @click="goToNext"
+                        >&#8250;</b-button
+                      >
+                    </b-button-group>
                   </b-navbar-nav>
                 </client-only>
               </b-collapse>
@@ -215,6 +232,7 @@ export default {
   margin-top: 5px;
   margin-bottom: 5 px;
   width: 100%;
+  min-height: 100vh;
 }
 
 .sidebar {

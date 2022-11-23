@@ -1,16 +1,20 @@
 <template>
-  <div class="card text-center shadow-2xl m-2">
-    <div class="card-body pl-2 pr-1 py-1">
-      <div id="chart">
-        <ApexChart
-          ref="chart"
-          type="bar"
-          height="320"
-          :options="options"
-          :series="series"
-        ></ApexChart>
+  <div>
+    <b-overlay :show="show" rounded="sm">
+      <div class="card text-center shadow-2xl m-2">
+        <div class="card-body pl-2 pr-1 py-1">
+          <div id="chart">
+            <ApexChart
+              ref="chart"
+              type="bar"
+              height="320"
+              :options="options"
+              :series="series"
+            ></ApexChart>
+          </div>
+        </div>
       </div>
-    </div>
+    </b-overlay>
   </div>
 </template>
 
@@ -45,6 +49,7 @@ export default {
   },
   data() {
     return {
+      show: false,
       series: [],
       options: {
         chart: {
@@ -137,6 +142,7 @@ export default {
   mounted() {},
   methods: {
     updateChart() {
+      this.show = true;
       const data = [];
       const categories = [];
       const colors = [];
@@ -162,6 +168,7 @@ export default {
           text: `${this.title} ${this.locationName}`,
         },
       });
+      this.show = false;
     },
   },
 };

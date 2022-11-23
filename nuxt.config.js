@@ -144,7 +144,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    // transpile: ['ol']
+    transpile: [/claygl/, /echarts/, /echarts-gl/, /zrender/],
   },
 
   styleResources: {
@@ -207,11 +207,16 @@ export default {
     // linkExactActiveClass: 'active',
     middleware: ['auth'],
     extendRoutes(routes, resolve) {
-      /*       routes.push({
+      routes.push({
         name: 'datasets-loads',
         path: '/datasets/load/:source/:system/:initial',
         component: '~/pages/datasets/_load.vue',
-      }); */
+      });
+      routes.push({
+        name: 'dashboards-show',
+        path: '/dashboards/show/:source/:system/:initial',
+        component: '~/pages/dashboards/_show.vue',
+      });
     },
   },
   /*

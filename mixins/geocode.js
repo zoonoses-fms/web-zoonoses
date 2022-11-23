@@ -45,8 +45,7 @@ export default {
           address: item.address,
           number: item.number,
           address_complement: item.address_complement,
-          neighborhood: item.neighborhood,
-          neighborhood_alias_id: item.neighborhood_alias_id,
+          neighborhood_alias: item.neighborhood_alias,
         },
       };
 

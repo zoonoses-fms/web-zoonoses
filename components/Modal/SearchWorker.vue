@@ -5,7 +5,7 @@
       :variant="variant"
       @click="showForm"
     >
-      <b-icon icon="search"></b-icon>
+      <b-icon-search></b-icon-search>
       <b-icon icon="people"></b-icon>
       Buscar Colaborador
     </b-button>
@@ -29,7 +29,7 @@
           />
           <div class="input-group-append">
             <b-button id="search" class="input-group-text" @click="getRows">
-              <b-icon icon="search"></b-icon>
+              <b-icon-search></b-icon-search>
             </b-button>
           </div>
         </div>

@@ -53,7 +53,7 @@
         </b-card-text>
         <b-card-text>
           <button class="btn btn-outline-dark" @click="removeFile(item)">
-            <font-awesome-icon :icon="['far', 'times-circle']" />
+            <b-icon icon="x-circle"></b-icon>
           </button>
         </b-card-text>
       </b-card>

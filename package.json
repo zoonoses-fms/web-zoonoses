@@ -29,6 +29,8 @@
     "chaikin-smooth": "^1.0.4",
     "core-js": "^3.19.3",
     "easy-circular-progress": "^1.0.4",
+    "echarts": "^5.4.0",
+    "echarts-gl": "^2.0.9",
     "hex-to-rgba": "^2.0.1",
     "nuxt": "^2.15.8",
     "nuxt-validate": "^1.0.1",
