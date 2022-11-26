@@ -72,7 +72,6 @@
                 :to="`/ncrlo/campaign/cycle/report/${data.item.id}`"
               >
                 <b-icon icon="bar-chart"></b-icon>
-
               </b-button>
             </template>
             <template #cell(allocation)="data">
@@ -99,7 +98,12 @@
                 variant="warning"
                 @click="payrollPdf(data.item)"
               >
-                $
+                <b-icon
+                  v-show="loadPayroll.includes(data.item.id)"
+                  icon="arrow-clockwise"
+                  animation="spin"
+                ></b-icon>
+                <b-icon v-show="!loadPayroll.includes(data.item.id)" icon="currency-dollar">$</b-icon>
               </b-button>
             </template>
             <template #cell(edit)="data">
@@ -199,6 +203,7 @@ export default {
           label: 'Excluir',
         },
       ],
+      loadPayroll: [],
     };
   },
 
@@ -277,6 +282,7 @@ export default {
     },
     async payrollPdf(support) {
       try {
+        this.loadPayroll.push(support.id);
         const response = await this.$axios.get(
           `${this.urlCampaignCycle}payroll/${support.id}`,
           {
@@ -300,6 +306,10 @@ export default {
           error.toString();
         console.log(message);
       }
+      this.loadPayroll = this.loadPayroll.filter((value) => {
+        return value !== support.id;
+      });
+      console.log(this.loadPayroll);
     },
   },
 };

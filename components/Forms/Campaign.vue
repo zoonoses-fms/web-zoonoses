@@ -164,7 +164,7 @@
                     <div class="form-group">
                       <label for="vaccinator-cost-input">Anotador:</label>
                       <money
-                        v-model="vaccinationCampaign.annotator_cost"
+                        v-model="vaccinationCampaign.annotators_cost"
                         v-bind="money"
                         name="vaccinator-cost-input"
                         class="form-control form-control-sm"
@@ -400,7 +400,7 @@ export default {
           assistant_cost: 0,
           supervisor_cost: 0,
           vaccinator_cost: 0,
-          annotator_cost: 0,
+          annotators_cost: 0,
           rural_supervisor_cost: 0,
           rural_assistant_cost: 0,
           vaccine_cost: 0,
@@ -437,7 +437,7 @@ export default {
         assistant_cost: 0,
         supervisor_cost: 0,
         vaccinator_cost: 0,
-        annotator_cost: 0,
+        annotators_cost: 0,
         rural_supervisor_cost: 0,
         rural_assistant_cost: 0,
         vaccine_cost: 0,

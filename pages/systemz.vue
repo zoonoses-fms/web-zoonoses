@@ -47,5 +47,13 @@ export default {
   mounted() {
     // this.$auth.refreshTokens();
   },
+  created() {
+    this.welcomeMessage();
+  },
+  methods: {
+    welcomeMessage() {
+      this.$store.commit('layout/CHANGE_NAV_TITLE', 'SystemZ');
+    },
+  },
 };
 </script>

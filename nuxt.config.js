@@ -208,12 +208,12 @@ export default {
     middleware: ['auth'],
     extendRoutes(routes, resolve) {
       routes.push({
-        name: 'datasets-loads',
+        name: 'datasets_loads',
         path: '/datasets/load/:source/:system/:initial',
         component: '~/pages/datasets/_load.vue',
       });
       routes.push({
-        name: 'dashboards-show',
+        name: 'dashboards_show',
         path: '/dashboards/show/:source/:system/:initial',
         component: '~/pages/dashboards/_show.vue',
       });

@@ -98,9 +98,14 @@ export default {
       platformPassword: process.env.PLATFORM_PASSWORD,
     };
   },
-  created() {},
+  created() {
+    this.welcomeMessage();
+  },
   mounted() {},
   methods: {
+    welcomeMessage() {
+      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Login');
+    },
     async onSubmit() {
       try {
         const response = await this.$auth.loginWith('local', {
