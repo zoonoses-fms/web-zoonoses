@@ -67,72 +67,58 @@
       </div>
     </transition>
     <div class="container-main">
-      <div class="row">
-        <div class="col">
-          <b-navbar
-            toggleable="lg"
-            type="dark"
-            variant="primary"
-            class="d-flex justify-content-end"
-          >
-            <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
-            <b-navbar-nav class="ml-auto">
-              <b-collapse id="nav-collapse" is-nav>
-                <!-- Right aligned nav items -->
-                <client-only>
-                  <b-navbar-nav class="ml-auto">
-                    <b-nav-item to="/"
-                      ><b-icon-house></b-icon-house
-                    ></b-nav-item>
-                    <b-nav-item to="/systemz">SystemZ</b-nav-item>
-                    <b-nav-item to="/dashboards">Dashboards</b-nav-item>
-                  </b-navbar-nav>
-                  <b-navbar-nav
-                    v-if="$auth.loggedIn"
-                    class="ml-auto justify-content-end"
-                  >
-                    <b-nav-item-dropdown right>
-                      <!-- Using 'button-content' slot -->
-                      <template #button-content>
-                        <em>{{ $auth.user.name }}</em>
-                        <b-avatar size="sm"></b-avatar>
-                      </template>
-                      <NuxtLink
-                        v-show="isAdmin"
-                        to="/admin/user"
-                        class="dropdown-item"
-                      >
-                        Usuários
-                      </NuxtLink>
-                      <NuxtLink
-                        v-show="isAdmin"
-                        to="/admin/team"
-                        class="dropdown-item"
-                      >
-                        Turmas
-                      </NuxtLink>
-                      <NuxtLink
-                        v-show="isAdmin"
-                        to="/auth/profile"
-                        class="dropdown-item"
-                      >
-                        Profile
-                      </NuxtLink>
-                      <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-                    </b-nav-item-dropdown>
-                    <b-button-group class="mx-1">
-                      <b-button variant="success" class="mx-1" @click="goToPrev"
-                        >&#8249;</b-button
-                      >
-                      <b-button variant="success" class="mx-1" @click="goToNext"
-                        >&#8250;</b-button
-                      >
-                    </b-button-group>
-                  </b-navbar-nav>
-                </client-only>
-              </b-collapse>
-            </b-navbar-nav>
+      <b-navbar toggleable="lg" type="dark" variant="primary">
+        <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
 
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <client-only>
+            <b-navbar-nav class="ml-auto">
+              <b-nav-item to="/"><b-icon-house></b-icon-house></b-nav-item>
+              <b-nav-item to="/systemz">SystemZ</b-nav-item>
+              <b-nav-item to="/dashboards">Dashboards</b-nav-item>
+
+              <b-nav-item-dropdown v-if="$auth.loggedIn" right>
+                <!-- Using 'button-content' slot -->
+                <template #button-content>
+                  <em>{{ $auth.user.name }}</em>
+                  <b-avatar size="sm"></b-avatar>
+                </template>
+                <NuxtLink
+                  v-show="isAdmin"
+                  to="/admin/user"
+                  class="dropdown-item"
+                >
+                  Usuários
+                </NuxtLink>
+                <NuxtLink
+                  v-show="isAdmin"
+                  to="/admin/team"
+                  class="dropdown-item"
+                >
+                  Turmas
+                </NuxtLink>
+                <NuxtLink
+                  v-show="isAdmin"
+                  to="/auth/profile"
+                  class="dropdown-item"
+                >
+                  Profile
+                </NuxtLink>
+                <b-dropdown-item @click="logout">Logout</b-dropdown-item>
+              </b-nav-item-dropdown>
+              <b-button-group class="mx-1">
+                <b-button variant="success" class="mx-1" @click="goToPrev"
+                  >&#8249;</b-button
+                >
+                <b-button variant="success" class="mx-1" @click="goToNext"
+                  >&#8250;</b-button
+                >
+              </b-button-group>
+            </b-navbar-nav>
+          </client-only>
+          <client-only>
             <NuxtLink
               v-show="!$auth.loggedIn"
               to="/auth/login"
@@ -153,9 +139,10 @@
             >
               <b-icon icon="layout-text-sidebar"></b-icon>
             </button>
-          </b-navbar>
-        </div>
-      </div>
+          </client-only>
+        </b-collapse>
+      </b-navbar>
+
       <div class="p-2">
         <Nuxt />
       </div>

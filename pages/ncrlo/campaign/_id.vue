@@ -93,18 +93,10 @@
               </b-button>
             </template>
             <template #cell(payroll)="data">
-              <b-button
-                class="mt-0"
-                variant="warning"
-                @click="payrollPdf(data.item)"
-              >
-                <b-icon
-                  v-show="loadPayroll.includes(data.item.id)"
-                  icon="arrow-clockwise"
-                  animation="spin"
-                ></b-icon>
-                <b-icon v-show="!loadPayroll.includes(data.item.id)" icon="currency-dollar">$</b-icon>
-              </b-button>
+              <ModalExportPayroll
+                :item="data.item"
+                :url="`${urlCampaignCycle}payroll`"
+              ></ModalExportPayroll>
             </template>
             <template #cell(edit)="data">
               <FormsCampaignCycle

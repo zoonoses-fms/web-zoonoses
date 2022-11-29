@@ -1,46 +1,19 @@
 <template>
   <div ref="container" class="flex-container">
     <div class="container-main">
-      <div class="row">
-        <div class="col">
-          <b-navbar
-            toggleable="lg"
-            type="dark"
-            variant="primary"
-            class="d-flex justify-content-end"
-          >
-            <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
-            <b-navbar-nav class="ml-auto">
-              <b-collapse id="nav-collapse" is-nav>
-                <!-- Right aligned nav items -->
-                <client-only>
-                  <b-navbar-nav class="ml-auto">
-                    <b-nav-item to="/"
-                      ><b-icon-house></b-icon-house
-                    ></b-nav-item>
-                    <b-nav-item to="/systemz">SystemZ</b-nav-item>
-                    <b-nav-item to="/dashboards">Dashboards</b-nav-item>
-                  </b-navbar-nav>
-                </client-only>
-              </b-collapse>
-            </b-navbar-nav>
+      <b-navbar toggleable="lg" type="dark" variant="primary">
+        <b-navbar-brand href="#">{{ title }}</b-navbar-brand>
 
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-            <b-navbar-toggle
-              v-show="$auth.loggedIn"
-              target="nav-collapse"
-            ></b-navbar-toggle>
-            <button
-              v-show="!show"
-              type="button"
-              class="btn btn-primary"
-              @click="switchShow"
-            >
-              <b-icon icon="layout-text-sidebar"></b-icon>
-            </button>
-          </b-navbar>
-        </div>
-      </div>
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item to="/"><b-icon-house></b-icon-house></b-nav-item>
+            <b-nav-item to="/systemz">SystemZ</b-nav-item>
+            <b-nav-item to="/dashboards">Dashboards</b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
       <div class="p-2">
         <Nuxt />
       </div>
@@ -69,8 +42,11 @@ export default {
     // window.removeEventListener('resize', this.onResize)
   },
   methods: {
-    switchShow() {
-      this.show = !this.show;
+    goToPrev() {
+      this.$router.go(-1);
+    },
+    goToNext() {
+      this.$router.go(1);
     },
   },
 };
@@ -88,5 +64,13 @@ export default {
   margin-bottom: 5 px;
   width: 100%;
   min-height: 100vh;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
+  opacity: 0;
 }
 </style>
