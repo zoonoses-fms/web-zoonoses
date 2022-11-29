@@ -10,7 +10,7 @@ export default {
   layout: 'simple',
   auth: false,
   created() {
-    this.$router.push('/ncrlo/campaign/cycle/map/points/public/1');
+    this.$router.push('/ncrlo/campaign/cycle/map/points/public/2');
   },
   mounted() {
     // this.$auth.refreshTokens();
