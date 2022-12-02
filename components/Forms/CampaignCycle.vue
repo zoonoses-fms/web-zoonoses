@@ -21,7 +21,30 @@
           <b-overlay :show="show" rounded="sm">
             <div class="">
               <div class="row pb-1">
-                <div class="col-12 d-flex justify-content-end">
+                <div class="col-8 form-row">
+                  <div class="form-check form-check-inline p-0">
+                    <label class="form-check-label">
+                      Pagamento parcial Pré-campanha?
+                      <input
+                        v-model="cycle.partial_value"
+                        class="form-check-input"
+                        type="checkbox"
+                      />
+                    </label>
+                  </div>
+                  <div class="input-group col-12 col-md-3">
+                    <input
+                      v-model="cycle.percentage_value"
+                      type="text"
+                      class="form-control"
+                      :disabled="!cycle.partial_value"
+                    />
+                    <div class="input-group-append input-sm">
+                      <span class="input-group-text">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex justify-content-end">
                   <NuxtLink
                     to="/ncrlo/vaccination/worker"
                     class="btn btn-success"
@@ -138,7 +161,7 @@
                     accordion="accordion-transports"
                     role="tabpanel"
                   >
-                    <b-card-body v-if="visibleTransports">
+                    <b-card-body>
                       <div
                         v-for="(item, index) in datesTransports"
                         :key="`${item.name}-${index}`"
@@ -176,7 +199,7 @@
                     accordion="accordion-zoonoses"
                     role="tabpanel"
                   >
-                    <b-card-body v-if="visibleZoonoses">
+                    <b-card-body>
                       <div
                         v-for="(item, index) in datesZoonoses"
                         :key="`${item.name}-${index}`"
@@ -229,7 +252,7 @@
                       @click="
                         visibleDriverColdChains = !visibleDriverColdChains
                       "
-                      >Motorista Rede de Frio
+                      >Motorista
                     </b-button>
                   </b-card-header>
                   <b-collapse
@@ -238,13 +261,13 @@
                     accordion="accordion-driver-cold-chains"
                     role="tabpanel"
                   >
-                    <b-card-body v-if="visibleDriverColdChains">
+                    <b-card-body>
                       <div
                         v-for="(item, index) in datesDriverColdChains"
                         :key="`${item.name}-${index}`"
                         class="form-group border border-success rounded p-1"
                       >
-                        <label>Motorista Rede de Frio {{ item.date }}</label>
+                        <label>Motorista {{ item.date }}</label>
                         <FormsSelectWorker
                           :campaign-cycle-id="cycle.id"
                           :selected-worker="cycle[item.name]"
@@ -262,15 +285,11 @@
                   <b-card-header header-tag="header" class="p-1" role="tab">
                     <b-button
                       :class="visibleColdChains ? null : 'collapsed'"
-                      :aria-expanded="
-                        visibleColdChains ? 'true' : 'false'
-                      "
+                      :aria-expanded="visibleColdChains ? 'true' : 'false'"
                       aria-controls="accordion-cold-chains"
                       block
                       variant="success"
-                      @click="
-                        visibleColdChains = !visibleColdChains
-                      "
+                      @click="visibleColdChains = !visibleColdChains"
                       >Equipe Rede de Frio
                     </b-button>
                   </b-card-header>
@@ -280,7 +299,7 @@
                     accordion="accordion-cold-chains"
                     role="tabpanel"
                   >
-                    <b-card-body v-if="visibleColdChains">
+                    <b-card-body>
                       <div
                         v-for="(item, index) in datesColdChains"
                         :key="`${item.name}-${index}`"
@@ -355,6 +374,8 @@ export default {
           start_transports: [],
           before_zoonoses: [],
           start_zoonoses: [],
+          partial_value: false,
+          percentage_value: 0,
         };
       },
     },
@@ -391,6 +412,8 @@ export default {
         start_transports: [],
         before_zoonoses: [],
         start_zoonoses: [],
+        partial_value: false,
+        percentage_value: 0,
       },
       datesDriverColdChains: [],
       datesColdChains: [],
