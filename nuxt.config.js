@@ -21,7 +21,7 @@ export default {
   // https://nuxtjs.org/docs/features/loading/
   loading: {
     color: '#e95e38',
-    height: '6px'
+    height: '6px',
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -116,9 +116,13 @@ export default {
       'BPopover',
       'BAvatar',
       'BButton',
+      'BToast',
       'BButtonGroup',
       'BDropdownItem',
       'BNavItemDropdown',
+      'BForm',
+      'BFormGroup',
+      'BFormInput',
       'BFormCheckbox',
       'BFormRadioGroup',
       'BFormSelect',
@@ -161,6 +165,20 @@ export default {
       'VBTooltip',
       'VBScrollspy',
       'VBToggle',
+    ],
+    componentPlugins: [
+      'LayoutPlugin',
+      'FormPlugin',
+      'FormCheckboxPlugin',
+      'FormInputPlugin',
+      'FormRadioPlugin',
+      'ToastPlugin',
+      'ModalPlugin',
+    ],
+    directivePlugins: [
+      'VBPopoverPlugin',
+      'VBTooltipPlugin',
+      'VBScrollspyPlugin',
     ],
   },
 
