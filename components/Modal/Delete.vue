@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-button v-b-modal="`delete-modal-${item.id}`" variant="danger">
-      <b-icon icon="trash"></b-icon>
+      <b-icon-trash></b-icon-trash>
       {{ textButton }}
     </b-button>
 

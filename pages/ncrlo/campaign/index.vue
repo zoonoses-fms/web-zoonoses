@@ -3,11 +3,11 @@
     <div class="row m-2 justify-content-between">
       <div class="col-sm-12 col-md-6"></div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
-        <FormsCampaign
+        <LazyFormsCampaign
           text-button="Cadastrar campanha"
           variant="primary"
           @create="getRows"
-        ></FormsCampaign>
+        ></LazyFormsCampaign>
       </div>
     </div>
     <div class="row justify-content-between">
@@ -38,7 +38,7 @@
                 variant="warning"
                 :to="`/ncrlo/campaign/report/${data.item.id}`"
               >
-                <b-icon icon="bar-chart"></b-icon>
+                <b-icon-bar-chart></b-icon-bar-chart>
               </b-button>
             </template>
             <template #cell(details)="data">
@@ -50,21 +50,21 @@
               </NuxtLink>
             </template>
             <template #cell(edit)="data">
-              <FormsCampaign
+              <LazyFormsCampaign
                 text-button=""
                 variant="success"
                 :old-vaccination-campaign="data.item"
                 @update="getRows"
-              ></FormsCampaign>
+              ></LazyFormsCampaign>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete
+              <LazyModalDelete
                 :item="data.item"
                 :url="url"
                 text-button=""
                 @deletItem="getRows"
               >
-              </ModalDelete>
+              </LazyModalDelete>
             </template>
           </b-table>
         </b-card>

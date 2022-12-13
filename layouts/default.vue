@@ -124,7 +124,7 @@
               to="/auth/login"
               class="btn btn-warning"
             >
-              <b-icon icon="arrow-return-right"></b-icon>
+              <b-icon-arrow-return-right></b-icon-arrow-return-right>
               Login
             </NuxtLink>
             <b-navbar-toggle
@@ -137,7 +137,7 @@
               class="btn btn-primary"
               @click="switchShow"
             >
-              <b-icon icon="layout-text-sidebar"></b-icon>
+              <b-icon-layout-text-sidebar></b-icon-layout-text-sidebar>
             </button>
           </client-only>
         </b-collapse>

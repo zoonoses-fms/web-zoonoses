@@ -9,7 +9,7 @@
             class="badge badge-pill badge-danger h-auto m-1 p-2"
           >
             <a class="inline-block" @click.prevent="onRemoveBadge(badge)">
-              <b-icon :icon="x - circle" />
+              <b-icon-x-circle></b-icon-x-circle>
             </a>
 
             <template v-if="sortingProperty && indexProperty">

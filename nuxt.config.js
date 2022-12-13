@@ -18,6 +18,11 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
+  // https://nuxtjs.org/docs/features/loading/
+  loading: {
+    color: '#e95e38',
+    height: '6px'
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['assets/scss/style.scss'],
@@ -98,9 +103,65 @@ export default {
 
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
-    icons: true,
     bootstrapCSS: false, // Or `css: false`
     bootstrapVueCSS: false,
+    icons: false,
+    components: [
+      'BNavbar',
+      'BNavbarBrand',
+      'BNavbarToggle',
+      'BNavbarNav',
+      'BNavItem',
+      'BCollapse',
+      'BPopover',
+      'BAvatar',
+      'BButton',
+      'BButtonGroup',
+      'BDropdownItem',
+      'BNavItemDropdown',
+      'BFormCheckbox',
+      'BFormRadioGroup',
+      'BFormSelect',
+      'BFormSelectOption',
+      'BInputGroup',
+      'BInputGroupAppend',
+      'BPagination',
+      'BOverlay',
+      'BTable',
+      'BCard',
+      'BCardHeader',
+      'BCardGroup',
+      'BModal',
+      'BIconMap',
+      'BIconPlus',
+      'BIconChevronRight',
+      'BIconHouse',
+      'BIconSignpostSplit',
+      'BIconPencil',
+      'BIconPeople',
+      'BIconSearch',
+      'BIconBookmark',
+      'BIconClipboardCheck',
+      'BIconPieChart',
+      'BIconArrowReturnRight',
+      'BIconLayoutTextSidebar',
+      'BIconBarChart',
+      'BIconTrash',
+      'BIconPrinter',
+      'BIconPersonBadgeFill',
+      'BIconCurrencyDollar',
+      'BIconXCircle',
+      'BIconCheckCircle',
+      'BIconExclamationCircle',
+      'BIconPinMap',
+    ],
+    directives: [
+      'VBModal',
+      'VBPopover',
+      'VBTooltip',
+      'VBScrollspy',
+      'VBToggle',
+    ],
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -145,6 +206,9 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/claygl/, /echarts/, /echarts-gl/, /zrender/],
+    babel: {
+      compact: true,
+    },
   },
 
   styleResources: {

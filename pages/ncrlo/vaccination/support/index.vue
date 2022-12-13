@@ -67,30 +67,29 @@
               {{ data.item.number }}
             </template>
             <template #cell(geometry)="data">
-              <b-icon
+              <b-icon-pin-map
                 v-show="data.item.geometry != null"
-                icon="pin-map"
-              ></b-icon>
+              ></b-icon-pin-map>
             </template>
             <template #cell(neighborhood)="data">
               {{ data.item.neighborhood }}
             </template>
             <template #cell(edit)="data">
-              <FormsVaccinationSupport
+              <LazyFormsVaccinationSupport
                 text-button="Editar"
                 variant="success"
                 :old-support="data.item"
                 @updateSupport="getRows"
-              ></FormsVaccinationSupport>
+              ></LazyFormsVaccinationSupport>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete
+              <LazyModalDelete
                 :item="data.item"
                 :url="url"
                 text-button="Remover"
                 @deletItem="getRows"
               >
-              </ModalDelete>
+              </LazyModalDelete>
             </template>
           </b-table>
         </b-card>

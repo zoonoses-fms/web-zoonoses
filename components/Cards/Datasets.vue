@@ -40,18 +40,16 @@
                   :to="`/${system}/map/${row.id}`"
                   class="btn btn-sm btn-secondary m-0"
                 >
-                  <b-icon icon="map" class="icon-menu w-4 h-4 stroke-current" />
+                  <b-icon-map class="icon-menu w-4 h-4 stroke-current" />
                 </NuxtLink>
                 <NuxtLink
                   :to="`/${system}/details/${row.id}`"
                   class="btn btn-sm btn-primary m-0"
                 >
-                  <b-icon
-                    icon="plus"
+                  <b-icon-plus
                     class="icon-menu w-4 h-4 stroke-current"
                   />
-                  <b-icon
-                    icon="chevron-right"
+                  <b-icon-chevron-right
                     class="icon-menu w-4 h-4 ml-2 stroke-current"
                   />
                 </NuxtLink>

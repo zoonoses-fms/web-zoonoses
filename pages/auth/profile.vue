@@ -1,6 +1,6 @@
 <template>
   <main class="form-signin">
-    <CardsUser :user="user"></CardsUser>
+    <LazyCardsUser :user="user"></LazyCardsUser>
   </main>
 </template>
 

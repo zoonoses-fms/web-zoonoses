@@ -26,11 +26,11 @@
         </div>
       </div>
       <div class="col-sm-12 col-md-2 col-xl-1">
-        <FormsTeam
+        <LazyFormsTeam
           text-button="Cadastar"
           variant="primary"
           @createTeam="getRows"
-        ></FormsTeam>
+        ></LazyFormsTeam>
       </div>
     </div>
     <div class="row justify-content-between">
@@ -55,16 +55,16 @@
               {{ data.item.number }}
             </template>
             <template #cell(edit)="data">
-              <FormsTeam
+              <LazyFormsTeam
                 text-button="Editar"
                 :old-team="data.item"
                 variant="primary"
                 @updateMember="getRows"
-              ></FormsTeam>
+              ></LazyFormsTeam>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete :item="data.item" url="user/" @deletItem="getRows">
-              </ModalDelete>
+              <LazyModalDelete :item="data.item" url="user/" @deletItem="getRows">
+              </LazyModalDelete>
             </template>
           </b-table>
         </b-card>

@@ -7,12 +7,12 @@
         </NuxtLink>
       </div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
-        <FormsAddPoint
+        <LazyFormsAddPoint
           text-button="Adicionar Posto"
           variant="primary"
           :current-support.sync="support"
           @addSupport="addPoint"
-        ></FormsAddPoint>
+        ></LazyFormsAddPoint>
       </div>
     </div>
     <div v-if="newCampaignPoints.length > 0">
@@ -69,18 +69,16 @@
           >
             <template #cell(pendency)="data">
               <div class="d-flex justify-content-center">
-                <b-icon
+                <b-icon-exclamation-circle
                   v-if="data.item.pendency"
-                  icon="exclamation-circle"
                   variant="danger"
                   font-scale="2"
-                ></b-icon>
-                <b-icon
+                ></b-icon-exclamation-circle>
+                <b-icon-check-circle
                   v-else
-                  icon="check-circle"
                   variant="success"
                   font-scale="2"
-                ></b-icon>
+                ></b-icon-check-circle>
               </div>
             </template>
             <template #cell(area)="data">
@@ -109,13 +107,13 @@
                 variant="warning"
                 @click="frequencyPdf(data.item)"
               >
-                <b-icon icon="person-badge-fill"></b-icon>
+                <b-icon-person-badge-fill></b-icon-person-badge-fill>
               </b-button>
             </template>
             <template #cell(edit)="data">
               <div class="d-flex">
                 <div class="mx-1">
-                  <FormsCampaignPoint
+                  <LazyFormsCampaignPoint
                     text-button=""
                     variant="success"
                     :title="data.item.point.name"
@@ -126,7 +124,7 @@
                   />
                 </div>
                 <div>
-                  <FormsCampaignPointPeople
+                  <LazyFormsCampaignPointPeople
                     text-button=""
                     variant="info"
                     :title="data.item.point.name"
@@ -139,13 +137,13 @@
               </div>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete
+              <LazyModalDelete
                 :item="data.item"
                 :url="urlCampaignPoint"
                 text-button=""
                 @deletItem="getDetailSupport"
               >
-              </ModalDelete>
+              </LazyModalDelete>
             </template>
           </b-table>
         </b-card>

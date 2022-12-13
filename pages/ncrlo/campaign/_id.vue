@@ -3,12 +3,12 @@
     <div class="row m-2 justify-content-between">
       <div class="col-sm-12 col-md-6 d-flex justify-content-star"></div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-end">
-        <FormsCampaignCycle
+        <LazyFormsCampaignCycle
           text-button="Cadastrar Etapa"
           variant="primary"
           :current-campaign.sync="campaign"
           @create="getDetailCampaign"
-        ></FormsCampaignCycle>
+        ></LazyFormsCampaignCycle>
       </div>
     </div>
     <div class="row justify-content-between">
@@ -54,7 +54,7 @@
                 :to="`/ncrlo/campaign/cycle/map/points/${data.item.id}`"
                 class="btn btn-success"
               >
-                <b-icon icon="map"></b-icon>
+                <b-icon-map></b-icon-map>
               </NuxtLink>
             </template>
             <template #cell(supports)="data">
@@ -62,7 +62,7 @@
                 :to="`/ncrlo/campaign/cycle/map/supports/${data.item.id}`"
                 class="btn btn-info"
               >
-                <b-icon icon="map"></b-icon>
+                <b-icon-map></b-icon-map>
               </NuxtLink>
             </template>
             <template #cell(report)="data">
@@ -71,7 +71,7 @@
                 variant="warning"
                 :to="`/ncrlo/campaign/cycle/report/${data.item.id}`"
               >
-                <b-icon icon="bar-chart"></b-icon>
+                <b-icon-bar-chart></b-icon-bar-chart>
               </b-button>
             </template>
             <template #cell(allocation)="data">
@@ -80,7 +80,7 @@
                 variant="warning"
                 @click="allocationPdf(data.item)"
               >
-                <b-icon icon="printer"></b-icon>
+                <b-icon-printer></b-icon-printer>
               </b-button>
             </template>
             <template #cell(frequency)="data">
@@ -89,23 +89,23 @@
                 variant="warning"
                 @click="frequencyPdf(data.item)"
               >
-                <b-icon icon="person-badge-fill"></b-icon>
+                <b-icon-person-badge-fill></b-icon-person-badge-fill>
               </b-button>
             </template>
             <template #cell(payroll)="data">
-              <ModalExportPayroll
+              <LazyModalExportPayroll
                 :item="data.item"
                 :url="`${urlCampaignCycle}payroll`"
-              ></ModalExportPayroll>
+              ></LazyModalExportPayroll>
             </template>
             <template #cell(edit)="data">
-              <FormsCampaignCycle
+              <LazyFormsCampaignCycle
                 text-button=""
                 variant="success"
                 :old-campaign-cycle="data.item"
                 :current-campaign.sync="campaign"
                 @update="getDetailCampaign"
-              ></FormsCampaignCycle>
+              ></LazyFormsCampaignCycle>
             </template>
             <template #cell(details)="data">
               <NuxtLink
@@ -116,13 +116,13 @@
               </NuxtLink>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete
+              <LazyModalDelete
                 :item="data.item"
                 :url="urlCampaignCycle"
                 text-button=""
                 @deletItem="getDetailCampaign"
               >
-              </ModalDelete>
+              </LazyModalDelete>
             </template>
           </b-table>
         </b-card>

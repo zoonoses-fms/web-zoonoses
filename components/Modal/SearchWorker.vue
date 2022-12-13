@@ -6,7 +6,7 @@
       @click="showForm"
     >
       <b-icon-search></b-icon-search>
-      <b-icon icon="people"></b-icon>
+      <b-icon-people></b-icon-people>
       Buscar Colaborador
     </b-button>
     <b-modal

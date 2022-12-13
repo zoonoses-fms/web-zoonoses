@@ -5,7 +5,7 @@
       class="mt-0"
       variant="danger"
     >
-      <b-icon icon="currency-dollar">$</b-icon>
+      <b-icon-currency-dollar>$</b-icon-currency-dollar>
     </b-button>
 
     <b-modal

@@ -1,14 +1,14 @@
 <template>
   <div class="map-points col-12">
     <client-only placeholder="Loading...">
-      <OlMapViewLegendPoints
+      <LazyOlMapViewLegendPoints
         height="80"
         :map-features.sync="supports"
         :zoom-out="14"
         color-radar="#198754"
         color-default="#28a745"
       >
-      </OlMapViewLegendPoints>
+      </LazyOlMapViewLegendPoints>
     </client-only>
   </div>
 </template>
@@ -44,6 +44,7 @@ export default {
       });
 
       const cycle = response.data;
+      console.log(cycle);
       const supports = [];
       for (const itemSupport of cycle.supports) {
         if (itemSupport.support.geometry != null) {
@@ -59,6 +60,7 @@ export default {
           }
         }
       }
+
       this.supports = [...supports];
     },
   },

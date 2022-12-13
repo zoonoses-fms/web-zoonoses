@@ -8,7 +8,7 @@
             {{ cycle.start }} {{ cycle.end != null ? ' - ' + cycle.end : '' }}
           </h6>
           <b-button class="mt-0" variant="warning" @click="reportPdf(cycle)">
-            <b-icon icon="printer"></b-icon>
+            <b-icon-printer></b-icon-printer>
           </b-button>
         </template>
       </b-card>

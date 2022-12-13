@@ -1,7 +1,7 @@
 <template>
   <div style="width: max-content; display: inline-block" class="m-0 p-0">
     <b-button block :variant="variant" @click="showForm">
-      <b-icon :icon="iconButton" />
+      <b-icon-plus />
     </b-button>
     <b-overlay :show="show" rounded="sm">
       <div class="container">

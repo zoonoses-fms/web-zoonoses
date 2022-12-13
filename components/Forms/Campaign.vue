@@ -6,7 +6,7 @@
       @click="setCampaign"
     >
       {{ textButton }}
-      <b-icon icon="pencil"></b-icon>
+      <b-icon-pencil></b-icon-pencil>
     </b-button>
     <ValidationObserver v-slot="{ valid }">
       <form @submit.prevent="handleOk">

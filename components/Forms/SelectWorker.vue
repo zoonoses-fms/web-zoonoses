@@ -34,7 +34,7 @@
         @create="setWorker"
       >
         <template #button>
-          <b-icon icon="person-plus" />
+          <b-icon-pencil />
         </template>
       </FormsVaccinationWorker>
     </div>

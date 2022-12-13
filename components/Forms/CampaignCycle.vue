@@ -6,7 +6,7 @@
       :variant="variant"
       @click="setCampaign"
     >
-      <b-icon icon="pencil"></b-icon>
+      <b-icon-pencil></b-icon-pencil>
       {{ textButton }}
     </b-button>
     <ValidationObserver v-slot="{ valid }">

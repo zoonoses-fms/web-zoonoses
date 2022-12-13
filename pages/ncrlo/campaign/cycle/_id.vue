@@ -70,18 +70,16 @@
           >
             <template #cell(pendency)="data">
               <div class="d-flex justify-content-center">
-                <b-icon
+                <b-icon-exclamation-circle
                   v-if="data.item.pendency"
-                  icon="exclamation-circle"
                   variant="danger"
                   font-scale="2"
-                ></b-icon>
-                <b-icon
+                ></b-icon-exclamation-circle>
+                <b-icon-check-circle
                   v-else
-                  icon="check-circle"
                   variant="success"
                   font-scale="2"
-                ></b-icon>
+                ></b-icon-check-circle>
               </div>
             </template>
             <template #cell(name)="data">
@@ -115,17 +113,17 @@
                 variant="warning"
                 @click="frequencyPdf(data.item)"
               >
-                <b-icon icon="person-badge-fill"></b-icon>
+                <b-icon-person-badge-fill></b-icon-person-badge-fill>
               </b-button>
             </template>
             <template #cell(edit)="data">
-              <FormsCampaignSupport
+              <LazyFormsCampaignSupport
                 text-button=""
                 variant="success"
                 :old-support="data.item"
                 :title="data.item.support ? data.item.support.name : ''"
                 @update="getDetailCycle"
-              ></FormsCampaignSupport>
+              ></LazyFormsCampaignSupport>
             </template>
             <template #cell(details)="data">
               <NuxtLink
@@ -136,13 +134,13 @@
               </NuxtLink>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete
+              <LazyModalDelete
                 :item="data.item"
                 :url="urlCampaignSupport"
                 text-button=""
                 @deletItem="getDetailCycle"
               >
-              </ModalDelete>
+              </LazyModalDelete>
             </template>
           </b-table>
         </b-card>

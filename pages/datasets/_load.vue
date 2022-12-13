@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <InputUploadFile
+      <LazyInputUploadFile
         resource="dataset"
         :source="source"
         :system="system"
@@ -39,7 +39,7 @@
                 ></v-swatches>
               </template>
               <template #cell(updated_at)="data">
-                {{ data.item.updated_at }}
+                {{ data.item.updated_at | formatDateTime }}
               </template>
             </b-table>
           </b-card>
@@ -63,7 +63,7 @@
             </div>
           </div>
         </template>
-      </InputUploadFile>
+      </LazyInputUploadFile>
     </div>
   </div>
 </template>

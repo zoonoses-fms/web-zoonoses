@@ -2,7 +2,7 @@
   <div class="card text-center shadow-2xl m-2">
     <div class="row">
       <div class="col-lg-4 col-md-6 col-sm-12 card-dashboard">
-        <CardsDatasets
+        <LazyCardsDatasets
           ref="cardDatasets"
           :title.sync="locationName"
           :url.sync="url"
@@ -10,41 +10,41 @@
           system="dengeon"
           :params.sync="paramsDatasets"
           @checked="changeDatasets"
-        ></CardsDatasets>
+        ></LazyCardsDatasets>
       </div>
       <div class="col-lg-4 col-md-6 col-sm-12 card-dashboard">
         <client-only>
-          <BarChartDataset
+          <LazyBarChartDataset
             title="Total de Notificações: "
             :datasets.sync="checkedDatasets"
             :location-name.sync="locationName"
-          ></BarChartDataset>
+          ></LazyBarChartDataset>
         </client-only>
       </div>
       <div class="col-lg-4 col-md-6 col-sm-12 card-dashboard">
         <client-only>
-          <BarChartGrouped
+          <LazyBarChartGrouped
             ref="serieByGrouped"
             title="Nascimentos por sexo: "
             :datasets.sync="checkedDatasets"
             :location-name.sync="locationName"
             :params.sync="paramsSerieBySexo"
             :url.sync="urlSerieRange"
-          ></BarChartGrouped>
+          ></LazyBarChartGrouped>
         </client-only>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
         <client-only>
-          <LineChart
+          <LazyLineChart
             ref="serieByMonth"
             title="Notificação por mês: "
             :datasets.sync="checkedDatasets"
             :location-name.sync="locationName"
             :params.sync="paramsSerieByMonth"
             :url.sync="urlSerie"
-          ></LineChart>
+          ></LazyLineChart>
         </client-only>
       </div>
     </div>

@@ -5,7 +5,7 @@
       :variant="variant"
       @click="showForm"
     >
-      <b-icon icon="people"></b-icon>
+      <b-icon-people></b-icon-people>
       {{ textButton }}
     </b-button>
     <ValidationObserver v-slot="{ invalid }">

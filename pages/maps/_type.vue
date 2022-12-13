@@ -3,7 +3,7 @@
     <article class="cell cell-map">
       <b-overlay :show="showOverlay" rounded="sm">
         <client-only>
-          <OlMap
+          <LazyOlMap
             :map-features="mapFeatures"
             :zoom-out="zoomOut"
             :editable.sync="editable"
@@ -15,7 +15,7 @@
             @add="setAddFearures"
             @delete="setDeleteFearures"
             @deleteAddFeature="setDeleteFearures"
-          ></OlMap>
+          ></LazyOlMap>
         </client-only>
       </b-overlay>
     </article>
@@ -174,14 +174,14 @@
         >
           <summary>
             <span class="ml-1">{{ feature.properties.name }}</span>
-            <b-icon icon="pencil" class="ml-1"></b-icon>
+            <b-icon-pencil class="ml-1"></b-icon-pencil>
             <b-button
               size="sm"
               variant="danger"
               class="ml-1 p-0"
               @click="deleteItemModify(index)"
             >
-              <b-icon icon="x-circle" class="m-1"></b-icon>
+              <b-icon-x-circle class="m-1"></b-icon-x-circle>
             </b-button>
             Editado
           </summary>
@@ -223,14 +223,14 @@
         >
           <summary>
             <span class="ml-1">{{ feature.properties.name }}</span>
-            <b-icon icon="pencil" class="ml-1"></b-icon>
+            <b-icon-pencil class="ml-1"></b-icon-pencil>
             <b-button
               size="sm"
               variant="success"
               class="ml-1 p-0"
               @click="deleteItemAdd(index)"
             >
-              <b-icon icon="x-circle" class="m-1"></b-icon>
+              <b-icon-x-circle class="m-1"></b-icon-x-circle>
             </b-button>
             Novo
           </summary>
@@ -272,14 +272,14 @@
         >
           <summary>
             <span class="ml-1">{{ feature.properties.name }}</span>
-            <b-icon icon="pencil" class="ml-1"></b-icon>
+            <b-icon-pencil class="ml-1"></b-icon-pencil>
             <b-button
               size="sm"
               variant="warning"
               class="ml-1 p-0"
               @click="deleteItemDeletend(index)"
             >
-              <b-icon icon="x-circle" class="m-1"></b-icon>
+              <b-icon-x-circle class="m-1"></b-icon-x-circle>
             </b-button>
             Deletado
           </summary>

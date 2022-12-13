@@ -34,11 +34,11 @@
         </div>
       </div>
       <div class="col-sm-12 col-md-4 col-lg-3 d-flex justify-content-end">
-        <FormsVaccinationPoint
+        <LazyFormsVaccinationPoint
           text-button="Cadastrar Posto"
           variant="success"
           @updateSupport="getRows"
-        ></FormsVaccinationPoint>
+        ></LazyFormsVaccinationPoint>
       </div>
     </div>
     <div class="row justify-content-between">
@@ -67,30 +67,29 @@
               {{ data.item.number }}
             </template>
             <template #cell(geometry)="data">
-              <b-icon
+              <b-icon-pin-map
                 v-show="data.item.geometry != null"
-                icon="pin-map"
-              ></b-icon>
+              ></b-icon-pin-map>
             </template>
             <template #cell(neighborhood)="data">
               {{ data.item.neighborhood }}
             </template>
             <template #cell(edit)="data">
-              <FormsVaccinationPoint
+              <LazyFormsVaccinationPoint
                 text-button=""
                 variant="success"
                 :old-point="data.item"
                 @updateSupport="getRows"
-              ></FormsVaccinationPoint>
+              ></LazyFormsVaccinationPoint>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete
+              <LazyModalDelete
                 :item="data.item"
                 :url="url"
                 text-button=""
                 @deletItem="getRows"
               >
-              </ModalDelete>
+              </LazyModalDelete>
             </template>
           </b-table>
         </b-card>

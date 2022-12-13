@@ -53,7 +53,7 @@
         </b-card-text>
         <b-card-text>
           <button class="btn btn-outline-dark" @click="removeFile(item)">
-            <b-icon icon="x-circle"></b-icon>
+            <b-icon-x-circle></b-icon-x-circle>
           </button>
         </b-card-text>
       </b-card>

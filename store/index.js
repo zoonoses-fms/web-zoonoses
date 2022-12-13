@@ -22,7 +22,6 @@ export const actions = {
           // server return the data is cookie valid loggedIn is true
           auth = data; // set the data auth
           this.$auth.setUser(auth);
-          console.log(data);
         } catch (err) {
           console.error(err.data);
         }

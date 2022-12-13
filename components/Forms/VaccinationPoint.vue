@@ -2,7 +2,7 @@
   <div>
     <b-button v-b-modal="`modal-xl-${id}`" :variant="variant" @click="showForm">
       {{ textButton }}
-      <b-icon icon="pencil"></b-icon>
+      <b-icon-pencil></b-icon-pencil>
     </b-button>
     <ValidationObserver v-slot="{ invalid }">
       <b-modal

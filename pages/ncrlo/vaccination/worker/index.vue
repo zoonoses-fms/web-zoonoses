@@ -34,12 +34,12 @@
         </div>
       </div>
       <div class="col-sm-12 col-md-4 col-lg-3 d-flex justify-content-end">
-        <FormsVaccinationWorker
+        <LazyFormsVaccinationWorker
           text-button="Cadastrar Equipe"
           variant="success"
           :url="url"
           @create="getRows"
-        ></FormsVaccinationWorker>
+        ></LazyFormsVaccinationWorker>
       </div>
     </div>
     <div class="row justify-content-between">
@@ -77,22 +77,22 @@
               {{ data.item.neighborhood }}
             </template>
             <template #cell(edit)="data">
-              <FormsVaccinationWorker
+              <LazyFormsVaccinationWorker
                 text-button="Editar"
                 variant="success"
                 :old-worker="data.item"
                 :url="url"
                 @update="getRows"
-              ></FormsVaccinationWorker>
+              ></LazyFormsVaccinationWorker>
             </template>
             <template #cell(delete)="data">
-              <ModalDelete
+              <LazyModalDelete
                 :item="data.item"
                 :url="url"
                 text-button="Remover"
                 @deletItem="getRows"
               >
-              </ModalDelete>
+              </LazyModalDelete>
             </template>
           </b-table>
         </b-card>

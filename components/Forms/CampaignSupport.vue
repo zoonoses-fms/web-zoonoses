@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-button v-b-modal="`modal-xl-${id}`" :variant="variant" @click="showForm">
-      <b-icon icon="pencil"></b-icon>
+      <b-icon-pencil></b-icon-pencil>
       {{ textButton }}
     </b-button>
     <ValidationObserver v-slot="{ invalid }">

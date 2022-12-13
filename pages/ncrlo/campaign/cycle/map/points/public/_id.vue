@@ -1,14 +1,14 @@
 <template>
   <div class="map-points col-12">
     <client-only placeholder="Loading...">
-      <OlMapViewPublic
+      <LazyOlMapViewPublic
         height="90"
         :map-features.sync="supports"
         :zoom-out="2"
         color-radar="#198754"
         color-default="#28a745"
       >
-      </OlMapViewPublic>
+      </LazyOlMapViewPublic>
     </client-only>
   </div>
 </template>
