@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-around">
-    <div class="card-deck mb-3 text-center">
+    <div class="card-deck m-3 text-center">
       <div class="card mb-4 shadow-sm">
         <div class="card-header">
           <h4 class="my-0 font-weight-normal">NCRLOZ</h4>

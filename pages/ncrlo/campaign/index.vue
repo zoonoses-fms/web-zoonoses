@@ -32,6 +32,15 @@
             <template #cell(email)="data">
               {{ data.item.start }}
             </template>
+            <template #cell(report)="data">
+              <b-button
+                class="mt-0"
+                variant="warning"
+                :to="`/ncrlo/campaign/report/${data.item.id}`"
+              >
+                <b-icon icon="bar-chart"></b-icon>
+              </b-button>
+            </template>
             <template #cell(details)="data">
               <NuxtLink
                 :to="`/ncrlo/campaign/${data.item.id}`"
@@ -85,6 +94,10 @@ export default {
           key: 'start',
           label: 'Início',
           sortable: true,
+        },
+        {
+          key: 'report',
+          label: 'Relat.',
         },
         {
           key: 'details',

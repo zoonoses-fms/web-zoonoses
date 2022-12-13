@@ -33,8 +33,51 @@
           :fields="consolidatedFields"
           :items="[cycle]"
           bordered
+          class="table"
         >
           <template #thead-top> </template>
+          <template #cell(male_dogs)="data">
+            {{ data.item.male_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_male_dogs)="data">
+            {{ calcPercentage(data.item.male_dogs, data.item.total_of_dogs) }}
+          </template>
+          <template #cell(female_dogs)="data">
+            {{ data.item.female_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_female_dogs)="data">
+            {{ calcPercentage(data.item.female_dogs, data.item.total_of_dogs) }}
+          </template>
+          <template #cell(total_of_dogs)="data">
+            {{ data.item.total_of_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_total_of_dogs)="data">
+            {{ calcPercentage(data.item.total_of_dogs, data.item.total) }}
+          </template>
+          <template #cell(male_cat)="data">
+            {{ data.item.male_cat.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_male_cat)="data">
+            {{ calcPercentage(data.item.male_cat, data.item.total_of_cats) }}
+          </template>
+          <template #cell(female_cat)="data">
+            {{ data.item.female_cat.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_female_cat)="data">
+            {{ calcPercentage(data.item.female_cat, data.item.total_of_cats) }}
+          </template>
+          <template #cell(total_of_cats)="data">
+            {{ data.item.total_of_cats.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_total_of_cats)="data">
+            {{ calcPercentage(data.item.total_of_cats, data.item.total) }}
+          </template>
+          <template #cell(total)="data">
+            {{ data.item.total.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(goal)="data">
+            {{ data.item.goal.toLocaleString('pt-BR') }}
+          </template>
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
@@ -48,8 +91,51 @@
           :fields="saadFields"
           :items="Object.keys(cycle.saads).map((key) => cycle.saads[key])"
           bordered
+          class="table"
         >
           <template #thead-top> </template>
+          <template #cell(male_dogs)="data">
+            {{ data.item.male_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_male_dogs)="data">
+            {{ calcPercentage(data.item.male_dogs, data.item.total_of_dogs) }}
+          </template>
+          <template #cell(female_dogs)="data">
+            {{ data.item.female_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_female_dogs)="data">
+            {{ calcPercentage(data.item.female_dogs, data.item.total_of_dogs) }}
+          </template>
+          <template #cell(total_of_dogs)="data">
+            {{ data.item.total_of_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_total_of_dogs)="data">
+            {{ calcPercentage(data.item.total_of_dogs, data.item.total) }}
+          </template>
+          <template #cell(male_cat)="data">
+            {{ data.item.male_cat.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_male_cat)="data">
+            {{ calcPercentage(data.item.male_cat, data.item.total_of_cats) }}
+          </template>
+          <template #cell(female_cat)="data">
+            {{ data.item.female_cat.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_female_cat)="data">
+            {{ calcPercentage(data.item.female_cat, data.item.total_of_cats) }}
+          </template>
+          <template #cell(total_of_cats)="data">
+            {{ data.item.total_of_cats.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_total_of_cats)="data">
+            {{ calcPercentage(data.item.total_of_cats, data.item.total) }}
+          </template>
+          <template #cell(total)="data">
+            {{ data.item.total.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(goal)="data">
+            {{ data.item.goal.toLocaleString('pt-BR') }}
+          </template>
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
@@ -63,7 +149,9 @@
     >
       <b-card class="col-12">
         <template #header>
-          <h5 class="mb-0">{{ support.support.name }} - {{ support.saads[0].name}}</h5>
+          <h5 class="mb-0">
+            {{ support.support.name }} - {{ support.saads[0].name }}
+          </h5>
         </template>
 
         <b-table
@@ -75,8 +163,51 @@
           :fields="consolidatedFields"
           :items="[support]"
           bordered
+          class="table"
         >
           <template #thead-top> </template>
+          <template #cell(male_dogs)="data">
+            {{ data.item.male_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_male_dogs)="data">
+            {{ calcPercentage(data.item.male_dogs, data.item.total_of_dogs) }}
+          </template>
+          <template #cell(female_dogs)="data">
+            {{ data.item.female_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_female_dogs)="data">
+            {{ calcPercentage(data.item.female_dogs, data.item.total_of_dogs) }}
+          </template>
+          <template #cell(total_of_dogs)="data">
+            {{ data.item.total_of_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_total_of_dogs)="data">
+            {{ calcPercentage(data.item.total_of_dogs, data.item.total) }}
+          </template>
+          <template #cell(male_cat)="data">
+            {{ data.item.male_cat.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_male_cat)="data">
+            {{ calcPercentage(data.item.male_cat, data.item.total_of_cats) }}
+          </template>
+          <template #cell(female_cat)="data">
+            {{ data.item.female_cat.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_female_cat)="data">
+            {{ calcPercentage(data.item.female_cat, data.item.total_of_cats) }}
+          </template>
+          <template #cell(total_of_cats)="data">
+            {{ data.item.total_of_cats.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_total_of_cats)="data">
+            {{ calcPercentage(data.item.total_of_cats, data.item.total) }}
+          </template>
+          <template #cell(total)="data">
+            {{ data.item.total.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(goal)="data">
+            {{ data.item.goal.toLocaleString('pt-BR') }}
+          </template>
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
@@ -91,8 +222,51 @@
           :fields="fields"
           :items="support.points"
           bordered
+          class="table"
         >
           <template #thead-top> </template>
+          <template #cell(male_dogs)="data">
+            {{ data.item.male_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_male_dogs)="data">
+            {{ calcPercentage(data.item.male_dogs, data.item.total_of_dogs) }}
+          </template>
+          <template #cell(female_dogs)="data">
+            {{ data.item.female_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_female_dogs)="data">
+            {{ calcPercentage(data.item.female_dogs, data.item.total_of_dogs) }}
+          </template>
+          <template #cell(total_of_dogs)="data">
+            {{ data.item.total_of_dogs.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_total_of_dogs)="data">
+            {{ calcPercentage(data.item.total_of_dogs, data.item.total) }}
+          </template>
+          <template #cell(male_cat)="data">
+            {{ data.item.male_cat.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_male_cat)="data">
+            {{ calcPercentage(data.item.male_cat, data.item.total_of_cats) }}
+          </template>
+          <template #cell(female_cat)="data">
+            {{ data.item.female_cat.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_female_cat)="data">
+            {{ calcPercentage(data.item.female_cat, data.item.total_of_cats) }}
+          </template>
+          <template #cell(total_of_cats)="data">
+            {{ data.item.total_of_cats.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(percentage_total_of_cats)="data">
+            {{ calcPercentage(data.item.total_of_cats, data.item.total) }}
+          </template>
+          <template #cell(total)="data">
+            {{ data.item.total.toLocaleString('pt-BR') }}
+          </template>
+          <template #cell(goal)="data">
+            {{ data.item.goal.toLocaleString('pt-BR') }}
+          </template>
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
@@ -111,38 +285,80 @@ export default {
       cycle: null,
       fields: [
         { key: 'point.name', label: 'Nome', sortable: true },
-        { key: 'male_dogs', label: 'Cães', sortable: true },
-        { key: 'female_dogs', label: 'Cadelas', sortable: true },
-        { key: 'total_of_dogs', label: 'Total Cães', sortable: true },
-        { key: 'male_cat', label: 'Gatos', sortable: true },
-        { key: 'female_cat', label: 'Gatas', sortable: true },
-        { key: 'total_of_cats', label: 'Total Gatos', sortable: true },
-        { key: 'total', label: 'Total', sortable: true },
-        { key: 'goal', label: 'Meta', sortable: true },
-        { key: 'calcGoal', label: 'Cobertura', sortable: true },
+        { key: 'male_dogs', label: 'Cães', sortable: false },
+        { key: 'percentage_male_dogs', label: '% Cães', sortable: false },
+        { key: 'female_dogs', label: 'Cadelas', sortable: false },
+        { key: 'percentage_female_dogs', label: '% Cadelas', sortable: false },
+        { key: 'total_of_dogs', label: 'Total Cães', sortable: false },
+        {
+          key: 'percentage_total_of_dogs',
+          label: '% Total Cães',
+          sortable: false,
+        },
+        { key: 'male_cat', label: 'Gatos', sortable: false },
+        { key: 'percentage_male_cat', label: '% Gatos', sortable: false },
+        { key: 'female_cat', label: 'Gatas', sortable: false },
+        { key: 'percentage_female_cat', label: '% Gatas', sortable: false },
+        { key: 'total_of_cats', label: 'Total Gatos', sortable: false },
+        {
+          key: 'percentage_total_of_cats',
+          label: '% Total Gatos',
+          sortable: false,
+        },
+        { key: 'total', label: 'Total', sortable: false },
+        { key: 'goal', label: 'Meta', sortable: false },
+        { key: 'calcGoal', label: 'Cobertura', sortable: false },
       ],
       saadFields: [
         { key: 'name', label: 'Nome', sortable: true },
-        { key: 'male_dogs', label: 'Cães', sortable: true },
-        { key: 'female_dogs', label: 'Cadelas', sortable: true },
-        { key: 'total_of_dogs', label: 'Total Cães', sortable: true },
-        { key: 'male_cat', label: 'Gatos', sortable: true },
-        { key: 'female_cat', label: 'Gatas', sortable: true },
-        { key: 'total_of_cats', label: 'Total Gatos', sortable: true },
-        { key: 'total', label: 'Total', sortable: true },
-        { key: 'goal', label: 'Meta', sortable: true },
-        { key: 'calcGoal', label: 'Cobertura', sortable: true },
+        { key: 'male_dogs', label: 'Cães', sortable: false },
+        { key: 'percentage_male_dogs', label: '% Cães', sortable: false },
+        { key: 'female_dogs', label: 'Cadelas', sortable: false },
+        { key: 'percentage_female_dogs', label: '% Cadelas', sortable: false },
+        { key: 'total_of_dogs', label: 'Total Cães', sortable: false },
+        {
+          key: 'percentage_total_of_dogs',
+          label: '% Total Cães',
+          sortable: false,
+        },
+        { key: 'male_cat', label: 'Gatos', sortable: false },
+        { key: 'percentage_male_cat', label: '% Gatos', sortable: false },
+        { key: 'female_cat', label: 'Gatas', sortable: false },
+        { key: 'percentage_female_cat', label: '% Gatas', sortable: false },
+        { key: 'total_of_cats', label: 'Total Gatos', sortable: false },
+        {
+          key: 'percentage_total_of_cats',
+          label: '% Total Gatos',
+          sortable: false,
+        },
+        { key: 'total', label: 'Total', sortable: false },
+        { key: 'goal', label: 'Meta', sortable: false },
+        { key: 'calcGoal', label: 'Cobertura', sortable: false },
       ],
       consolidatedFields: [
-        { key: 'male_dogs', label: 'Cães', sortable: true },
-        { key: 'female_dogs', label: 'Cadelas', sortable: true },
-        { key: 'total_of_dogs', label: 'Total Cães', sortable: true },
-        { key: 'male_cat', label: 'Gatos', sortable: true },
-        { key: 'female_cat', label: 'Gatas', sortable: true },
-        { key: 'total_of_cats', label: 'Total Gatos', sortable: true },
-        { key: 'total', label: 'Total', sortable: true },
-        { key: 'goal', label: 'Meta', sortable: true },
-        { key: 'calcGoal', label: 'Cobertura', sortable: true },
+        { key: 'male_dogs', label: 'Cães', sortable: false },
+        { key: 'percentage_male_dogs', label: '% Cães', sortable: false },
+        { key: 'female_dogs', label: 'Cadelas', sortable: false },
+        { key: 'percentage_female_dogs', label: '% Cadelas', sortable: false },
+        { key: 'total_of_dogs', label: 'Total Cães', sortable: false },
+        {
+          key: 'percentage_total_of_dogs',
+          label: '% Total Cães',
+          sortable: false,
+        },
+        { key: 'male_cat', label: 'Gatos', sortable: false },
+        { key: 'percentage_male_cat', label: '% Gatos', sortable: false },
+        { key: 'female_cat', label: 'Gatas', sortable: false },
+        { key: 'percentage_female_cat', label: '% Gatas', sortable: false },
+        { key: 'total_of_cats', label: 'Total Gatos', sortable: false },
+        {
+          key: 'percentage_total_of_cats',
+          label: '% Total Gatos',
+          sortable: false,
+        },
+        { key: 'total', label: 'Total', sortable: false },
+        { key: 'goal', label: 'Meta', sortable: false },
+        { key: 'calcGoal', label: 'Cobertura', sortable: false },
       ],
     };
   },
@@ -157,9 +373,10 @@ export default {
 
       this.cycle = response.data;
 
-      const saads = Object.keys(this.cycle.saads).map((key) => this.cycle.saads[key]);
+      const saads = Object.keys(this.cycle.saads).map(
+        (key) => this.cycle.saads[key]
+      );
       console.log(saads);
-
     },
     async reportPdf(support) {
       try {
@@ -195,6 +412,20 @@ export default {
         return '0%';
       }
     },
+    calcPercentage(part, total) {
+      const one = total / 100;
+      const percentage = part / one;
+
+      return `${percentage.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}%`;
+    },
   },
 };
 </script>
+<style scoped>
+.table {
+  font-size: 12px;
+}
+</style>
