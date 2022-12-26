@@ -18,7 +18,7 @@
     <div v-if="newCampaignPoints.length > 0">
       <div class="row justify-content-between">
         <div class="col-12">
-          <b-card class="text-center">
+          <BCard class="text-center">
             <template #header>
               <div class="row m-0">
                 <div class="col-sm-12 col-md-6 d-flex justify-content-start">
@@ -31,7 +31,7 @@
                 </div>
               </div>
             </template>
-            <b-table
+            <BTable
               id="table-campaign-new-points"
               striped
               responsive
@@ -49,15 +49,15 @@
               <template #cell(number)="data">
                 {{ data.item.number }}
               </template>
-            </b-table>
-          </b-card>
+            </BTable>
+          </BCard>
         </div>
       </div>
     </div>
     <div class="row justify-content-between">
       <div class="col-12">
-        <b-card>
-          <b-table
+        <BCard>
+          <BTable
             id="table-campaign-points"
             striped
             responsive
@@ -120,18 +120,20 @@
                     :old-point="data.item"
                     :supervisors="support.supervisors"
                     :campaign-cycle-id="support.campaign_cycle_id"
-                    @update="getDetailSupport"
+                    @input="feedback"
                   />
                 </div>
                 <div>
                   <LazyFormsCampaignPointPeople
                     text-button=""
                     variant="info"
+                    :cycle="support.cycle"
+                    :support="support"
                     :title="data.item.point.name"
                     :old-point="data.item"
                     :supervisors="support.supervisors"
                     :campaign-cycle-id="support.campaign_cycle_id"
-                    @update="getDetailSupport"
+                    @input="feedback"
                   />
                 </div>
               </div>
@@ -145,18 +147,23 @@
               >
               </LazyModalDelete>
             </template>
-          </b-table>
-        </b-card>
+          </BTable>
+        </BCard>
       </div>
     </div>
   </main>
 </template>
 
 <script>
+import toast from '@/mixins/toast';
 export default {
   name: 'SupportDetailsPage',
+  mixins: [toast],
   data() {
     return {
+      cycle: {
+        start: null,
+      },
       support: {},
       points: [],
       newCampaignPoints: [],
@@ -219,6 +226,10 @@ export default {
     welcomeMessage() {
       this.$store.commit('layout/CHANGE_NAV_TITLE', 'Postos');
     },
+    feedback(params) {
+      this.toast(params);
+      this.getDetailSupport();
+    },
     async getDetailSupport() {
       this.points = [];
 
@@ -229,10 +240,6 @@ export default {
 
       this.support.points.forEach((point) => {
         point.pendency = false;
-        if (point.supervisor_id === null || point.vaccinators.length === 0) {
-          point._rowVariant = 'danger';
-          point.pendency = true;
-        }
         this.points.push(point);
       });
     },
@@ -246,25 +253,11 @@ export default {
         try {
           await this.$axios.post(`${this.urlCampaignPoint}`, {
             ...element,
-            campaing_support_id: this.$route.params.id,
+           campaign_support_id: this.$route.params.id,
           });
-          this.$bvToast.toast('Cadastro efetuado!', {
-            title: 'Sucesso',
-            autoHideDelay: 5000,
-            variant: 'success',
-            solid: true,
-          });
+          this.toast({ status: 'success' });
         } catch (errors) {
-          for (const prop in errors.response.data) {
-            errors.response.data[prop].forEach((element) => {
-              this.$bvToast.toast(element, {
-                title: 'Error',
-                autoHideDelay: 5000,
-                variant: 'danger',
-                solid: true,
-              });
-            });
-          }
+          this.$emit('input', { status: 'errors', errors });
         }
 
         counter++;
@@ -291,8 +284,6 @@ export default {
         link.target = '_blank';
         link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
         link.click();
-        // window.open(url);
-        // console.log(response);
       } catch (error) {
         const message =
           (error.response && error.response.data) ||

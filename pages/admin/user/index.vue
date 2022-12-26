@@ -35,8 +35,8 @@
     </div>
     <div class="row justify-content-between">
       <div class="col-12">
-        <b-card class="text-center">
-          <b-table
+        <BCard class="text-center">
+          <BTable
             id="table-users"
             striped
             responsive
@@ -66,8 +66,8 @@
               <LazyModalDelete :item="data.item" url="user/" @deletItem="getRows">
               </LazyModalDelete>
             </template>
-          </b-table>
-        </b-card>
+          </BTable>
+        </BCard>
       </div>
     </div>
   </main>

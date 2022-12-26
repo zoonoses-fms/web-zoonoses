@@ -39,8 +39,26 @@
 </template>
 
 <script>
+import 'ol/ol.css';
 import Vue from 'vue';
 import hexToRgba from 'hex-to-rgba';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import GeomPoint from 'ol/geom/Point';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import Style from 'ol/style/Style';
+import Text from 'ol/style/Text';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Icon from 'ol/style/Icon';
+import GeoJSON from 'ol/format/GeoJSON';
+import OSM from 'ol/source/OSM';
+import Feature from 'ol/Feature';
+import Overlay from 'ol/Overlay';
+import { Select } from 'ol/interaction';
+import { getCenter } from 'ol/extent';
 
 export default {
   name: 'OlMapViewLegendPoints',
@@ -86,7 +104,7 @@ export default {
   },
   data() {
     return {
-      mePoint: new Vue.ol.geom.Point([-4765711.89, -567780.5]),
+      mePoint: new GeomPoint([-4765711.89, -567780.5]),
       coordsOrigin: [0, 0],
       vector: null,
       source: null,
@@ -110,27 +128,27 @@ export default {
             name: '',
           },
         },
-        coordsDestination: new Vue.ol.geom.Point([0, 0]),
+        coordsDestination: new GeomPoint([0, 0]),
       },
-      styleDefault: new Vue.ol.style.Style({
-        fill: new Vue.ol.style.Fill({
+      styleDefault: new Style({
+        fill: new Fill({
           color: hexToRgba(this.colorDefault, 0.2),
         }),
-        stroke: new Vue.ol.style.Stroke({
+        stroke: new Stroke({
           color: hexToRgba(this.colorDefault, 0.9),
           width: 2,
         }),
-        text: new Vue.ol.style.Text({
+        text: new Text({
           font: '12px Calibri,sans-serif',
-          fill: new Vue.ol.style.Fill({
+          fill: new Fill({
             color: '#000',
           }),
-          stroke: new Vue.ol.style.Stroke({
+          stroke: new Stroke({
             color: '#fff',
             width: 4,
           }),
         }),
-        image: new Vue.ol.style.Icon({
+        image: new Icon({
           src: require('@/assets/img/marker/pets-5.png'),
           anchor: [0.5, 64],
           anchorXUnits: 'fraction',
@@ -183,7 +201,7 @@ export default {
         };
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            this.mePoint = new Vue.ol.geom.Point([
+            this.mePoint = new GeomPoint([
               pos.coords.longitude,
               pos.coords.latitude,
             ]);
@@ -198,12 +216,6 @@ export default {
         console.log('Geolocation is not supported');
       }
 
-      const Map = Vue.ol.Map;
-      const View = Vue.ol.View;
-      const TileLayer = Vue.ol.layer.Tile;
-      const VectorLayer = Vue.ol.layer.Vector;
-      const VectorSource = Vue.ol.source.Vector;
-      const OSM = Vue.ol.source.OSM;
       const style = this.styleDefault;
 
       this.source = new VectorSource({
@@ -279,7 +291,7 @@ export default {
         features: mapFeatures,
       };
 
-      this.features = new Vue.ol.format.GeoJSON().readFeatures(geoJsonfeatures);
+      this.features = new GeoJSON().readFeatures(geoJsonfeatures);
 
       for (const feature of this.features) {
         if (
@@ -287,7 +299,7 @@ export default {
           feature.getProperties().points.length > 0
         ) {
           for (const point of feature.getProperties().points) {
-            const featurePoint = new Vue.ol.format.GeoJSON().readFeature(point);
+            const featurePoint = new GeoJSON().readFeature(point);
             featurePoint.getGeometry().transform('EPSG:4326', 'EPSG:3857');
             featurePoint.setStyle(feature.getStyle());
 
@@ -301,8 +313,8 @@ export default {
         .getView()
         .animate({ zoom: this.map.getView().getZoom() + this.zoomOut });
 
-      const meStyle = new Vue.ol.style.Style({
-        image: new Vue.ol.style.Icon({
+      const meStyle = new Style({
+        image: new Icon({
           src: require('@/assets/img/marker/marker.png'),
           anchor: [0.5, 64],
           anchorXUnits: 'fraction',
@@ -311,11 +323,11 @@ export default {
           // size: [60, 60],
         }),
       });
-      const origin = new Vue.ol.geom.Point(this.mePoint.getCoordinates());
+      const origin = new GeomPoint(this.mePoint.getCoordinates());
       origin.transform('EPSG:3857', 'EPSG:4326');
       this.coordsOrigin = origin.getCoordinates();
-      const meFeature = new Vue.ol.Feature({
-        geometry: new Vue.ol.geom.Point(this.mePoint.getCoordinates()),
+      const meFeature = new Feature({
+        geometry: new GeomPoint(this.mePoint.getCoordinates()),
         name: 'Eu',
         neighborhood_alias: {
           name: '',
@@ -349,7 +361,7 @@ export default {
           for (const feature of features) {
             this.$emit(
               'delete',
-              new Vue.ol.format.GeoJSON().writeFeatures([feature])
+              new GeoJSON().writeFeatures([feature])
             );
 
             layer = this.selectedEditable.getLayer(feature);
@@ -360,12 +372,12 @@ export default {
     },
     setInfo(value) {
       if (value) {
-        this.selectedInfo = new Vue.ol.interaction.Select({
+        this.selectedInfo = new Select({
           wrapX: false,
           // style: this.styleDefault,
         });
 
-        const overlayPopup = new Vue.ol.Overlay({
+        const overlayPopup = new Overlay({
           element: document.getElementById('popup'),
         });
         this.map.addOverlay(overlayPopup);
@@ -374,10 +386,10 @@ export default {
           this.showPopover = false;
           if (e.selected.length > 0) {
             const coordinates = e.selected[0].getGeometry().getExtent();
-            overlayPopup.setPosition(Vue.ol.extent.getCenter(coordinates));
+            overlayPopup.setPosition(getCenter(coordinates));
             this.showPopover = true;
             this.featureInfo = e.selected[0];
-            this.featureInfo.coordsDestination = new Vue.ol.geom.Point(
+            this.featureInfo.coordsDestination = new GeomPoint(
               coordinates
             );
             this.featureInfo.coordsDestination.transform(
@@ -392,7 +404,7 @@ export default {
                   name: '',
                 },
               },
-              coordsDestination: new Vue.ol.geom.Point([0, 0]),
+              coordsDestination: new GeomPoint([0, 0]),
             };
           }
         });
@@ -404,7 +416,7 @@ export default {
     changeFeatureName() {
       this.$emit(
         'modify',
-        new Vue.ol.format.GeoJSON().writeFeatures([this.featureInfo])
+        new GeoJSON().writeFeatures([this.featureInfo])
       );
     },
   },

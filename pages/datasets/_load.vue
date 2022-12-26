@@ -9,8 +9,8 @@
         @upload="upload"
       >
         <template #table>
-          <b-card class="text-center">
-            <b-table
+          <BCard class="text-center">
+            <BTable
               id="table-born-alive-form"
               striped
               hover
@@ -41,8 +41,8 @@
               <template #cell(updated_at)="data">
                 {{ data.item.updated_at | formatDateTime }}
               </template>
-            </b-table>
-          </b-card>
+            </BTable>
+          </BCard>
           <div class="row">
             <div class="col-sm-12 col-md-8">
               <b-pagination

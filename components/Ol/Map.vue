@@ -32,7 +32,22 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import 'ol/ol.css';
+import 'ol-ext/dist/ol-ext.min.css';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import Style from 'ol/style/Style';
+import Text from 'ol/style/Text';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import OSM from 'ol/source/OSM';
+import GeoJSON from 'ol/format/GeoJSON';
+import { Select, Modify, Draw, Snap } from 'ol/interaction';
+import Overlay from 'ol/Overlay';
+import { getCenter } from 'ol/extent';
 
 export default {
   name: 'OlMap',
@@ -92,58 +107,58 @@ export default {
           name: '',
         },
       },
-      styleDefault: new Vue.ol.style.Style({
-        fill: new Vue.ol.style.Fill({
+      styleDefault: new Style({
+        fill: new Fill({
           color: 'rgba(229, 146, 56, 0.2)',
         }),
-        stroke: new Vue.ol.style.Stroke({
+        stroke: new Stroke({
           color: 'rgba(229, 146, 56, 0.9)',
           width: 2,
         }),
-        text: new Vue.ol.style.Text({
+        text: new Text({
           font: '12px Calibri,sans-serif',
-          fill: new Vue.ol.style.Fill({
+          fill: new Fill({
             color: '#000',
           }),
-          stroke: new Vue.ol.style.Stroke({
+          stroke: new Stroke({
             color: '#fff',
             width: 3,
           }),
         }),
       }),
-      styleOver: new Vue.ol.style.Style({
-        fill: new Vue.ol.style.Fill({
+      styleOver: new Style({
+        fill: new Fill({
           color: 'rgba(229, 146, 56, 0.6)',
         }),
-        stroke: new Vue.ol.style.Stroke({
+        stroke: new Stroke({
           color: 'rgba(229, 146, 56, 0.9)',
           width: 2,
         }),
-        text: new Vue.ol.style.Text({
+        text: new Text({
           font: '14px Calibri,sans-serif',
-          fill: new Vue.ol.style.Fill({
+          fill: new Fill({
             color: '#000',
           }),
-          stroke: new Vue.ol.style.Stroke({
+          stroke: new Stroke({
             color: '#fff',
             width: 3,
           }),
         }),
       }),
-      styleAdd: new Vue.ol.style.Style({
-        fill: new Vue.ol.style.Fill({
+      styleAdd: new Style({
+        fill: new Fill({
           color: 'rgba(220, 53, 69, 0.2)',
         }),
-        stroke: new Vue.ol.style.Stroke({
+        stroke: new Stroke({
           color: 'rgba(220, 53, 69, 0.9)',
           width: 2,
         }),
-        text: new Vue.ol.style.Text({
+        text: new Text({
           font: '14px Calibri,sans-serif',
-          fill: new Vue.ol.style.Fill({
+          fill: new Fill({
             color: '#000',
           }),
-          stroke: new Vue.ol.style.Stroke({
+          stroke: new Stroke({
             color: '#fff',
             width: 3,
           }),
@@ -197,12 +212,6 @@ export default {
   },
   methods: {
     initiateMap() {
-      const Map = Vue.ol.Map;
-      const View = Vue.ol.View;
-      const TileLayer = Vue.ol.layer.Tile;
-      const VectorLayer = Vue.ol.layer.Vector;
-      const VectorSource = Vue.ol.source.Vector;
-      const OSM = Vue.ol.source.OSM;
       const style = this.styleDefault;
 
       this.source = new VectorSource({
@@ -287,7 +296,7 @@ export default {
       /*       this.features = [];
       for (const feature of mapFeatures) {
         this.features.push(
-          new Vue.ol.format.GeoJSON().readFeature(feature, {
+          new GeoJSON().readFeature(feature, {
             // featureProjection: 'EPSG:3857',
           })
         );
@@ -304,7 +313,7 @@ export default {
         features: mapFeatures,
       };
 
-      this.features = new Vue.ol.format.GeoJSON().readFeatures(geoJsonfeatures);
+      this.features = new GeoJSON().readFeatures(geoJsonfeatures);
 
       this.source.addFeatures(this.features);
     },
@@ -331,7 +340,7 @@ export default {
           for (const feature of features) {
             this.$emit(
               'delete',
-              new Vue.ol.format.GeoJSON().writeFeatures([feature])
+              new GeoJSON().writeFeatures([feature])
             );
 
             layer = this.selectedEditable.getLayer(feature);
@@ -345,29 +354,29 @@ export default {
         this.$refs.map.addEventListener('mouseover', this.handleMouseoverEdit, false);
         this.$refs.map.addEventListener('mouseout', this.handleMouseoutEdit, false);
 
-        this.selectedEditable = new Vue.ol.interaction.Select({
+        this.selectedEditable = new Select({
           wrapX: false,
-          style: new Vue.ol.style.Style({
-            fill: new Vue.ol.style.Fill({
+          style: new Style({
+            fill: new Fill({
               color: 'rgba(56, 146, 56, 0.4)',
             }),
-            stroke: new Vue.ol.style.Stroke({
+            stroke: new Stroke({
               color: 'rgba(56, 146, 56, 0.8)',
               width: 2,
             }),
-            text: new Vue.ol.style.Text({
+            text: new Text({
               font: '12px Calibri,sans-serif',
-              fill: new Vue.ol.style.Fill({
+              fill: new Fill({
                 color: '#000',
               }),
-              stroke: new Vue.ol.style.Stroke({
+              stroke: new Stroke({
                 color: '#fff',
                 width: 3,
               }),
             }),
           }),
         });
-        this.modify = new Vue.ol.interaction.Modify({
+        this.modify = new Modify({
           features: this.selectedEditable.getFeatures(),
         });
         this.map.addInteraction(this.selectedEditable);
@@ -375,7 +384,7 @@ export default {
         this.modify.on('modifyend', (e) => {
           this.$emit(
             'modify',
-            new Vue.ol.format.GeoJSON().writeFeatures(
+            new GeoJSON().writeFeatures(
               e.features.getArray()
               // this.selected.getFeatures().getArray()
             )
@@ -390,22 +399,22 @@ export default {
     },
     setInfo(value) {
       if (value) {
-        this.selectedInfo = new Vue.ol.interaction.Select({
+        this.selectedInfo = new Select({
           wrapX: false,
-          style: new Vue.ol.style.Style({
-            fill: new Vue.ol.style.Fill({
+          style: new Style({
+            fill: new Fill({
               color: 'rgba(23, 162, 184, 0.4)',
             }),
-            stroke: new Vue.ol.style.Stroke({
+            stroke: new Stroke({
               color: 'rgba(23, 162, 184, 0.8)',
               width: 2,
             }),
-            text: new Vue.ol.style.Text({
+            text: new Text({
               font: '12px Calibri,sans-serif',
-              fill: new Vue.ol.style.Fill({
+              fill: new Fill({
                 color: '#000',
               }),
-              stroke: new Vue.ol.style.Stroke({
+              stroke: new Stroke({
                 color: '#fff',
                 width: 3,
               }),
@@ -413,7 +422,7 @@ export default {
           }),
         });
 
-        const overlayPopup = new Vue.ol.Overlay({
+        const overlayPopup = new Overlay({
           element: document.getElementById('popup'),
         });
         this.map.addOverlay(overlayPopup);
@@ -422,7 +431,7 @@ export default {
           this.showPopover = false;
           if (e.selected.length > 0) {
             const coordinates = e.selected[0].getGeometry().getExtent();
-            overlayPopup.setPosition(Vue.ol.extent.getCenter(coordinates));
+            overlayPopup.setPosition(getCenter(coordinates));
             this.showPopover = true;
             this.featureInfo = e.selected[0];
           } else {
@@ -442,12 +451,12 @@ export default {
       if (value) {
         document.addEventListener('keydown', this.handleKeypessDraw, false);
 
-        this.draw = new Vue.ol.interaction.Draw({
+        this.draw = new Draw({
           source: this.sourceAdd,
           type: 'Polygon',
           style: this.styleAdd,
         });
-        this.snap = new Vue.ol.interaction.Snap({ source: this.sourceAdd });
+        this.snap = new Snap({ source: this.sourceAdd });
         this.map.addInteraction(this.draw);
         this.map.addInteraction(this.snap);
 
@@ -459,7 +468,7 @@ export default {
         this.draw.on('drawend', (e) => {
           this.$emit(
             'add',
-            new Vue.ol.format.GeoJSON().writeFeatures([e.feature])
+            new GeoJSON().writeFeatures([e.feature])
           );
         });
       } else {
@@ -472,7 +481,7 @@ export default {
     changeFeatureName() {
       this.$emit(
         'modify',
-        new Vue.ol.format.GeoJSON().writeFeatures([this.featureInfo])
+        new GeoJSON().writeFeatures([this.featureInfo])
       );
     },
   },

@@ -16,8 +16,27 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import 'ol/ol.css';
+import 'ol-ext/dist/ol-ext.min.css';
 import hexToRgba from 'hex-to-rgba';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import GeomPoint from 'ol/geom/Point';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import Style from 'ol/style/Style';
+import Text from 'ol/style/Text';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Circle from 'ol/style/Circle';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import { Select } from 'ol/interaction';
+import Overlay from 'ol/Overlay';
+import { getCenter } from 'ol/extent';
+import { easeOut } from 'ol/easing';
+import OSM from 'ol/source/OSM';
 
 export default {
   name: 'OlMapViewPoints',
@@ -77,29 +96,29 @@ export default {
           name: '',
         },
       },
-      styleDefault: new Vue.ol.style.Style({
-        fill: new Vue.ol.style.Fill({
+      styleDefault: new Style({
+        fill: new Fill({
           color: hexToRgba(this.colorDefault, 0.2),
         }),
-        stroke: new Vue.ol.style.Stroke({
+        stroke: new Stroke({
           color: hexToRgba(this.colorDefault, 0.9),
           width: 2,
         }),
-        text: new Vue.ol.style.Text({
+        text: new Text({
           font: '12px Calibri,sans-serif',
-          fill: new Vue.ol.style.Fill({
+          fill: new Fill({
             color: '#000',
           }),
-          stroke: new Vue.ol.style.Stroke({
+          stroke: new Stroke({
             color: '#fff',
             width: 3,
           }),
         }),
-        image: new Vue.ol.style.Circle({
-          fill: new Vue.ol.style.Fill({
+        image: new Circle({
+          fill: new Fill({
             color: hexToRgba(this.colorDefault, 0.9),
           }),
-          stroke: new Vue.ol.style.Stroke({
+          stroke: new Stroke({
             color: hexToRgba(this.colorDefault, 0.9),
             width: 2,
           }),
@@ -107,28 +126,28 @@ export default {
           points: 4,
         }),
       }),
-      styleOver: new Vue.ol.style.Style({
-        fill: new Vue.ol.style.Fill({
+      styleOver: new Style({
+        fill: new Fill({
           color: hexToRgba(this.colorDefault, 0.9),
         }),
-        stroke: new Vue.ol.style.Stroke({
+        stroke: new Stroke({
           color: hexToRgba(this.colorDefault, 0.9),
           width: 2,
         }),
-        text: new Vue.ol.style.Text({
+        text: new Text({
           font: '14px Calibri,sans-serif',
-          fill: new Vue.ol.style.Fill({
+          fill: new Fill({
             color: '#000',
           }),
-          stroke: new Vue.ol.style.Stroke({
+          stroke: new Stroke({
             color: '#fff',
             width: 3,
           }),
         }),
       }),
-      styleRadar: new Vue.ol.style.Style({
-        image: new Vue.ol.style.Circle({
-          stroke: new Vue.ol.style.Stroke({
+      styleRadar: new Style({
+        image: new Circle({
+          stroke: new Stroke({
             color: hexToRgba(this.colorRadar, 1),
             width: 2,
           }),
@@ -173,12 +192,6 @@ export default {
   },
   methods: {
     initiateMap() {
-      const Map = Vue.ol.Map;
-      const View = Vue.ol.View;
-      const TileLayer = Vue.ol.layer.Tile;
-      const VectorLayer = Vue.ol.layer.Vector;
-      const VectorSource = Vue.ol.source.Vector;
-      const OSM = Vue.ol.source.OSM;
       const style = this.styleDefault;
 
       this.source = new VectorSource({
@@ -214,8 +227,8 @@ export default {
         source: new OSM(),
       });
 
-      this.vectorAnimate = new Vue.ol.layer.Vector({
-        source: new Vue.ol.source.Vector({ style: this.styleRadar }),
+      this.vectorAnimate = new VectorLayer({
+        source: new VectorSource({ style: this.styleRadar }),
         wrapX: false,
       });
 
@@ -249,8 +262,8 @@ export default {
     updateFeatures(mapFeatures) {
       this.source.clear();
       this.map.removeLayer(this.vectorAnimate);
-      this.vectorAnimate = new Vue.ol.layer.Vector({
-        source: new Vue.ol.source.Vector({ style: this.styleRadar }),
+      this.vectorAnimate = new VectorLayer({
+        source: new VectorSource({ style: this.styleRadar }),
         wrapX: false,
       });
       this.map.addLayer(this.vectorAnimate);
@@ -265,7 +278,7 @@ export default {
         features: mapFeatures,
       };
 
-      this.features = new Vue.ol.format.GeoJSON().readFeatures(geoJsonfeatures);
+      this.features = new GeoJSON().readFeatures(geoJsonfeatures);
 
       for (const feature of this.features) {
         feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
@@ -308,10 +321,7 @@ export default {
           const features = this.selectedEditable.getFeatures().getArray();
           let layer = null;
           for (const feature of features) {
-            this.$emit(
-              'delete',
-              new Vue.ol.format.GeoJSON().writeFeatures([feature])
-            );
+            this.$emit('delete', new GeoJSON().writeFeatures([feature]));
 
             layer = this.selectedEditable.getLayer(feature);
             layer.getSource().removeFeature(feature);
@@ -321,12 +331,12 @@ export default {
     },
     setInfo(value) {
       if (value) {
-        this.selectedInfo = new Vue.ol.interaction.Select({
+        this.selectedInfo = new Select({
           wrapX: false,
           style: this.styleDefault,
         });
 
-        const overlayPopup = new Vue.ol.Overlay({
+        const overlayPopup = new Overlay({
           element: document.getElementById('popup'),
         });
         this.map.addOverlay(overlayPopup);
@@ -335,7 +345,7 @@ export default {
           this.showPopover = false;
           if (e.selected.length > 0) {
             const coordinates = e.selected[0].getGeometry().getExtent();
-            overlayPopup.setPosition(Vue.ol.extent.getCenter(coordinates));
+            overlayPopup.setPosition(getCenter(coordinates));
             this.showPopover = true;
             this.featureInfo = e.selected[0];
           } else {
@@ -352,10 +362,7 @@ export default {
       }
     },
     changeFeatureName() {
-      this.$emit(
-        'modify',
-        new Vue.ol.format.GeoJSON().writeFeatures([this.featureInfo])
-      );
+      this.$emit('modify', new GeoJSON().writeFeatures([this.featureInfo]));
     },
     setPulses(f) {
       for (let i = 1; i <= 7; i++) {
@@ -364,20 +371,23 @@ export default {
       return true;
     },
     setPulse(f, duration) {
-      const feature = new Vue.ol.Feature(
-        new Vue.ol.geom.Point(f.getGeometry().getCoordinates())
+      const feature = new Feature(
+        new GeomPoint(f.getGeometry().getCoordinates())
       );
       feature.setStyle(this.styleRadar);
       this.vectorAnimate.getSource().addFeature(feature);
-      this.vectorAnimate.animateFeature(
-        feature,
-        new Vue.ol.featureAnimation.Zoom({
-          fade: Vue.ol.easing.easeOut,
-          duration,
-          repeat: this.repeatAnimate,
-          easing: Vue.ol.easing.easeOut,
-        })
-      );
+      if (process.client) {
+        const Zoom = require('ol-ext/featureanimation/Zoom').default;
+        this.vectorAnimate.animateFeature(
+          feature,
+          new Zoom({
+            fade: easeOut,
+            duration,
+            repeat: this.repeatAnimate,
+            easing: easeOut,
+          })
+        );
+      }
     },
   },
 };

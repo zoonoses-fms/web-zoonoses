@@ -72,7 +72,7 @@
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <b-collapse id="nav-collapse" is-nav>
+        <BCollapse id="nav-collapse" is-nav>
           <client-only>
             <b-navbar-nav class="ml-auto">
               <b-nav-item to="/"><b-icon-house></b-icon-house></b-nav-item>
@@ -140,7 +140,7 @@
               <b-icon-layout-text-sidebar></b-icon-layout-text-sidebar>
             </button>
           </client-only>
-        </b-collapse>
+        </BCollapse>
       </b-navbar>
 
       <div class="p-2">

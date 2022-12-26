@@ -16,9 +16,11 @@
 
 <script>
 import Vue from 'vue';
+import charts from '@/mixins/charts';
 
 export default {
   name: 'PainelBarChartRanger',
+  mixins: [charts],
   props: {
     title: {
       type: String,

@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="accordion" role="tablist">
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
+      <BCard no-body class="mb-1">
+        <BCardHeader header-tag="header" class="p-1" role="tab">
           <b-button v-b-toggle.chapters block variant="info">
             Filtro por Capítulo CID 10
           </b-button>
-        </b-card-header>
-        <b-collapse id="chapters" visible accordion="cids" role="tabpanel">
-          <b-card-body>
-            <b-card-text>
+        </BCardHeader>
+        <BCollapse id="chapters" visible accordion="cids" role="tabpanel">
+          <BCardBody>
+            <BCardText>
               <p>Classificação de CIDS segundo o capítulo</p>
               <InputAutocompleteBadge
                 v-model="selectedChaptersCids"
@@ -27,20 +27,20 @@
                   Filtrar
                 </button>
               </div>
-            </b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
+            </BCardText>
+          </BCardBody>
+        </BCollapse>
+      </BCard>
 
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
+      <BCard no-body class="mb-1">
+        <BCardHeader header-tag="header" class="p-1" role="tab">
           <b-button v-b-toggle.groups block variant="info">
             Filtro por Grupo CID 10
           </b-button>
-        </b-card-header>
-        <b-collapse id="groups" accordion="cids" role="tabpanel">
-          <b-card-body>
-            <b-card-text>
+        </BCardHeader>
+        <BCollapse id="groups" accordion="cids" role="tabpanel">
+          <BCardBody>
+            <BCardText>
               <p>Classificação por grupos do CID 10</p>
               <InputAutocompleteBadge
                 v-model="selectedGroupsCids"
@@ -58,20 +58,20 @@
                   Filtrar
                 </button>
               </div>
-            </b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
+            </BCardText>
+          </BCardBody>
+        </BCollapse>
+      </BCard>
 
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
+      <BCard no-body class="mb-1">
+        <BCardHeader header-tag="header" class="p-1" role="tab">
           <b-button v-b-toggle.cids block variant="info">
             Filtro por Categoria/Sub CID 10
           </b-button>
-        </b-card-header>
-        <b-collapse id="cids" accordion="cids" role="tabpanel">
-          <b-card-body>
-            <b-card-text>
+        </BCardHeader>
+        <BCollapse id="cids" accordion="cids" role="tabpanel">
+          <BCardBody>
+            <BCardText>
               <p>Classificação por categoria e subcategoria CID 10</p>
               <InputAutocompleteBadge
                 v-model="selectedCids"
@@ -89,10 +89,10 @@
                   Filtrar
                 </button>
               </div>
-            </b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
+            </BCardText>
+          </BCardBody>
+        </BCollapse>
+      </BCard>
     </div>
   </div>
 </template>

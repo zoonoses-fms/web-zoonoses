@@ -12,8 +12,8 @@
     </div>
     <div class="row justify-content-between">
       <div class="col-12">
-        <b-card>
-          <b-table
+        <BCard>
+          <BTable
             id="table-campaigns"
             striped
             responsive
@@ -53,8 +53,8 @@
               <LazyFormsCampaign
                 text-button=""
                 variant="success"
-                :old-vaccination-campaign="data.item"
-                @update="getRows"
+                :old-campaign="data.item"
+                @input="feedback"
               ></LazyFormsCampaign>
             </template>
             <template #cell(delete)="data">
@@ -66,16 +66,18 @@
               >
               </LazyModalDelete>
             </template>
-          </b-table>
-        </b-card>
+          </BTable>
+        </BCard>
       </div>
     </div>
   </main>
 </template>
 
 <script>
+import toast from '@/mixins/toast';
 export default {
   name: 'CampaignPage',
+  mixins: [toast],
   data() {
     return {
       url: 'ncrlo/campaign/',
@@ -127,6 +129,10 @@ export default {
     welcomeMessage() {
       this.$store.commit('layout/CHANGE_NAV_TITLE', 'Campanhas de vacinação');
     },
+    feedback(params) {
+      this.toast(params);
+      this.getRows();
+    },
     async getRows() {
       try {
         const response = await this.$axios.get(`${this.url}`, {
@@ -136,6 +142,7 @@ export default {
           },
         });
         this.rows = await response.data.data;
+
         this.totalRows = await response.data.total;
       } catch (error) {
         /* if(error.response.status === 401) {

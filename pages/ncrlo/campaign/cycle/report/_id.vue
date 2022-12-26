@@ -1,7 +1,7 @@
 <template>
   <main v-if="cycle" class="container-fluid">
     <div class="row m-2 justify-content-between">
-      <b-card class="col-12">
+      <BCard class="col-12">
         <template #header>
           <h5 class="mb-0">{{ cycle.description }}</h5>
           <h6 class="mb-0">
@@ -17,14 +17,14 @@
             <b-icon-printer></b-icon-printer>
           </b-button>
         </template>
-      </b-card>
+      </BCard>
     </div>
     <div class="row m-2 justify-content-between">
-      <b-card class="col-12">
+      <BCard class="col-12">
         <template #header>
           <h5 class="mb-0">{{ cycle.description }}</h5>
         </template>
-        <b-table
+        <BTable
           striped
           responsive
           hover
@@ -69,8 +69,8 @@
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
-        </b-table>
-        <b-table
+        </BTable>
+        <BTable
           striped
           responsive
           hover
@@ -115,22 +115,22 @@
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
-        </b-table>
-      </b-card>
+        </BTable>
+      </BCard>
     </div>
     <div
       v-for="support in cycle.supports"
       :key="support.id"
       class="row m-2 justify-content-between"
     >
-      <b-card class="col-12">
+      <BCard class="col-12">
         <template #header>
           <h5 class="mb-0">
             {{ support.support.name }} - {{ support.saads[0].name }}
           </h5>
         </template>
 
-        <b-table
+        <BTable
           striped
           responsive
           hover
@@ -175,9 +175,9 @@
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
-        </b-table>
+        </BTable>
 
-        <b-table
+        <BTable
           striped
           responsive
           hover
@@ -222,8 +222,8 @@
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
-        </b-table>
-      </b-card>
+        </BTable>
+      </BCard>
     </div>
   </main>
 </template>

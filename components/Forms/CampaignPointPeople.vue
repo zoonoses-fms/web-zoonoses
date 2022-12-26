@@ -1,7 +1,8 @@
+<!-- eslint-disable vue/no-template-shadow -->
 <template>
   <div>
     <b-button
-      v-b-modal="`modal-md-people-${id}`"
+      v-b-modal="`modal-xl-people-${id}`"
       :variant="variant"
       @click="showForm"
     >
@@ -10,21 +11,21 @@
     </b-button>
     <ValidationObserver v-slot="{ invalid }">
       <b-modal
-        :id="`modal-md-people-${id}`"
-        size="md"
+        :id="`modal-xl-people-${id}`"
+        size="xl"
         scrollable
         :title="title"
         @ok="handleOk"
       >
         <b-overlay :show="show" rounded="sm">
-          <div class="">
+          <div class="container-fluid">
             <div class="row pb-1">
               <div class="col-8">
                 <div class="form-group border border-success rounded p-1">
                   <label>Ponto de Apoio</label>
                   <b-input-group>
                     <b-form-select
-                      v-model="point.campaing_support_id"
+                    v-model="point.campaign_support_id"
                       :disabled="isDisabled"
                     >
                       <b-form-select-option
@@ -85,38 +86,15 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group border border-success rounded p-1">
-                    <label>Selecione o Supervisor</label>
-                    <FormsSelectWorker
-                      :campaign-cycle-id="campaignCycleId"
-                      :selected-worker="point.supervisor_id"
-                      list-type="supervisor"
-                      :pre-loading-list="supervisors"
-                      @change="setSupervisor"
-                    ></FormsSelectWorker>
-                  </div>
-                  <div class="form-group border border-success rounded p-1">
-                    <label>Selecione os Vacinadores</label>
-                    <FormsSelectWorker
-                      :campaign-cycle-id="campaignCycleId"
-                      :selected-worker="point.vaccinators"
-                      list-type="vaccinators"
-                      :multiple="true"
-                      @change="setVaccinators"
-                    ></FormsSelectWorker>
-                  </div>
-                  <div class="form-group border border-success rounded p-1">
-                    <label>Selecione os Anotadores</label>
-                    <FormsSelectWorker
-                      :campaign-cycle-id="campaignCycleId"
-                      :selected-worker="point.annotators"
-                      list-type="annotators"
-                      :multiple="true"
-                      @change="setAnnotators"
-                    ></FormsSelectWorker>
-                  </div>
                 </div>
               </div>
+
+              <FormsSelectProfiles
+                v-if="!support.is_rural"
+                v-model="point.profiles"
+                :pre-list-worker="preListWorker"
+                :date="cycle.start"
+              />
             </form>
             <div class="footerform"></div>
           </div>
@@ -148,12 +126,20 @@ export default {
       type: String,
       required: true,
     },
+    cycle: {
+      type: Object,
+      required: true,
+    },
+    support: {
+      type: Object,
+      required: true,
+    },
     oldPoint: {
       type: Object,
       default() {
         return {
           id: null,
-          campaing_support_id: null,
+         campaign_support_id: null,
           vaccination_point_id: null,
           supervisor_id: null,
           order: null,
@@ -214,7 +200,7 @@ export default {
         default() {
           return {
             id: null,
-            campaing_support_id: null,
+            campaign_support_id: null,
             vaccination_point_id: null,
             supervisor_id: null,
             order: null,
@@ -267,6 +253,17 @@ export default {
       add: false,
     };
   },
+  computed: {
+    preListWorker() {
+      const profiles = this.support.profiles.filter((profile) => {
+        return profile.is_supervisor === true;
+      });
+      if (profiles.length > 0) {
+        return profiles[0].workers;
+      }
+      return [];
+    },
+  },
   watch: {},
   created() {
     this.id = this.oldPoint.id;
@@ -290,58 +287,20 @@ export default {
     },
     async create() {
       try {
-        const response = await this.$axios.post(`${this.url}`, this.point);
-        this.point = response.data;
-        this.$emit('create');
-        this.$bvToast.toast('Cadastro efetuado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-        this.show = false;
+        await this.$axios.post(`${this.url}`, this.point);
+        this.$emit('input', { status: 'create' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
-
+        this.$emit('input', { status: 'errors', errors });
         this.show = false;
       }
     },
     async update() {
       try {
-        const response = await this.$axios.put(
-          `${this.url}${this.point.id}/`,
-          this.point
-        );
-        this.point = response.data;
-        this.$emit('update');
-        this.$bvToast.toast('Cadastro atualizado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-
-        this.show = false;
+        await this.$axios.put(`${this.url}${this.point.id}/`, this.point);
+        this.$emit('input', { status: 'update' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
+        this.$emit('input', { status: 'errors', errors });
+        this.show = false;
       }
     },
     setSupervisor(id) {
@@ -356,7 +315,7 @@ export default {
     async getSupports() {
       const supports = await this.$axios.get(`${this.urlSupport}`, {
         params: {
-          campaing_support_id: this.point.campaing_support_id,
+         campaign_support_id: this.point.campaign_support_id,
         },
       });
       this.supports = supports.data;

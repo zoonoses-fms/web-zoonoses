@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row justify-content-center align-items-center">
         <div class="col-xl-4 col-lg-5 col-md-6">
-          <b-card class="text-center">
+          <BCard class="text-center">
             <b-overlay :show="show" rounded="sm">
               <b-form ref="form" @submit.stop.prevent="handleSubmit">
                 <b-form-group
@@ -25,7 +25,7 @@
                 >
               </b-form>
             </b-overlay>
-          </b-card>
+          </BCard>
         </div>
       </div>
     </div>

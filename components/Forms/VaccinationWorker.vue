@@ -1,14 +1,15 @@
 <template>
-  <div>
-    <b-button
+  <div class="input-group-append">
+    <button
+      :id="`button-md-${id}`"
       v-b-modal="`modal-md-${id}`"
-      :variant="variant"
-      class="mt-1"
+      class="btn btn-outline-success"
+      type="button"
       @click="showForm"
     >
-      {{ textButton }}
-      <slot name="button"> </slot>
-    </b-button>
+      {{ textButton }} <slot name="button"> </slot>
+    </button>
+
     <ValidationObserver v-slot="{ valid }">
       <b-modal
         :id="`modal-md-${id}`"
@@ -94,10 +95,7 @@
                 />
               </div>
             </div>
-            <b-form-radio-group
-              v-slot="{ ariaDescribedby }"
-              label="Tipo"
-            >
+            <b-form-radio-group v-slot="{ ariaDescribedby }" label="Tipo">
               <b-form-radio
                 v-model="worker.type"
                 :aria-describedby="ariaDescribedby"
@@ -299,13 +297,8 @@ export default {
 };
 </script>
 <style scoped>
-.table {
-  height: 50vh;
-  overflow-y: scroll;
-}
-
-.map-points {
-  width: 100%;
-  height: 50vh;
+button {
+  border-top-right-radius: 0.25rem !important;
+  border-bottom-right-radius: 0.25rem !important;
 }
 </style>

@@ -19,8 +19,10 @@
 </template>
 
 <script>
+import charts from '@/mixins/charts';
 export default {
   name: 'BarChartDataset',
+  mixins: [charts],
   props: {
     title: {
       type: String,

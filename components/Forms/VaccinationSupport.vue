@@ -185,7 +185,7 @@
               v-if="geocodes.length > 0"
               class="table col-12 col-md-6 col-lg-4"
             >
-              <b-table
+              <BTable
                 id="table-supports"
                 striped
                 responsive
@@ -211,7 +211,7 @@
                 <template #cell(place)="data">
                   {{ data.item.properties.display_name | truncate(128) }}
                 </template>
-              </b-table>
+              </BTable>
             </div>
             <div
               class="map-points col-12"

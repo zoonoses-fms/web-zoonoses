@@ -43,8 +43,8 @@
     </div>
     <div class="row justify-content-between">
       <div class="col-12">
-        <b-card>
-          <b-table
+        <BCard>
+          <BTable
             id="table-supports"
             striped
             responsive
@@ -91,8 +91,8 @@
               >
               </LazyModalDelete>
             </template>
-          </b-table>
-        </b-card>
+          </BTable>
+        </BCard>
       </div>
     </div>
   </main>

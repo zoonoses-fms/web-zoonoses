@@ -2,15 +2,17 @@
   <div class="card text-center shadow-2xl m-2">
     <div class="row">
       <div class="col-lg-4 col-md-6 col-sm-12 card-dashboard">
-        <LazyCardsDatasets
-          ref="cardDatasets"
-          :title.sync="locationName"
-          :url.sync="url"
-          sort="year"
-          system="dengeon"
-          :params.sync="paramsDatasets"
-          @checked="changeDatasets"
-        ></LazyCardsDatasets>
+        <client-only>
+          <LazyCardsDatasets
+            ref="cardDatasets"
+            :title.sync="locationName"
+            :url.sync="url"
+            sort="year"
+            system="dengeon"
+            :params.sync="paramsDatasets"
+            @checked="changeDatasets"
+          ></LazyCardsDatasets>
+        </client-only>
       </div>
       <div class="col-lg-4 col-md-6 col-sm-12 card-dashboard">
         <client-only>

@@ -26,13 +26,13 @@
           class="accordion"
           role="tablist"
         >
-          <b-card
+          <BCard
             v-for="item in listFeatures"
             :key="item.id"
             no-body
             class="mb-1"
           >
-            <b-card-header header-tag="header" class="p-1" role="tab">
+            <BCardHeader header-tag="header" class="p-1" role="tab">
               <b-button
                 v-b-toggle="`accordion-${item.id}`"
                 block
@@ -45,8 +45,8 @@
               >
                 {{ item.name }}
               </b-button>
-            </b-card-header>
-            <b-collapse
+            </BCardHeader>
+            <BCollapse
               :id="`accordion-${item.id}`"
               accordion="region"
               role="tabpanel"
@@ -68,8 +68,8 @@
                   {{ neighborhood.name }}
                 </a>
               </div>
-            </b-collapse>
-          </b-card>
+            </BCollapse>
+          </BCard>
         </div>
         <div v-else class="list-group container-list mb-3">
           <a class="list-group-item list-group-item-action disabled">

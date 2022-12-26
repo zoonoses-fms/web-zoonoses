@@ -18,8 +18,8 @@
           :title="cycle.description ? `${cycle.description}` : ``"
           @ok="handleOk"
         >
-          <b-overlay :show="show" rounded="sm">
-            <div class="">
+          <BOverlay :show="show" rounded="sm">
+            <div class="container-fluid">
               <div class="row pb-1">
                 <div class="col-8 form-row">
                   <div class="form-check form-check-inline p-0">
@@ -53,274 +53,106 @@
                   </NuxtLink>
                 </div>
               </div>
-            </div>
-            <form ref="form" @submit.stop.prevent></form>
-            <div class="row">
-              <div class="col-12 col-lg-6">
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Número"
-                  :rules="{ required: true, numeric: true }"
-                >
-                  <div class="form-group">
-                    <label for="number-input">Número</label>
-                    <input
-                      v-model="cycle.number"
-                      name="number-input"
-                      class="form-control form-control-sm"
-                      type="text"
-                    />
-                    <div
-                      v-for="(error, index) in errors"
-                      :key="index"
-                      class="invalid-feedback d-block"
-                    >
-                      {{ error }}
-                    </div>
-                  </div>
-                </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Descrição"
-                  :rules="{ required: true }"
-                >
-                  <div class="form-group">
-                    <label for="number-input">Descrição</label>
-                    <input
-                      v-model="cycle.description"
-                      name="number-input"
-                      class="form-control form-control-sm"
-                      type="text"
-                    />
-                    <div
-                      v-for="(error, index) in errors"
-                      :key="index"
-                      class="invalid-feedback d-block"
-                    >
-                      {{ error }}
-                    </div>
-                  </div>
-                </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Início"
-                  :rules="{ required: true }"
-                >
-                  <div class="form-group">
-                    <label for="start-input">Início</label>
-                    <input
-                      v-model="cycle.start"
-                      name="start-input"
-                      class="form-control form-control-sm"
-                      type="date"
-                    />
-                    <div
-                      v-for="(error, index) in errors"
-                      :key="index"
-                      class="invalid-feedback d-block"
-                    >
-                      {{ error }}
-                    </div>
-                  </div>
-                </ValidationProvider>
-                <div class="form-group border border-success rounded p-1">
-                  <label>Coordenador Estatística</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.statistic_coordinator_id"
-                    list-type="statistic_coordinator"
-                    @change="setStatisticCoordinator"
-                  ></FormsSelectWorker>
-                </div>
-                <div class="form-group border border-success rounded p-1">
-                  <label>Estatística</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.statistics"
-                    list-type="statistics"
-                    :multiple="true"
-                    @change="setStatistics"
-                  ></FormsSelectWorker>
-                </div>
-
-                <b-card no-body class="mb-1">
-                  <b-card-header header-tag="header" class="p-1" role="tab">
-                    <b-button
-                      :class="visibleTransports ? null : 'collapsed'"
-                      :aria-expanded="visibleTransports ? 'true' : 'false'"
-                      aria-controls="accordion-transports"
-                      block
-                      variant="success"
-                      @click="visibleTransports = !visibleTransports"
-                      >Apoio GETRANS</b-button
-                    >
-                  </b-card-header>
-                  <b-collapse
-                    id="accordion-transports"
-                    v-model="visibleTransports"
-                    accordion="accordion-transports"
-                    role="tabpanel"
+              <div class="row">
+                <div class="col-12 col-lg-3">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="Número"
+                    :rules="{ required: true, numeric: true }"
                   >
-                    <b-card-body>
-                      <div
-                        v-for="(item, index) in datesTransports"
-                        :key="`${item.name}-${index}`"
-                        class="form-group border border-success rounded p-1"
-                      >
-                        <label>Apoio GETRANS {{ item.date }}</label>
-                        <FormsSelectWorker
-                          :campaign-cycle-id="cycle.id"
-                          :selected-worker="cycle[item.name]"
-                          :list-type="item.name"
-                          :multiple="true"
-                          :index="index"
-                          @change="setTransports"
-                        ></FormsSelectWorker>
-                      </div>
-                    </b-card-body>
-                  </b-collapse>
-                </b-card>
-
-                <b-card no-body class="mb-1">
-                  <b-card-header header-tag="header" class="p-1" role="tab">
-                    <b-button
-                      :class="visibleZoonoses ? null : 'collapsed'"
-                      :aria-expanded="visibleZoonoses ? 'true' : 'false'"
-                      aria-controls="accordion-zoonoses"
-                      block
-                      variant="success"
-                      @click="visibleZoonoses = !visibleZoonoses"
-                      >Apoio ZOONOSES
-                    </b-button>
-                  </b-card-header>
-                  <b-collapse
-                    id="accordion-zoonoses"
-                    v-model="visibleZoonoses"
-                    accordion="accordion-zoonoses"
-                    role="tabpanel"
+                    <div class="form-group">
+                      <label
+                        >Número:
+                        <input
+                          v-model="cycle.number"
+                          name="number-input"
+                          class="form-control form-control-sm"
+                          type="text"
+                        />
+                        <div
+                          v-for="(error, index) in errors"
+                          :key="index"
+                          class="invalid-feedback d-block"
+                        >
+                          {{ error }}
+                        </div>
+                      </label>
+                    </div>
+                  </ValidationProvider>
+                </div>
+                <div class="col-12 col-lg-3">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="Descrição"
+                    :rules="{ required: true }"
                   >
-                    <b-card-body>
-                      <div
-                        v-for="(item, index) in datesZoonoses"
-                        :key="`${item.name}-${index}`"
-                        class="form-group border border-success rounded p-1"
-                      >
-                        <label>Apoio ZOONOSES {{ item.date }}</label>
-                        <FormsSelectWorker
-                          :campaign-cycle-id="cycle.id"
-                          :selected-worker="cycle[item.name]"
-                          :list-type="item.name"
-                          :multiple="true"
-                          :index="index"
-                          @change="setZoonoses"
-                        ></FormsSelectWorker>
-                      </div>
-                    </b-card-body>
-                  </b-collapse>
-                </b-card>
+                    <div class="form-group">
+                      <label
+                        >Descrição:
+                        <input
+                          v-model="cycle.description"
+                          name="number-input"
+                          class="form-control form-control-sm"
+                          type="text"
+                        />
+                        <div
+                          v-for="(error, index) in errors"
+                          :key="index"
+                          class="invalid-feedback d-block"
+                        >
+                          {{ error }}
+                        </div>
+                      </label>
+                    </div>
+                  </ValidationProvider>
+                </div>
+                <div class="col-12 col-lg-3">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="Início"
+                    :rules="{ required: true }"
+                  >
+                    <div class="form-group">
+                      <label
+                        >Início:
+                        <input
+                          v-model="cycle.start"
+                          name="start-input"
+                          class="form-control form-control-sm"
+                          type="date"
+                        />
+                        <div
+                          v-for="(error, index) in errors"
+                          :key="index"
+                          class="invalid-feedback d-block"
+                        >
+                          {{ error }}
+                        </div>
+                      </label>
+                    </div>
+                  </ValidationProvider>
+                </div>
+                <div class="col-12 col-lg-3">
+                  <div class="form-group">
+                    <label
+                      >Fim:
+                      <input
+                        v-model="cycle.end"
+                        name="end-input"
+                        class="form-control form-control-sm"
+                        type="date"
+                      />
+                    </label>
+                  </div>
+                </div>
               </div>
-              <div class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <label>Coordenador Rede de Frio</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.cold_chain_coordinator_id"
-                    list-type="cold_chain_coordinator"
-                    @change="setColdChainCoordinator"
-                  ></FormsSelectWorker>
-                </div>
-                <div class="form-group border border-success rounded p-1">
-                  <label>Enfermeira Rede de Frio</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="cycle.id"
-                    :selected-worker="cycle.cold_chain_nurse_id"
-                    list-type="cold_chain_nurse"
-                    @change="setColdChainNurse"
-                  ></FormsSelectWorker>
-                </div>
 
-                <b-card no-body class="mb-1">
-                  <b-card-header header-tag="header" class="p-1" role="tab">
-                    <b-button
-                      :class="visibleDriverColdChains ? null : 'collapsed'"
-                      :aria-expanded="
-                        visibleDriverColdChains ? 'true' : 'false'
-                      "
-                      aria-controls="accordion-driver-cold-chains"
-                      block
-                      variant="success"
-                      @click="
-                        visibleDriverColdChains = !visibleDriverColdChains
-                      "
-                      >Motorista
-                    </b-button>
-                  </b-card-header>
-                  <b-collapse
-                    id="accordion-driver-cold-chains"
-                    v-model="visibleDriverColdChains"
-                    accordion="accordion-driver-cold-chains"
-                    role="tabpanel"
-                  >
-                    <b-card-body>
-                      <div
-                        v-for="(item, index) in datesDriverColdChains"
-                        :key="`${item.name}-${index}`"
-                        class="form-group border border-success rounded p-1"
-                      >
-                        <label>Motorista {{ item.date }}</label>
-                        <FormsSelectWorker
-                          :campaign-cycle-id="cycle.id"
-                          :selected-worker="cycle[item.name]"
-                          :list-type="item.name"
-                          :multiple="true"
-                          :index="index"
-                          @change="setDriverColdChains"
-                        ></FormsSelectWorker>
-                      </div>
-                    </b-card-body>
-                  </b-collapse>
-                </b-card>
-
-                <b-card no-body class="mb-1">
-                  <b-card-header header-tag="header" class="p-1" role="tab">
-                    <b-button
-                      :class="visibleColdChains ? null : 'collapsed'"
-                      :aria-expanded="visibleColdChains ? 'true' : 'false'"
-                      aria-controls="accordion-cold-chains"
-                      block
-                      variant="success"
-                      @click="visibleColdChains = !visibleColdChains"
-                      >Equipe Rede de Frio
-                    </b-button>
-                  </b-card-header>
-                  <b-collapse
-                    id="accordion-cold-chains"
-                    v-model="visibleColdChains"
-                    accordion="accordion-cold-chains"
-                    role="tabpanel"
-                  >
-                    <b-card-body>
-                      <div
-                        v-for="(item, index) in datesColdChains"
-                        :key="`${item.name}-${index}`"
-                        class="form-group border border-success rounded p-1"
-                      >
-                        <label>Rede de Frio {{ item.date }}</label>
-                        <FormsSelectWorker
-                          :campaign-cycle-id="cycle.id"
-                          :selected-worker="cycle[item.name]"
-                          :list-type="item.name"
-                          :multiple="true"
-                          :index="index"
-                          @change="setColdChains"
-                        ></FormsSelectWorker>
-                      </div>
-                    </b-card-body>
-                  </b-collapse>
-                </b-card>
-              </div>
+              <FormsSelectProfiles
+                v-model="cycle.profiles"
+                :date="cycle.start"
+              />
             </div>
-          </b-overlay>
+          </BOverlay>
 
           <template #modal-footer="{ ok, cancel }">
             <button
@@ -362,18 +194,6 @@ export default {
           start: null,
           end: null,
           campaign_id: null,
-          statistic_coordinator_id: null,
-          statistics: [],
-          cold_chain_coordinator_id: null,
-          cold_chain_nurse_id: null,
-          before_driver_cold_chains: [],
-          start_driver_cold_chains: [],
-          before_cold_chains: [],
-          start_cold_chains: [],
-          before_transports: [],
-          start_transports: [],
-          before_zoonoses: [],
-          start_zoonoses: [],
           partial_value: false,
           percentage_value: 0,
         };
@@ -400,74 +220,14 @@ export default {
         start: null,
         end: null,
         campaign_id: null,
-        statistic_coordinator_id: null,
-        statistics: [],
-        cold_chain_coordinator_id: null,
-        cold_chain_nurse_id: null,
-        before_driver_cold_chains: [],
-        start_driver_cold_chains: [],
-        before_cold_chains: [],
-        start_cold_chains: [],
-        before_transports: [],
-        start_transports: [],
-        before_zoonoses: [],
-        start_zoonoses: [],
         partial_value: false,
         percentage_value: 0,
       },
-      datesDriverColdChains: [],
-      datesColdChains: [],
-      datesTransports: [],
-      datesZoonoses: [],
-      visibleTransports: false,
-      visibleZoonoses: false,
-      visibleDriverColdChains: false,
-      visibleColdChains: false,
     };
   },
   computed: {},
   created() {
     this.id = this.oldCampaignCycle.id;
-    const start = new Date(`${this.oldCampaignCycle.start}T00:00:00`);
-    const before = new Date(`${this.oldCampaignCycle.start}T00:00:00`);
-
-    before.setDate(start.getDate() - 1);
-
-    this.datesDriverColdChains.push({
-      name: 'before_driver_cold_chains',
-      date: before.toLocaleDateString('pt-BR'),
-    });
-    this.datesDriverColdChains.push({
-      name: 'start_driver_cold_chains',
-      date: start.toLocaleDateString('pt-BR'),
-    });
-
-    this.datesColdChains.push({
-      name: 'before_cold_chains',
-      date: before.toLocaleDateString('pt-BR'),
-    });
-    this.datesColdChains.push({
-      name: 'start_cold_chains',
-      date: start.toLocaleDateString('pt-BR'),
-    });
-
-    this.datesTransports.push({
-      name: 'before_transports',
-      date: before.toLocaleDateString('pt-BR'),
-    });
-    this.datesTransports.push({
-      name: 'start_transports',
-      date: start.toLocaleDateString('pt-BR'),
-    });
-
-    this.datesZoonoses.push({
-      name: 'before_zoonoses',
-      date: before.toLocaleDateString('pt-BR'),
-    });
-    this.datesZoonoses.push({
-      name: 'start_zoonoses',
-      date: start.toLocaleDateString('pt-BR'),
-    });
   },
   methods: {
     setCampaign() {
@@ -475,166 +235,27 @@ export default {
     },
     async create() {
       try {
-        const response = await this.$axios.post(`${this.url}`, {
+        await this.$axios.post(`${this.url}`, {
           ...this.cycle,
           campaign_id: this.currentCampaign.id,
         });
-        this.$bvToast.toast('Cadastro efetuado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-        this.$emit('create', await response.data);
-        this.show = false;
+        this.$emit('input', { status: 'create' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
-
+        this.$emit('input', { status: 'errors', errors });
         this.show = false;
       }
     },
     async update() {
       try {
-        const response = await this.$axios.put(
-          `${this.url}${this.cycle.id}`,
-          this.cycle
-        );
-        this.$bvToast.toast('Cadastro atualizado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-        this.$emit('update', await response.data);
-        this.show = false;
+        await this.$axios.put(`${this.url}${this.cycle.id}`, this.cycle);
+        this.$emit('input', { status: 'update' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
+        this.$emit('input', { status: 'errors', errors });
+        this.show = false;
       }
     },
     handleOk() {
       this.show = true;
-
-      const statistics = [];
-      const beforeColdChains = [];
-      const startColdChains = [];
-      const beforeDriverColdChains = [];
-      const startDriverColdChains = [];
-      const beforeTransports = [];
-      const startTransports = [];
-      const beforeZoonoses = [];
-      const startZoonoses = [];
-
-      // before_driver_cold_chains
-
-      this.cycle.statistics.forEach((statistic) => {
-        if (typeof statistic === 'object') {
-          statistics.push(statistic.id);
-        }
-      });
-
-      if (statistics.length > 0) {
-        this.cycle.statistics = statistics;
-      }
-
-      this.cycle.before_cold_chains.forEach((beforeColdChain) => {
-        if (typeof beforeColdChain === 'object') {
-          beforeColdChains.push(beforeColdChain.id);
-        }
-      });
-
-      if (beforeColdChains.length > 0) {
-        this.cycle.before_cold_chains = beforeColdChains;
-      }
-
-      this.cycle.start_cold_chains.forEach((startColdChain) => {
-        if (typeof startColdChain === 'object') {
-          startColdChains.push(startColdChain.id);
-        }
-      });
-
-      if (startColdChains.length > 0) {
-        this.cycle.start_cold_chains = startColdChains;
-      }
-
-      this.cycle.before_driver_cold_chains.forEach((beforeDriverColdChain) => {
-        if (typeof beforeDriverColdChain === 'object') {
-          beforeDriverColdChains.push(beforeDriverColdChain.id);
-        }
-      });
-
-      if (beforeDriverColdChains.length > 0) {
-        this.cycle.before_driver_cold_chains = beforeDriverColdChains;
-      }
-
-      this.cycle.start_driver_cold_chains.forEach((startDriverColdChain) => {
-        if (typeof startDriverColdChain === 'object') {
-          startDriverColdChains.push(startDriverColdChain.id);
-        }
-      });
-
-      if (startDriverColdChains.length > 0) {
-        this.cycle.start_driver_cold_chains = startDriverColdChains;
-      }
-
-      this.cycle.before_transports.forEach((beforeTransport) => {
-        console.log(typeof beforeColdChain);
-        if (typeof beforeTransport === 'object') {
-          beforeTransports.push(beforeTransport.id);
-        }
-      });
-
-      if (beforeTransports.length > 0) {
-        this.cycle.before_transports = beforeTransports;
-      }
-
-      this.cycle.start_transports.forEach((startTransport) => {
-        if (typeof startTransport === 'object') {
-          startTransports.push(startTransport.id);
-        }
-      });
-
-      if (startTransports.length > 0) {
-        this.cycle.start_transports = startTransports;
-      }
-
-      this.cycle.before_zoonoses.forEach((beforeZoonose) => {
-        if (typeof beforeZoonose === 'object') {
-          beforeZoonoses.push(beforeZoonose.id);
-        }
-      });
-
-      if (beforeZoonoses.length > 0) {
-        this.cycle.before_zoonoses = beforeZoonoses;
-      }
-
-      this.cycle.start_zoonoses.forEach((startZoonose) => {
-        if (typeof startZoonose === 'object') {
-          startZoonoses.push(startZoonose.id);
-        }
-      });
-
-      if (startZoonoses.length > 0) {
-        this.cycle.start_zoonoses = startZoonoses;
-      }
-
       this.handleSubmit();
     },
     handleSubmit() {
@@ -647,46 +268,6 @@ export default {
         // this.$bvModal.hide(`modal-xl-${this.id}`);
       });
       this.show = false;
-    },
-    setStatisticCoordinator(id) {
-      this.cycle.statistic_coordinator_id = id;
-    },
-    setStatistics(ids) {
-      this.cycle.statistics = ids;
-    },
-    setTransports(ids, listType) {
-      if (listType === 'before_transports') {
-        this.cycle.before_transports = ids;
-      } else {
-        this.cycle.start_transports = ids;
-      }
-    },
-    setZoonoses(ids, listType) {
-      if (listType === 'before_zoonoses') {
-        this.cycle.before_zoonoses = ids;
-      } else {
-        this.cycle.start_zoonoses = ids;
-      }
-    },
-    setColdChains(ids, listType) {
-      if (listType === 'before_cold_chains') {
-        this.cycle.before_cold_chains = ids;
-      } else {
-        this.cycle.start_cold_chains = ids;
-      }
-    },
-    setColdChainCoordinator(id) {
-      this.cycle.cold_chain_coordinator_id = id;
-    },
-    setColdChainNurse(id) {
-      this.cycle.cold_chain_nurse_id = id;
-    },
-    setDriverColdChains(ids, listType) {
-      if (listType === 'before_driver_cold_chains') {
-        this.cycle.before_driver_cold_chains = ids;
-      } else {
-        this.cycle.start_driver_cold_chains = ids;
-      }
     },
   },
 };

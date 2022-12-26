@@ -16,8 +16,11 @@
 
 <script>
 import Vue from 'vue';
+import charts from '@/mixins/charts';
+
 export default {
   name: 'PolarChart',
+  mixins: [charts],
   props: {
     title: {
       type: String,

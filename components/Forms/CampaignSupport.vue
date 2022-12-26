@@ -13,7 +13,7 @@
         @ok="handleOk"
       >
         <b-overlay :show="show" rounded="sm">
-          <div class="">
+          <div class="container-fluid">
             <div class="row pb-1">
               <div class="col-12 d-flex justify-content-end">
                 <NuxtLink
@@ -25,9 +25,8 @@
               </div>
             </div>
 
-            <form ref="form" @submit.stop.prevent></form>
             <div class="row">
-              <div class="col-4 col-md-2">
+              <div class="col-4 col-lg-2">
                 <div class="form-group">
                   <label for="goal-input">Ordem:</label>
                   <input
@@ -38,7 +37,7 @@
                   />
                 </div>
               </div>
-              <div class="col-4 col-md-2">
+              <div class="col-4 col-lg-2">
                 <div class="form-group">
                   <label for="goal-input">Meta:</label>
                   <input
@@ -49,7 +48,7 @@
                   />
                 </div>
               </div>
-              <div class="col-4 col-md-2">
+              <div class="col-4 col-lg-2">
                 <div class="form-group">
                   <label for="mileage-input">Quilometragem:</label>
                   <input
@@ -60,96 +59,7 @@
                   />
                 </div>
               </div>
-              <div class="col-12 col-md-6">
-                <b-form-checkbox
-                  id="checkbox-is-rural"
-                  v-model="support.is_rural"
-                  name="is_rural"
-                >
-                  Área Rural?
-                </b-form-checkbox>
-              </div>
-            </div>
-            <div v-if="support.is_rural" class="row">
-              <div class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <label>Supervisores Rural</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="support.campaign_cycle_id"
-                    :selected-worker="support.rural_supervisors"
-                    list-type="rural_supervisors"
-                    :multiple="true"
-                    @change="setRuralSupervisors"
-                  ></FormsSelectWorker>
-                </div>
-              </div>
-
-              <div class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <label>Auxiliar Rural</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="support.campaign_cycle_id"
-                    :selected-worker="support.rural_assistants"
-                    list-type="rural_assistants"
-                    :multiple="true"
-                    @change="setRuralAssistants"
-                  ></FormsSelectWorker>
-                </div>
-              </div>
-            </div>
-            <div v-if="!support.is_rural" class="row">
-              <div class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <label>Selecione o Coordenador</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="support.campaign_cycle_id"
-                    :selected-worker="support.coordinator_id"
-                    list-type="coordinator"
-                    @change="setCoordinator"
-                  ></FormsSelectWorker>
-                </div>
-              </div>
-
-              <div class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <label>Selecione os Supervisores</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="support.campaign_cycle_id"
-                    :selected-worker="support.supervisors"
-                    list-type="supervisors"
-                    :multiple="true"
-                    @change="setSupervisors"
-                  ></FormsSelectWorker>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <label>Selecione os Motorista</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="support.campaign_cycle_id"
-                    :selected-worker="support.drivers"
-                    list-type="drivers"
-                    :multiple="true"
-                    @change="setDrivers"
-                  ></FormsSelectWorker>
-                </div>
-              </div>
-              <div v-if="!support.is_rural" class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <label>Selecione os Apoiadores</label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="support.campaign_cycle_id"
-                    :selected-worker="support.assistants"
-                    list-type="assistants"
-                    :multiple="true"
-                    @change="setAssistants"
-                  ></FormsSelectWorker>
-                </div>
-              </div>
-
-              <div class="col-12 col-lg-6">
+              <div class="col-12 col-lg-3">
                 <div class="form-group border border-success rounded p-1">
                   <label>Selecione os SAAD</label>
                   <FormsSelectSaad
@@ -159,24 +69,21 @@
                   ></FormsSelectSaad>
                 </div>
               </div>
-              <div class="col-12 col-lg-6">
-                <div class="form-group border border-success rounded p-1">
-                  <label v-if="!support.is_rural">
-                    Selecione os Vacinadores Reserva
-                  </label>
-                  <label v-if="support.is_rural">
-                    Selecione os Vacinadores
-                  </label>
-                  <FormsSelectWorker
-                    :campaign-cycle-id="support.campaign_cycle_id"
-                    :selected-worker="support.vaccinators"
-                    list-type="vaccinators"
-                    :multiple="true"
-                    @change="setVaccinators"
-                  ></FormsSelectWorker>
-                </div>
+              <div class="col-12 col-lg-3">
+                <b-form-checkbox
+                  id="checkbox-is-rural"
+                  v-model="support.is_rural"
+                  name="is_rural"
+                >
+                  Área Rural?
+                </b-form-checkbox>
               </div>
             </div>
+            <FormsSelectProfiles
+              v-model="support.profiles"
+              :date="cycle.start"
+              @input="log"
+            />
           </div>
         </b-overlay>
         <template #modal-footer="{ ok, cancel }">
@@ -204,6 +111,10 @@ export default {
     },
     variant: {
       type: String,
+      required: true,
+    },
+    cycle: {
+      type: Object,
       required: true,
     },
     oldSupport: {
@@ -296,58 +207,20 @@ export default {
     },
     async create() {
       try {
-        const response = await this.$axios.post(`${this.url}`, this.support);
-        this.support = response.data;
-        this.$emit('create');
-        this.$bvToast.toast('Cadastro efetuado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-        this.show = false;
+        await this.$axios.post(`${this.url}`, this.support);
+        this.$emit('input', { status: 'create' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
-
+        this.$emit('input', { status: 'errors', errors });
         this.show = false;
       }
     },
     async update() {
       try {
-        const response = await this.$axios.put(
-          `${this.url}${this.support.id}/`,
-          this.support
-        );
-        this.support = response.data;
-        this.$emit('update');
-        this.$bvToast.toast('Cadastro atualizado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-
-        this.show = false;
+        await this.$axios.put(`${this.url}${this.support.id}`, this.support);
+        this.$emit('input', { status: 'update' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
+        this.$emit('input', { status: 'errors', errors });
+        this.show = false;
       }
     },
     setCoordinator(id) {
@@ -373,6 +246,9 @@ export default {
     },
     setSaads(ids) {
       this.support.saads = ids;
+    },
+    log() {
+      console.log(this.cycle);
     },
   },
 };

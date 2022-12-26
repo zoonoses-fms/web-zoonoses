@@ -34,7 +34,7 @@
         @create="setWorker"
       >
         <template #button>
-          <b-icon-pencil />
+          <BIconPencil />
         </template>
       </FormsVaccinationWorker>
     </div>
@@ -51,7 +51,7 @@ export default {
     Multiselect,
   },
   props: {
-    campaignCycleId: {
+    cycleId: {
       required: true,
       validator: (prop) =>
         typeof prop === 'number' || typeof prop === 'string' || prop === null,

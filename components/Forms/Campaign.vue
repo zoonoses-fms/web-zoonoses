@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-button
-      v-b-modal="`modal-lg-${id}`"
+      v-b-modal="`modal-xl-${id}`"
       :variant="variant"
       @click="setCampaign"
     >
@@ -11,355 +11,115 @@
     <ValidationObserver v-slot="{ valid }">
       <form @submit.prevent="handleOk">
         <b-modal
-          :id="`modal-lg-${id}`"
-          size="lg"
+          :id="`modal-xl-${id}`"
+          size="xl"
           scrollable
-          :title="vaccinationCampaign.year ? `${vaccinationCampaign.year}` : ``"
+          :title="campaign.year ? `${campaign.year}` : ``"
           @ok="handleOk"
         >
-          <b-overlay :show="show" rounded="sm">
-            <div class="row pb-1">
-              <div class="col-12 d-flex justify-content-end">
-                <NuxtLink
-                  to="/ncrlo/vaccination/worker"
-                  class="btn btn-success"
-                >
-                  Lista da equipe
-                </NuxtLink>
+          <BOverlay :show="show" rounded="sm">
+            <div class="container-fluid">
+              <div class="row pb-1">
+                <div class="col-12 d-flex justify-content-end">
+                  <NuxtLink
+                    to="/ncrlo/vaccination/worker"
+                    class="btn btn-success"
+                  >
+                    Lista da equipe
+                  </NuxtLink>
+                </div>
               </div>
-            </div>
-            <div class="row p-3">
-              <div class="col-12 p-4 shadow bg-white rounded">
-                <div class="row">
-                  <div class="col-4 px-1">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Ano"
-                      :rules="{ required: true, min: 4, max: 4 }"
-                    >
-                      <div class="form-group">
-                        <label for="year-input">Ano</label>
-                        <select
-                          v-model="vaccinationCampaign.year"
-                          name="year-input"
-                          class="form-control form-control-sm"
-                        >
-                          <option
-                            v-for="(year, index) in years"
-                            :key="index"
-                            :value="year"
-                          >
-                            {{ year }}
-                          </option>
-                        </select>
-                        <div
-                          v-for="(error, index) in errors"
-                          :key="index"
-                          class="invalid-feedback d-block"
-                        >
-                          {{ error }}
-                        </div>
-                      </div>
-                    </ValidationProvider>
-                  </div>
-                  <div class="col-4 px-1">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Início"
-                      :rules="{ required: true }"
-                    >
-                      <div class="form-group">
-                        <label for="start-input">Início</label>
-                        <input
-                          v-model="vaccinationCampaign.start"
-                          name="start-input"
-                          class="form-control form-control-sm"
-                          type="date"
-                        />
-                        <div
-                          v-for="(error, index) in errors"
-                          :key="index"
-                          class="invalid-feedback d-block"
-                        >
-                          {{ error }}
-                        </div>
-                      </div>
-                    </ValidationProvider>
-                  </div>
-                  <div class="col-4 px-1">
+              <div class="row pb-1">
+                <div class="col-4 px-1">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="Ano"
+                    :rules="{ required: true, min: 4, max: 4 }"
+                  >
                     <div class="form-group">
-                      <label for="end-input">Fim</label>
+                      <label for="year-input">Ano</label>
+                      <select
+                        v-model="campaign.year"
+                        name="year-input"
+                        class="form-control form-control-sm"
+                      >
+                        <option
+                          v-for="(year, index) in years"
+                          :key="index"
+                          :value="year"
+                        >
+                          {{ year }}
+                        </option>
+                      </select>
+                      <div
+                        v-for="(error, index) in errors"
+                        :key="index"
+                        class="invalid-feedback d-block"
+                      >
+                        {{ error }}
+                      </div>
+                    </div>
+                  </ValidationProvider>
+                </div>
+                <div class="col-4 px-1">
+                  <ValidationProvider
+                    v-slot="{ errors }"
+                    name="Início"
+                    :rules="{ required: true }"
+                  >
+                    <div class="form-group">
+                      <label for="start-input">Início</label>
                       <input
-                        v-model="vaccinationCampaign.end"
-                        name="end-input"
+                        v-model="campaign.start"
+                        name="start-input"
                         class="form-control form-control-sm"
                         type="date"
                       />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-3 px-1">
-                    <div class="form-group">
-                      <label for="goal-input">Meta:</label>
-                      <input
-                        v-model="vaccinationCampaign.goal"
-                        name="goal-input"
-                        class="form-control form-control-sm"
-                        type="number"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-3 px-1">
-                    <div class="form-group">
-                      <label for="coordinator-cost-input">Coordenador:</label>
-                      <money
-                        v-model="vaccinationCampaign.coordinator_cost"
-                        v-bind="money"
-                        name="coordinator-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-3 px-1">
-                    <div class="form-group">
-                      <label for="supervisor-cost-input">Supervisor:</label>
-                      <money
-                        v-model="vaccinationCampaign.supervisor_cost"
-                        v-bind="money"
-                        name="supervisor-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-3 px-1">
-                    <div class="form-group">
-                      <label for="assistant-cost-input">Apoiador:</label>
-                      <money
-                        v-model="vaccinationCampaign.assistant_cost"
-                        v-bind="money"
-                        name="assistant-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="vaccinator-cost-input">Vacinador:</label>
-                      <money
-                        v-model="vaccinationCampaign.vaccinator_cost"
-                        v-bind="money"
-                        name="vaccinator-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="vaccinator-cost-input">Anotador:</label>
-                      <money
-                        v-model="vaccinationCampaign.annotators_cost"
-                        v-bind="money"
-                        name="vaccinator-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="driver-cost-input">Motorista:</label>
-                      <money
-                        v-model="vaccinationCampaign.driver_cost"
-                        v-bind="money"
-                        name="driver-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="supervisor-cost-input"
-                        >Supervisor Rural:</label
+                      <div
+                        v-for="(error, index) in errors"
+                        :key="index"
+                        class="invalid-feedback d-block"
                       >
-                      <money
-                        v-model="vaccinationCampaign.rural_supervisor_cost"
-                        v-bind="money"
-                        name="supervisor-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
+                        {{ error }}
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="assistant-cost-input">Auxiliar Rural:</label>
-                      <money
-                        v-model="vaccinationCampaign.rural_assistant_cost"
-                        v-bind="money"
-                        name="assistant-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="assistant-cost-input">Enfermeira:</label>
-                      <money
-                        v-model="vaccinationCampaign.cold_chain_nurse_cost"
-                        v-bind="money"
-                        name="cold-chain-nurse-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
+                  </ValidationProvider>
                 </div>
-                <div class="row">
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="supervisor-cost-input"
-                        >Coordenador da Estatística:</label
-                      >
-                      <money
-                        v-model="vaccinationCampaign.statistic_coordinator_cost"
-                        v-bind="money"
-                        name="statistic-coordinator-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="assistant-cost-input"
-                        >Equipe de Estatística:</label
-                      >
-                      <money
-                        v-model="vaccinationCampaign.statistic_cost"
-                        v-bind="money"
-                        name="statistic-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="assistant-cost-input"
-                        >Equipe da GEZOON:</label
-                      >
-                      <money
-                        v-model="vaccinationCampaign.zoonoses_cost"
-                        v-bind="money"
-                        name="zoonoses-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="supervisor-cost-input"
-                        >Coordenador da Rede de Frio:</label
-                      >
-                      <money
-                        v-model="
-                          vaccinationCampaign.cold_chain_coordinator_cost
-                        "
-                        v-bind="money"
-                        name="cold-chain-coordinator-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="assistant-cost-input"
-                        >Equipe da Rede de Frio:</label
-                      >
-                      <money
-                        v-model="vaccinationCampaign.cold_chain_cost"
-                        v-bind="money"
-                        name="cold-chain-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-4 px-1">
-                    <div class="form-group">
-                      <label for="assistant-cost-input"
-                        >Equipe da GETRANS:</label
-                      >
-                      <money
-                        v-model="vaccinationCampaign.transport_cost"
-                        v-bind="money"
-                        name="transport-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-3 px-1">
-                    <div class="form-group">
-                      <label for="vaccine-cost-input">Vacina:</label>
-                      <money
-                        v-model="vaccinationCampaign.vaccine_cost"
-                        v-bind="money"
-                        name="vaccine-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-3 px-1">
-                    <div class="form-group">
-                      <label for="mileage-cost-input">KM:</label>
-                      <money
-                        v-model="vaccinationCampaign.mileage_cost"
-                        v-bind="money"
-                        name="mileage-cost-input"
-                        class="form-control form-control-sm"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <FormsSelectWorker
-                      :campaign-cycle-id="null"
-                      :selected-worker="vaccinationCampaign.coordinator_id"
-                      list-type="all"
-                      @change="setCoordinator"
-                    ></FormsSelectWorker>
+                <div class="col-4 px-1">
+                  <div class="form-group">
+                    <label for="end-input">Fim</label>
+                    <input
+                      v-model="campaign.end"
+                      name="end-input"
+                      class="form-control form-control-sm"
+                      type="date"
+                    />
                   </div>
                 </div>
               </div>
+              <FormsSelectProfiles
+                v-model="campaign.profiles"
+                :date="campaign.start"
+              />
+              <div v-if="campaign.id !== null" class="row">
+                <div class="col-12">
+                  <TablesCampaignProfileWorkers
+                    :profiles.sync="campaign.profiles_all"
+                    :campaign-id="campaign.id"
+                    @changeCost="setCost"
+                    @addProfile="addProfile"
+                    @removeProfile="removeProfile"
+                  />
+                </div>
+              </div>
             </div>
-          </b-overlay>
+          </BOverlay>
 
           <template #modal-footer="{ ok, cancel }">
             <button
               type="submit"
               class="btn btn-success"
-              :disabled="!valid && vaccinationCampaign.id === null"
+              :disabled="!valid && campaign.id === null"
               @click="ok()"
             >
               Salvar
@@ -374,20 +134,19 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
-import { Money } from 'v-money';
+
 export default {
   name: 'FormsVaccinationCampaign',
   components: {
     ValidationObserver,
     ValidationProvider,
-    Money,
   },
   props: {
     textButton: {
       type: String,
       required: true,
     },
-    oldVaccinationCampaign: {
+    oldCampaign: {
       type: Object,
       default() {
         return {
@@ -395,25 +154,7 @@ export default {
           year: null,
           start: null,
           end: null,
-          goal: 0,
-          coordinator_cost: 0,
-          assistant_cost: 0,
-          supervisor_cost: 0,
-          vaccinator_cost: 0,
-          annotators_cost: 0,
-          rural_supervisor_cost: 0,
-          rural_assistant_cost: 0,
-          vaccine_cost: 0,
-          mileage_cost: 0,
-          driver_cost: 0,
-          cold_chain_nurse_cost: 0,
-          statistic_coordinator_cost: 0,
-          statistic_cost: 0,
-          zoonoses_cost: 0,
-          cold_chain_coordinator_cost: 0,
-          cold_chain_cost: 0,
-          transport_cost: 0,
-          coordinator_id: null,
+          profiles_all: [],
         };
       },
     },
@@ -427,39 +168,15 @@ export default {
       id: null,
       show: false,
       url: 'ncrlo/campaign/',
-      vaccinationCampaign: {
+      campaign: {
         id: null,
         year: null,
         start: null,
         end: null,
         goal: 0,
-        coordinator_cost: 0,
-        assistant_cost: 0,
-        supervisor_cost: 0,
-        vaccinator_cost: 0,
-        annotators_cost: 0,
-        rural_supervisor_cost: 0,
-        rural_assistant_cost: 0,
-        vaccine_cost: 0,
-        mileage_cost: 0,
-        driver_cost: 0,
-        cold_chain_nurse_cost: 0,
-        statistic_coordinator_cost: 0,
-        statistic_cost: 0,
-        zoonoses_cost: 0,
-        cold_chain_coordinator_cost: 0,
-        cold_chain_cost: 0,
-        transport_cost: 0,
-        coordinator_id: null,
+        profiles_all: [],
       },
-      money: {
-        decimal: ',',
-        thousands: '.',
-        prefix: 'R$ ',
-        suffix: '',
-        precision: 2,
-        masked: false /* doesn't work with directive */,
-      },
+      listWorkers: [],
     };
   },
   computed: {
@@ -476,69 +193,31 @@ export default {
     },
   },
   created() {
-    this.id = this.oldVaccinationCampaign.id;
+    this.id = this.oldCampaign.id;
   },
   methods: {
     setCampaign() {
-      this.vaccinationCampaign = { ...this.oldVaccinationCampaign };
-      if (this.vaccinationCampaign.id) {
+      this.campaign = { ...this.oldCampaign };
+      if (this.campaign.id) {
         // get data
       }
     },
     async create() {
       try {
-        const response = await this.$axios.post(
-          `${this.url}`,
-          this.vaccinationCampaign
-        );
-        this.$bvToast.toast('Cadastro efetuado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-        this.$emit('create', await response.data);
-        this.show = false;
+        await this.$axios.post(`${this.url}`, this.campaign);
+        this.$emit('input', { status: 'create' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
-
+        this.$emit('input', { status: 'errors', errors });
         this.show = false;
       }
     },
     async update() {
       try {
-        const response = await this.$axios.put(
-          `${this.url}${this.vaccinationCampaign.id}/`,
-          this.vaccinationCampaign
-        );
-        this.$bvToast.toast('Cadastro atualizado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-        this.$emit('update', await response.data);
-        this.show = false;
+        await this.$axios.put(`${this.url}${this.campaign.id}`, this.campaign);
+        this.$emit('input', { status: 'update' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
+        this.$emit('input', { status: 'errors', errors });
+        this.show = false;
       }
     },
     handleOk() {
@@ -546,7 +225,7 @@ export default {
       this.handleSubmit();
     },
     handleSubmit() {
-      if (this.vaccinationCampaign.id) {
+      if (this.campaign.id) {
         this.update();
       } else {
         this.create();
@@ -557,8 +236,37 @@ export default {
       this.show = false;
     },
     setCoordinator(id) {
-      this.vaccinationCampaign.coordinator_id = id;
+      this.campaign.coordinator_id = id;
     },
+    setCost(item) {
+      const index = this.campaign.profiles_all.findIndex((profile) => {
+        return profile.id === item.id;
+      });
+      this.campaign.profiles_all[index].pivot.cost = item.pivot.cost;
+      this.campaign.update_cost = true;
+    },
+    addProfile(item) {
+      item.pivot = {
+        cost: 0,
+      };
+      this.campaign.profiles_all.push(item);
+    },
+    removeProfile(item) {
+      const index = this.campaign.profiles_all.findIndex((profile) => {
+        return profile.id === item.id;
+      });
+      if (index >= 0) {
+        this.campaign.profiles_all.splice(index, 1);
+      }
+
+      const indexProfiler = this.campaign.profiles.findIndex((profile) => {
+        return profile.id === item.id;
+      });
+
+      if (indexProfiler >= 0) {
+        this.campaign.profiles.splice(index, 1);
+      }
+    }
   },
 };
 </script>

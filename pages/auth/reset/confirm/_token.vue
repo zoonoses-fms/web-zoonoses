@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row justify-content-center align-items-center">
         <div class="col-xl-4 col-lg-5 col-md-6">
-          <b-card class="text-center">
+          <BCard class="text-center">
             <b-overlay :show="show" rounded="sm">
               <ValidationObserver v-slot="{ invalid }">
                 <b-form ref="form" @submit.stop.prevent>
@@ -99,7 +99,7 @@
                 </b-form>
               </ValidationObserver>
             </b-overlay>
-          </b-card>
+          </BCard>
         </div>
       </div>
     </div>

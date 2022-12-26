@@ -32,32 +32,32 @@
       </div>
     </div>
 
-    <b-card-group columns>
-      <b-card v-for="(item, index) in filesProcessed" :key="index">
-        <b-card-text>
+    <BCardGroup columns>
+      <BCard v-for="(item, index) in filesProcessed" :key="index">
+        <BCardText>
           <span>Upload do arquivo:</span>
-        </b-card-text>
-        <b-card-text>
+        </BCardText>
+        <BCardText>
           <b-progress
             :value="item.progress"
             :max="100"
             show-progress
             animated
           ></b-progress>
-        </b-card-text>
-        <b-card-text>
+        </BCardText>
+        <BCardText>
           <h3 class="flex card-title">
             <b-spinner label="Loading..."></b-spinner>
             Processando os dados de: {{ item.dataset.name }}
           </h3>
-        </b-card-text>
-        <b-card-text>
+        </BCardText>
+        <BCardText>
           <button class="btn btn-outline-dark" @click="removeFile(item)">
             <b-icon-x-circle></b-icon-x-circle>
           </button>
-        </b-card-text>
-      </b-card>
-    </b-card-group>
+        </BCardText>
+      </BCard>
+    </BCardGroup>
   </div>
 </template>
 

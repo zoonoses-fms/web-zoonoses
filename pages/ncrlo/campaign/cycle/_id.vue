@@ -19,7 +19,7 @@
     <div v-if="newSupports.length > 0">
       <div class="row justify-content-between">
         <div class="col-12">
-          <b-card class="text-center">
+          <BCard class="text-center">
             <template #header>
               <div class="row m-0">
                 <div class="col-sm-12 col-md-6 d-flex justify-content-start">
@@ -32,7 +32,7 @@
                 </div>
               </div>
             </template>
-            <b-table
+            <BTable
               id="table-cycle-supports"
               striped
               responsive
@@ -50,15 +50,15 @@
               <template #cell(number)="data">
                 {{ data.item.number }}
               </template>
-            </b-table>
-          </b-card>
+            </BTable>
+          </BCard>
         </div>
       </div>
     </div>
     <div class="row justify-content-between">
       <div class="col-12">
-        <b-card>
-          <b-table
+        <BCard>
+          <BTable
             id="table-cycle-new-supports"
             striped
             responsive
@@ -98,7 +98,12 @@
               </div>
             </template>
             <template #cell(neighborhood)="data">
-              <div v-if="data.item.support !== null && data.item.support.neighborhood_alias !== null">
+              <div
+                v-if="
+                  data.item.support !== null &&
+                  data.item.support.neighborhood_alias !== null
+                "
+              >
                 {{ data.item.support.neighborhood_alias.name }}
               </div>
             </template>
@@ -120,9 +125,10 @@
               <LazyFormsCampaignSupport
                 text-button=""
                 variant="success"
+                :cycle="cycle"
                 :old-support="data.item"
                 :title="data.item.support ? data.item.support.name : ''"
-                @update="getDetailCycle"
+                @input="feedback"
               ></LazyFormsCampaignSupport>
             </template>
             <template #cell(details)="data">
@@ -142,19 +148,23 @@
               >
               </LazyModalDelete>
             </template>
-          </b-table>
-        </b-card>
+          </BTable>
+        </BCard>
       </div>
     </div>
   </main>
 </template>
 
 <script>
+import toast from '@/mixins/toast';
 export default {
   name: 'CycleDetailsPage',
+  mixins: [toast],
   data() {
     return {
-      cycle: {},
+      cycle: {
+        start: null,
+      },
       supports: [],
       newSupports: [],
       url: 'ncrlo/campaign/cycle/',
@@ -239,6 +249,10 @@ export default {
         'Pontos de apoio a campanha de vacinação'
       );
     },
+    feedback(params) {
+      this.toast(params);
+      this.getDetailCycle();
+    },
     async getDetailCycle() {
       this.supports = [];
 
@@ -249,25 +263,6 @@ export default {
 
       this.cycle.supports.forEach((support) => {
         support.pendency = false;
-        if (
-          support.is_rural &&
-          (support.rural_supervisors.length === 0 ||
-            support.rural_assistants.length === 0 ||
-            support.vaccinators.length === 0 ||
-            support.drivers.length === 0)
-        ) {
-          support._rowVariant = 'danger';
-          support.pendency = true;
-        } else if (
-          !support.is_rural &&
-          (support.coordinator_id === null ||
-            support.supervisors.length === 0 ||
-            support.drivers.length === 0)
-        ) {
-          support._rowVariant = 'danger';
-          support.pendency = true;
-        }
-
         this.supports.push(support);
       });
     },
@@ -284,23 +279,9 @@ export default {
             ...element,
             campaign_cycle_id: this.$route.params.id,
           });
-          this.$bvToast.toast('Cadastro efetuado!', {
-            title: 'Sucesso',
-            autoHideDelay: 5000,
-            variant: 'success',
-            solid: true,
-          });
+          this.toast({ status: 'success' });
         } catch (errors) {
-          for (const prop in errors.response.data) {
-            errors.response.data[prop].forEach((element) => {
-              this.$bvToast.toast(element, {
-                title: 'Error',
-                autoHideDelay: 5000,
-                variant: 'danger',
-                solid: true,
-              });
-            });
-          }
+          this.toast({ status: 'errors', errors });
         }
 
         counter++;
@@ -327,8 +308,6 @@ export default {
         link.target = '_blank';
         link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
         link.click();
-        // window.open(url);
-        // console.log(response);
       } catch (error) {
         const message =
           (error.response && error.response.data) ||

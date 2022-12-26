@@ -6,13 +6,13 @@
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <b-collapse id="nav-collapse" is-nav>
+        <BCollapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item to="/"><b-icon-house></b-icon-house></b-nav-item>
             <b-nav-item to="/systemz">SystemZ</b-nav-item>
             <b-nav-item to="/dashboards">Dashboards</b-nav-item>
           </b-navbar-nav>
-        </b-collapse>
+        </BCollapse>
       </b-navbar>
       <div class="p-2">
         <Nuxt />

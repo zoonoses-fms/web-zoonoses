@@ -15,8 +15,8 @@
     >
       <div class="row justify-content-between">
         <div class="col-12">
-          <b-card class="text-center">
-            <b-table
+          <BCard class="text-center">
+            <BTable
               id="table-campaign-supports"
               striped
               responsive
@@ -50,8 +50,8 @@
                   >Adicionar</b-button
                 >
               </template>
-            </b-table>
-          </b-card>
+            </BTable>
+          </BCard>
         </div>
       </div>
       <template #modal-footer="{ cancel }">

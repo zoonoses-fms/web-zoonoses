@@ -13,8 +13,8 @@
     </div>
     <div class="row justify-content-between">
       <div class="col-12">
-        <b-card>
-          <b-table
+        <BCard>
+          <BTable
             id="table-campaign-new-supports"
             striped
             responsive
@@ -104,7 +104,7 @@
                 variant="success"
                 :old-campaign-cycle="data.item"
                 :current-campaign.sync="campaign"
-                @update="getDetailCampaign"
+                @input="feedback"
               ></LazyFormsCampaignCycle>
             </template>
             <template #cell(details)="data">
@@ -124,16 +124,18 @@
               >
               </LazyModalDelete>
             </template>
-          </b-table>
-        </b-card>
+          </BTable>
+        </BCard>
       </div>
     </div>
   </main>
 </template>
 
 <script>
+import toast from '@/mixins/toast';
 export default {
   name: 'CampaignDetailsPage',
+  mixins: [toast],
   data() {
     return {
       campaign: {
@@ -210,6 +212,10 @@ export default {
         `Etapas da Campanha ${this.campaign.year}`
       );
     },
+    feedback(params) {
+      this.toast(params);
+      this.getDetailCampaign();
+    },
     async getDetailCampaign() {
       this.cycles = [];
 
@@ -236,8 +242,6 @@ export default {
         link.target = '_blank';
         link.download = `${today}-Relatório de Locação de Pessoal.pdf`;
         link.click();
-        // window.open(url);
-        // console.log(response);
       } catch (error) {
         const message =
           (error.response && error.response.data) ||
@@ -262,8 +266,6 @@ export default {
         link.target = '_blank';
         link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
         link.click();
-        // window.open(url);
-        // console.log(response);
       } catch (error) {
         const message =
           (error.response && error.response.data) ||
@@ -289,8 +291,6 @@ export default {
         link.target = '_blank';
         link.download = `${today}-Folha de pagamento.pdf`;
         link.click();
-        // window.open(url);
-        // console.log(response);
       } catch (error) {
         const message =
           (error.response && error.response.data) ||
@@ -301,7 +301,6 @@ export default {
       this.loadPayroll = this.loadPayroll.filter((value) => {
         return value !== support.id;
       });
-      console.log(this.loadPayroll);
     },
   },
 };

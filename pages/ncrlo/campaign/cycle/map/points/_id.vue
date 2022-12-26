@@ -1,6 +1,6 @@
 <template>
   <div class="map-points col-12">
-    <client-only placeholder="Loading...">
+    <client-only>
       <LazyOlMapViewLegendPoints
         height="80"
         :map-features.sync="supports"

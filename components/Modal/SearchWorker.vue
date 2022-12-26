@@ -35,8 +35,8 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <b-card>
-              <b-table
+            <BCard>
+              <BTable
                 id="table-supports"
                 striped
                 responsive
@@ -55,8 +55,8 @@
                 <template #cell(location)="data">
                   {{ data.item.location }}
                 </template>
-              </b-table>
-            </b-card>
+              </BTable>
+            </BCard>
           </div>
         </div>
       </b-overlay>

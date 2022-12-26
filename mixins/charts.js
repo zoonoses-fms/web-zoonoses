@@ -1,4 +1,7 @@
 export default {
+  components: process.client
+    ? { 'ApexChart': require('vue-apexcharts') }
+    : {},
   data() {
     return {};
   },

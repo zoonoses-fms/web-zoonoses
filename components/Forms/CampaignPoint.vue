@@ -312,7 +312,7 @@ export default {
       default() {
         return {
           id: null,
-          campaing_support_id: null,
+         campaign_support_id: null,
           vaccination_point_id: null,
           supervisor_id: null,
           order: null,
@@ -341,8 +341,6 @@ export default {
           bottle_returned_completely: null,
           bottle_returned_partially: null,
           bottle_lost: null,
-          vaccinators: [],
-          annotators: [],
         };
       },
     },
@@ -371,7 +369,7 @@ export default {
         default() {
           return {
             id: null,
-            campaing_support_id: null,
+           campaign_support_id: null,
             vaccination_point_id: null,
             supervisor_id: null,
             order: null,
@@ -400,8 +398,6 @@ export default {
             bottle_returned_completely: null,
             bottle_returned_partially: null,
             bottle_lost: null,
-            vaccinators: [],
-            annotators: [],
           };
         },
       },
@@ -495,28 +491,10 @@ export default {
     },
     async create() {
       try {
-        const response = await this.$axios.post(`${this.url}`, this.point);
-        this.point = response.data;
-        this.$emit('create');
-        this.$bvToast.toast('Cadastro efetuado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-        this.show = false;
+        await this.$axios.post(`${this.url}`, this.point);
+        this.$emit('input', { status: 'create' });
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
-
+        this.$emit('input', { status: 'errors', errors });
         this.show = false;
       }
     },
@@ -524,42 +502,12 @@ export default {
       this.setVaccinators();
       this.setAnnotators();
       try {
-        const response = await this.$axios.put(
-          `${this.url}${this.point.id}/`,
-          this.point
-        );
-
-        if (process.client) {
-          if (navigator.serviceWorker) {
-            const msg = {
-              type: 'points',
-              data: this.point,
-            };
-            navigator.serviceWorker.controller.postMessage(msg);
-          }
-        }
-
-        this.point = response.data;
-        this.$emit('update');
-        this.$bvToast.toast('Cadastro atualizado!', {
-          title: 'Sucesso',
-          autoHideDelay: 5000,
-          variant: 'success',
-          solid: true,
-        });
-
+        await this.$axios.put(`${this.url}${this.point.id}/`, this.point);
+        this.$emit('input', { status: 'update' });
         this.show = false;
       } catch (errors) {
-        for (const prop in errors.response.data) {
-          errors.response.data[prop].forEach((element) => {
-            this.$bvToast.toast(element, {
-              title: 'Error',
-              autoHideDelay: 5000,
-              variant: 'danger',
-              solid: true,
-            });
-          });
-        }
+        this.$emit('input', { status: 'errors', errors });
+        this.show = false;
       }
     },
     setSupervisor(id) {
