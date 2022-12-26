@@ -67,19 +67,15 @@
             <b-form-checkbox v-model="profile.is_single_allocation" switch>
               Pode ser alocado em um só local?
             </b-form-checkbox>
-
             <b-form-checkbox v-model="profile.is_pre_campaign" switch>
               Trabalha na pre campanha?
             </b-form-checkbox>
-
             <b-form-checkbox v-model="profile.is_multiple" switch>
               Perfil de multiplos trabalhadores?
             </b-form-checkbox>
-
             <b-form-checkbox v-model="profile.is_rural" switch>
               Perfil rural?
             </b-form-checkbox>
-
             <b-form-checkbox v-model="profile.is_pre_load" switch>
               Perfil sem custos?
             </b-form-checkbox>
