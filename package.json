@@ -37,6 +37,7 @@
     "ol": "^7.1.0",
     "ol-ext": "^4.0.4",
     "simple-statistics": "^7.7.5",
+    "suneditor": "^2.44.3",
     "v-click-outside": "^3.1.2",
     "v-money": "^0.8.1",
     "vue": "^2.6.14",

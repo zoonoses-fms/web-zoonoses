@@ -30,6 +30,7 @@
 export default {
   name: 'DashboardsPage',
   layout: 'simple',
+  auth: false,
   data() {
     return {
       initial: 'the',

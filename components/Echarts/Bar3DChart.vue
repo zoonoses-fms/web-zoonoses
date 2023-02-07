@@ -202,7 +202,6 @@ export default {
       this.options.series.name = 'Dengue';
       this.options.series.data = this.series;
       this.options.visualMap.max = this.visualMapMax;
-      // console.log(this.myChart);
       if (this.myChart == null) {
         // const chartDom = this.$refs.chart;
         // this.myChart = init(chartDom);

@@ -7,10 +7,10 @@
 <script>
 export default {
   name: 'IndexPage',
-  layout: 'simple',
+  layout: 'site',
   auth: false,
   created() {
-    this.$router.push('/ncrlo/campaign/cycle/map/points/public/2');
+    this.$router.push('/site');
   },
   mounted() {
     // this.$auth.refreshTokens();

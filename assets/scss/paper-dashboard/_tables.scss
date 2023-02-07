@@ -1,4 +1,5 @@
 .table{
+    font-size: 0.85rem;
 
     .img-wrapper{
       width: 40px;
@@ -46,8 +47,7 @@
     }
 
    > thead > tr > th{
-       font-size: 14px;
-       font-weight: $font-weight-bold;
+       // font-size: 0.75rem;
        padding-bottom: 0;
        text-transform: uppercase;
        border: 0;
@@ -82,24 +82,6 @@
        vertical-align: middle;
    }
 
-   .th-description{
-       max-width: 150px;
-   }
-   .td-price{
-       font-size: 26px;
-       font-weight: $font-weight-light;
-       margin-top: 5px;
-       position: relative;
-       top: 4px;
-       text-align: right;
-   }
-   .td-total{
-        font-weight: $font-weight-bold;
-        font-size: $font-size-h5;
-        padding-top: 20px;
-        text-align: right;
-    }
-
    .td-actions .btn{
     margin: 0px;
     }
@@ -109,55 +91,6 @@
     }
 }
 
-.table-shopping{
-    > thead > tr > th{
-        font-size: $font-size-h6;
-        text-transform: uppercase;
-    }
-    > tbody > tr > td{
-        font-size: $font-paragraph;
-
-        b{
-            display: block;
-            margin-bottom: 5px;
-        }
-    }
-    .td-name{
-        font-weight: $font-weight-normal;
-        font-size: 1.5em;
-        small{
-            color: $dark-gray;
-            font-size: 0.75em;
-            font-weight: $font-weight-light;
-        }
-    }
-    .td-number{
-       font-weight: $font-weight-light;
-       font-size: $font-size-h4;
-   }
-    .td-name{
-        min-width: 200px;
-    }
-    .td-number{
-        text-align: right;
-        min-width: 170px;
-
-        small{
-            margin-right: 3px;
-        }
-    }
-
-    .img-container{
-        width: 120px;
-        max-height: 160px;
-        overflow: hidden;
-        display: block;
-
-        img{
-            width: 100%;
-        }
-    }
-}
 
 .table-responsive{
   overflow: scroll;

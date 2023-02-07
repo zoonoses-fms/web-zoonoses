@@ -82,7 +82,6 @@
             <FormsSelectProfiles
               v-model="support.profiles"
               :date="cycle.start"
-              @input="log"
             />
           </div>
         </b-overlay>

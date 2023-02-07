@@ -26,9 +26,7 @@
                   <h5 class="mb-0">Novos Pontos de Apoio</h5>
                 </div>
                 <div class="col-sm-12 col-md-6 d-flex justify-content-end">
-                  <b-button variant="success" @click="saveSupport">
-                    Salvar
-                  </b-button>
+                  <b-button variant="success" @click="saveSupport"> Salvar </b-button>
                 </div>
               </div>
             </template>
@@ -113,13 +111,10 @@
               </span>
             </template>
             <template #cell(frequency)="data">
-              <b-button
-                class="mt-0"
-                variant="warning"
-                @click="frequencyPdf(data.item)"
-              >
-                <b-icon-person-badge-fill></b-icon-person-badge-fill>
-              </b-button>
+              <ModalFrequencySupport
+                :item="data.item"
+                :url="`${urlCampaignSupport}frequency/`"
+              />
             </template>
             <template #cell(edit)="data">
               <LazyFormsCampaignSupport
@@ -156,9 +151,9 @@
 </template>
 
 <script>
-import toast from '@/mixins/toast';
+import toast from "@/mixins/toast";
 export default {
-  name: 'CycleDetailsPage',
+  name: "CycleDetailsPage",
   mixins: [toast],
   data() {
     return {
@@ -167,72 +162,72 @@ export default {
       },
       supports: [],
       newSupports: [],
-      url: 'ncrlo/campaign/cycle/',
-      urlCampaignSupport: 'ncrlo/campaign/support/',
+      url: "ncrlo/campaign/cycle/",
+      urlCampaignSupport: "ncrlo/campaign/support/",
       fieldsListAdd: [
         {
-          key: 'name',
-          label: 'Name',
+          key: "name",
+          label: "Name",
           sortable: true,
         },
         {
-          key: 'address',
-          label: 'Endereço',
+          key: "address",
+          label: "Endereço",
           sortable: true,
         },
         {
-          key: 'number',
-          label: 'Número',
+          key: "number",
+          label: "Número",
         },
       ],
       fields: [
         {
-          key: 'pendency',
-          label: 'Pendência',
+          key: "pendency",
+          label: "Pendência",
           sortable: true,
         },
         {
-          key: 'order',
-          label: 'Ordem',
+          key: "order",
+          label: "Ordem",
           sortable: true,
         },
         {
-          key: 'name',
-          label: 'Name',
+          key: "name",
+          label: "Name",
           sortable: true,
         },
         {
-          key: 'address',
-          label: 'Endereço',
+          key: "address",
+          label: "Endereço",
           sortable: true,
         },
         {
-          key: 'number',
-          label: 'Número',
+          key: "number",
+          label: "Número",
         },
         {
-          key: 'neighborhood',
-          label: 'Bairro',
+          key: "neighborhood",
+          label: "Bairro",
         },
         {
-          key: 'saad',
-          label: 'SAAD',
+          key: "saad",
+          label: "SAAD",
         },
         {
-          key: 'frequency',
-          label: 'Freq.',
+          key: "frequency",
+          label: "Freq.",
         },
         {
-          key: 'edit',
-          label: 'Editar',
+          key: "edit",
+          label: "Editar",
         },
         {
-          key: 'details',
-          label: 'Detalhes',
+          key: "details",
+          label: "Detalhes",
         },
         {
-          key: 'delete',
-          label: 'Excluir',
+          key: "delete",
+          label: "Excluir",
         },
       ],
     };
@@ -245,8 +240,8 @@ export default {
   methods: {
     welcomeMessage() {
       this.$store.commit(
-        'layout/CHANGE_NAV_TITLE',
-        'Pontos de apoio a campanha de vacinação'
+        "layout/CHANGE_NAV_TITLE",
+        "Pontos de apoio a campanha de vacinação"
       );
     },
     feedback(params) {
@@ -256,9 +251,7 @@ export default {
     async getDetailCycle() {
       this.supports = [];
 
-      const response = await this.$axios.get(
-        `${this.url}${this.$route.params.id}`
-      );
+      const response = await this.$axios.get(`${this.url}${this.$route.params.id}`);
       this.cycle = response.data;
 
       this.cycle.supports.forEach((support) => {
@@ -267,7 +260,7 @@ export default {
       });
     },
     addSupport(support) {
-      this.newSupports.push({ ...support, _rowVariant: 'success' });
+      this.newSupports.push({ ...support, _rowVariant: "success" });
     },
     saveSupport() {
       let counter = 0;
@@ -279,9 +272,9 @@ export default {
             ...element,
             campaign_cycle_id: this.$route.params.id,
           });
-          this.toast({ status: 'success' });
+          this.toast({ status: "success" });
         } catch (errors) {
-          this.toast({ status: 'errors', errors });
+          this.toast({ status: "errors", errors });
         }
 
         counter++;
@@ -297,22 +290,20 @@ export default {
         const response = await this.$axios.get(
           `${this.urlCampaignSupport}frequency/${support.id}`,
           {
-            responseType: 'blob',
+            responseType: "blob",
           }
         );
         const today = new Date().toISOString().slice(0, 10);
-        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const blob = new Blob([response.data], { type: "application/pdf" });
         // const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.target = '_blank';
+        link.target = "_blank";
         link.download = `${today}-Frequência de Locação de Pessoal.pdf`;
         link.click();
       } catch (error) {
         const message =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
+          (error.response && error.response.data) || error.message || error.toString();
         console.log(message);
       }
     },

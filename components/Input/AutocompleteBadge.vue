@@ -179,7 +179,7 @@ export default {
 }
 
 .badge {
-  font-size: 12px;
+  font-size: 0.75rem;
   white-space: unset;
 }
 

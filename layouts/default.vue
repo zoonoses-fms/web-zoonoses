@@ -153,7 +153,7 @@
 <script>
 import is from '@/mixins/is';
 export default {
-  name: 'NuxtTutorial',
+  name: 'LayoutDefault',
   mixins: [is],
   data() {
     return {

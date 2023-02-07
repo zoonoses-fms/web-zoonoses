@@ -63,12 +63,19 @@
                 </select>
               </label>
             </div>
-
+            <div class="form-group">
+              <label>
+                Trabalha na pre campanha? Quantos dias?
+                <input
+                  v-model="profile.is_pre_campaign"
+                  type="number"
+                  class="form-control"
+                  placeholder="0"
+                />
+              </label>
+            </div>
             <b-form-checkbox v-model="profile.is_single_allocation" switch>
               Pode ser alocado em um só local?
-            </b-form-checkbox>
-            <b-form-checkbox v-model="profile.is_pre_campaign" switch>
-              Trabalha na pre campanha?
             </b-form-checkbox>
             <b-form-checkbox v-model="profile.is_multiple" switch>
               Perfil de multiplos trabalhadores?
@@ -116,7 +123,7 @@ export default {
           scope: null,
           management: null,
           is_single_allocation: true,
-          is_pre_campaign: false,
+          is_pre_campaign: 0,
           is_multiple: false,
           is_rural: false,
         };
@@ -131,7 +138,7 @@ export default {
         scope: null,
         management: null,
         is_single_allocation: true,
-        is_pre_campaign: false,
+        is_pre_campaign: 0,
         is_multiple: false,
         is_rural: false,
       },

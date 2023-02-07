@@ -72,6 +72,7 @@
 export default {
   name: 'DashboadShow',
   layout: 'simple',
+  auth: false,
   data() {
     return {
       initial: 'the',

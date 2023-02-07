@@ -5,121 +5,130 @@
       :key="profile.id"
       class="form-group p-1 w-100 col-12"
     >
-      <div
-        v-if="!profile.is_pre_campaign"
-        class="input-group mb-3 border border-success rounded"
-      >
-        <label class="form-control h-auto">
+      <div class="card">
+        <div class="card-header">
           {{ profile.name }} - {{ profile.management }}
-          <Multiselect
-            v-model="profile.workers"
-            :options="
-              profile.is_pre_load ? [...preListWorker] : [...listWorkers]
-            "
-            :searchable="true"
-            :close-on-select="!profile.is_multiple"
-            :show-labels="true"
-            deselect-label="Clique para remover"
-            select-label="Clique para selecionar"
-            selected-label="Selecionado"
-            :multiple="profile.is_multiple"
-            track-by="id"
-            label="name"
-            placeholder="Selecione"
-            :allow-empty="true"
-            @select="select"
+        </div>
+        <div class="card-body p-0">
+          <div
+            v-if="profile.is_pre_campaign == 0"
+            class="input-group"
           >
-            <template slot="singleLabel" slot-scope="{ option }">
-              <strong>{{ option.name }}</strong> Matrícula
-              <strong>{{ option.registration }}</strong>
-            </template>
-            <template slot="noResult">
-              <span>Oops! Sem resultados</span>
-            </template>
-            <template slot="noOptions">
-              <span>Oops! Sem opção</span>
-            </template>
-          </Multiselect>
-        </label>
-        <div class="input-group-append">
-          <FormsVaccinationWorker
-            :name-modal="`worker-${profile.id}`"
-            text-button=""
-            variant="success"
-            :url="url"
-            @create="setWorker($event, profile.workers)"
+            <label class="form-control h-auto">
+              <Multiselect
+                v-model="profile.workers[0]"
+                :options="
+                  profile.is_pre_load ? [...preListWorker] : [...listWorkers]
+                "
+                :searchable="true"
+                :close-on-select="!profile.is_multiple"
+                :show-labels="true"
+                deselect-label="Clique para remover"
+                select-label="Clique para selecionar"
+                selected-label="Selecionado"
+                :multiple="profile.is_multiple"
+                track-by="id"
+                label="name"
+                placeholder="Selecione"
+                :allow-empty="true"
+                @select="select"
+              >
+                <template slot="singleLabel" slot-scope="{ option }">
+                  <strong>{{ option.name }}</strong> Matrícula
+                  <strong>{{ option.registration }}</strong>
+                </template>
+                <template slot="noResult">
+                  <span>Oops! Sem resultados</span>
+                </template>
+                <template slot="noOptions">
+                  <span>Oops! Sem opção</span>
+                </template>
+              </Multiselect>
+            </label>
+            <div class="input-group-append">
+              <FormsVaccinationWorker
+                :name-modal="`worker-${profile.id}`"
+                text-button=""
+                variant="success"
+                :url="url"
+                @create="setWorker($event, profile.workers[0])"
+              >
+                <template #button>
+                  <BIconPencil />
+                </template>
+              </FormsVaccinationWorker>
+            </div>
+          </div>
+
+          <template v-else>
+            <BTabs card>
+              <BTab
+                v-for="day in getListDays(profile.is_pre_campaign)"
+                :key="day.index"
+                :title="day.date"
+                active
+                class="p-0"
+              >
+                <div class="input-group">
+                  <label class="form-control h-auto">
+                    <Multiselect
+                      v-model="profile.workers[day.index]"
+                      :options="
+                        profile.is_pre_load
+                          ? [...preListWorker]
+                          : [...listWorkers]
+                      "
+                      :searchable="true"
+                      :close-on-select="!profile.is_multiple"
+                      :show-labels="true"
+                      deselect-label="Clique para remover"
+                      select-label="Clique para selecionar"
+                      selected-label="Selecionado"
+                      :multiple="profile.is_multiple"
+                      track-by="id"
+                      label="name"
+                      placeholder="Selecione"
+                      :allow-empty="true"
+                      @select="select"
+                    >
+                      <template slot="singleLabel" slot-scope="{ option }">
+                        <strong>{{ option.name }}</strong> Matrícula
+                        <strong>{{ option.registration }}</strong>
+                      </template>
+                      <template slot="noResult">
+                        <span>Oops! Sem resultados</span>
+                      </template>
+                      <template slot="noOptions">
+                        <span>Oops! Sem opção</span>
+                      </template>
+                    </Multiselect>
+                  </label>
+                  <div class="input-group-append">
+                    <FormsVaccinationWorker
+                      :name-modal="`worker-${profile.id}-${day.index}`"
+                      text-button=""
+                      variant="success"
+                      :url="url"
+                      @create="setWorker($event, profile.workers[day.index])"
+                    >
+                      <template #button>
+                        <BIconPencil />
+                      </template>
+                    </FormsVaccinationWorker>
+                  </div>
+                </div>
+              </BTab>
+            </BTabs>
+          </template>
+
+          <!--           <div
+            v-for="day in getListDays(profile.is_pre_campaign)"
+            :key="day.index"
           >
-            <template #button>
-              <BIconPencil />
-            </template>
-          </FormsVaccinationWorker>
+            {{ day.index }} - {{ day.date }} oi
+          </div> -->
         </div>
       </div>
-
-      <template v-else>
-        <BCard no-body>
-          <BCardHeader>
-            {{ profile.name }} - {{ profile.management }}
-          </BCardHeader>
-          <BTabs card>
-            <BTab
-              v-for="(worker, index) in profile.workers"
-              :key="index"
-              :title="dates[index] | formatDate"
-              active
-            >
-              <div class="input-group mb-3 border border-success rounded">
-                <label class="form-control h-auto">
-                  <Multiselect
-                    v-model="profile.workers[index]"
-                    :options="
-                      profile.is_pre_load
-                        ? [...preListWorker]
-                        : [...listWorkers]
-                    "
-                    :searchable="true"
-                    :close-on-select="!profile.is_multiple"
-                    :show-labels="true"
-                    deselect-label="Clique para remover"
-                    select-label="Clique para selecionar"
-                    selected-label="Selecionado"
-                    :multiple="profile.is_multiple"
-                    track-by="id"
-                    label="name"
-                    placeholder="Selecione"
-                    :allow-empty="true"
-                    @select="select"
-                  >
-                    <template slot="singleLabel" slot-scope="{ option }">
-                      <strong>{{ option.name }}</strong> Matrícula
-                      <strong>{{ option.registration }}</strong>
-                    </template>
-                    <template slot="noResult">
-                      <span>Oops! Sem resultados</span>
-                    </template>
-                    <template slot="noOptions">
-                      <span>Oops! Sem opção</span>
-                    </template>
-                  </Multiselect>
-                </label>
-                <div class="input-group-append">
-                  <FormsVaccinationWorker
-                    :name-modal="`worker-${profile.id}-${index}`"
-                    text-button=""
-                    variant="success"
-                    :url="url"
-                    @create="setWorker($event, profile.workers[index])"
-                  >
-                    <template #button>
-                      <BIconPencil />
-                    </template>
-                  </FormsVaccinationWorker>
-                </div>
-              </div>
-            </BTab>
-          </BTabs>
-        </BCard>
-      </template>
     </div>
   </div>
 </template>
@@ -191,6 +200,32 @@ export default {
         workers = worker;
       }
     },
+    getListDays(numberOfDays) {
+      const days = [];
+      // const arrayDays = [...Array(numberOfDays+1).keys()];
+
+      for (let index = 0; index <= numberOfDays; index++) {
+        let date = null;
+
+        if (this.date != null) {
+          date = new Date(`${this.date}T00:00:00`);
+          date.setDate(date.getDate() - index);
+          date = date.toLocaleDateString('pt-BR');
+        }
+
+        days.push({
+          index,
+          date,
+        });
+      }
+
+      return days;
+    },
   },
 };
 </script>
+<style scoped>
+.card {
+  font-size: 0.75rem;
+}
+</style>

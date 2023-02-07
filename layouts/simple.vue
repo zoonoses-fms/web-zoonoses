@@ -24,7 +24,7 @@
 <script>
 import is from '@/mixins/is';
 export default {
-  name: 'NuxtTutorial',
+  name: 'LayoutSimples',
   mixins: [is],
   data() {
     return {

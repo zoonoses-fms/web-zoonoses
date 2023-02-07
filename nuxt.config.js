@@ -31,15 +31,10 @@ export default {
   plugins: [
     { src: '~plugins/axios.js' },
     { src: '~plugins/filter' },
-    // { src: '~/plugins/apexcharts', mode: 'client' },
     { src: '~/plugins/autocomplete-vue', mode: 'client' },
-    // { src: '~/plugins/easy-circular-progress', mode: 'client' },
-    // { src: '~/plugins/v-click-outside', mode: 'client' },
-    // { src: '~/plugins/ol', mode: 'client' },
     { src: '~/plugins/locale' },
     { src: '~/plugins/palette' },
     { src: '~/plugins/simple-statistics' },
-    // { src: '~/plugins/offline.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -139,6 +134,7 @@ export default {
       'BCardBody',
       'BCardGroup',
       'BModal',
+      'BSpinner',
       'BIconMap',
       'BIconPlus',
       'BIconChevronRight',
@@ -161,6 +157,10 @@ export default {
       'BIconCheckCircle',
       'BIconExclamationCircle',
       'BIconPinMap',
+      'BIconTelephone',
+      'BIconMailbox',
+      'BCarousel',
+      'BCarouselSlide'
     ],
     directives: [
       'VBModal',
@@ -260,6 +260,7 @@ export default {
         'ol/easing',
         'hex-to-rgba',
       ],
+      [...'suneditor']
     ],
     babel: {
       compact: true,

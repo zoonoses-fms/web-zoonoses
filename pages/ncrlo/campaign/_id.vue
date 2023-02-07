@@ -66,16 +66,23 @@
               </NuxtLink>
             </template>
             <template #cell(report)="data">
-              <b-button
+              <BButton
                 class="mt-0"
                 variant="warning"
                 :to="`/ncrlo/campaign/cycle/report/${data.item.id}`"
               >
                 <b-icon-bar-chart></b-icon-bar-chart>
-              </b-button>
+              </BButton>
             </template>
             <template #cell(allocation)="data">
+              <BSpinner
+                v-show="showLoad"
+                variant="primary"
+                label="Spinning"
+              ></BSpinner>
+
               <b-button
+                v-show="!showLoad"
                 class="mt-0"
                 variant="warning"
                 @click="allocationPdf(data.item)"
@@ -84,7 +91,14 @@
               </b-button>
             </template>
             <template #cell(frequency)="data">
+              <BSpinner
+                v-show="showLoad"
+                variant="primary"
+                label="Spinning"
+              ></BSpinner>
+
               <b-button
+                v-show="!showLoad"
                 class="mt-0"
                 variant="warning"
                 @click="frequencyPdf(data.item)"
@@ -147,7 +161,7 @@ export default {
       fields: [
         {
           key: 'number',
-          label: 'Número',
+          label: 'Nº',
           sortable: true,
         },
         {
@@ -169,12 +183,12 @@ export default {
           label: 'PA',
         },
         {
-          key: 'allocation',
-          label: 'Aloc.',
-        },
-        {
           key: 'report',
           label: 'Relat.',
+        },
+        {
+          key: 'allocation',
+          label: 'Aloc.',
         },
         {
           key: 'frequency',
@@ -198,6 +212,7 @@ export default {
         },
       ],
       loadPayroll: [],
+      showLoad: false,
     };
   },
 
@@ -228,6 +243,7 @@ export default {
     },
     async allocationPdf(cycle) {
       try {
+        this.showLoad = true;
         const response = await this.$axios.get(
           `${this.urlCampaignCycle}allocation/${cycle.id}`,
           {
@@ -248,10 +264,13 @@ export default {
           error.message ||
           error.toString();
         console.log(message);
+      } finally {
+        this.showLoad = false;
       }
     },
     async frequencyPdf(support) {
       try {
+        this.showLoad = true;
         const response = await this.$axios.get(
           `${this.urlCampaignCycle}frequency/${support.id}`,
           {
@@ -272,6 +291,8 @@ export default {
           error.message ||
           error.toString();
         console.log(message);
+      } finally {
+        this.showLoad = false;
       }
     },
     async payrollPdf(support) {

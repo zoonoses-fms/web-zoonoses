@@ -41,11 +41,23 @@
                 <b-icon-bar-chart></b-icon-bar-chart>
               </b-button>
             </template>
-            <template #cell(details)="data">
-              <NuxtLink
-                :to="`/ncrlo/campaign/${data.item.id}`"
-                class="btn btn-warning"
+            <template #cell(payroll)="data">
+              <BSpinner
+                v-show="loadPayrollPdf.includes(data.item.id)"
+                small
+                variant="info"
+                label="Spinning"
+              ></BSpinner>
+              <b-button
+                v-show="!loadPayrollPdf.includes(data.item.id)"
+                variant="danger"
+                @click="payrollPdf(data.item)"
               >
+                <b-icon-currency-dollar>$</b-icon-currency-dollar>
+              </b-button>
+            </template>
+            <template #cell(details)="data">
+              <NuxtLink :to="`/ncrlo/campaign/${data.item.id}`" class="btn btn-warning">
                 <b-icon-search></b-icon-search>
               </NuxtLink>
             </template>
@@ -74,51 +86,56 @@
 </template>
 
 <script>
-import toast from '@/mixins/toast';
+import toast from "@/mixins/toast";
 export default {
-  name: 'CampaignPage',
+  name: "CampaignPage",
   mixins: [toast],
   data() {
     return {
-      url: 'ncrlo/campaign/',
+      url: "ncrlo/campaign/",
       fields: [
         {
-          key: 'id',
-          label: 'Id',
+          key: "id",
+          label: "Id",
           sortable: true,
         },
         {
-          key: 'year',
-          label: 'Ano',
+          key: "year",
+          label: "Ano",
           sortable: true,
         },
         {
-          key: 'start',
-          label: 'Início',
+          key: "start",
+          label: "Início",
           sortable: true,
         },
         {
-          key: 'report',
-          label: 'Relat.',
+          key: "report",
+          label: "Relat.",
         },
         {
-          key: 'details',
-          label: 'Detalhes',
+          key: "details",
+          label: "Detalhes",
         },
         {
-          key: 'edit',
-          label: 'Editar',
+          key: "payroll",
+          label: "Folha",
         },
         {
-          key: 'delete',
-          label: 'Excluir',
+          key: "edit",
+          label: "Editar",
+        },
+        {
+          key: "delete",
+          label: "Excluir",
         },
       ],
       perPage: 10,
       currentPage: 1,
       totalRows: 0,
-      search: '',
+      search: "",
       rows: [],
+      loadPayrollPdf: [],
     };
   },
   created() {
@@ -127,7 +144,7 @@ export default {
   },
   methods: {
     welcomeMessage() {
-      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Campanhas de vacinação');
+      this.$store.commit("layout/CHANGE_NAV_TITLE", "Campanhas de vacinação");
     },
     feedback(params) {
       this.toast(params);
@@ -149,6 +166,31 @@ export default {
           this.$router.push('/');
         } */
       }
+    },
+    async payrollPdf(item) {
+      try {
+        this.loadPayrollPdf.push(item.id);
+        const response = await this.$axios.get(`${this.url}payroll/pdf/${item.id}`, {
+          responseType: "blob",
+        });
+        const today = new Date().toISOString().slice(0, 10);
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        // const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.target = "_blank";
+        link.download = `${today}-Folha de pagamento.pdf`;
+        link.click();
+        // window.open(url);
+        // console.log(response);
+      } catch (error) {
+        const message =
+          (error.response && error.response.data) || error.message || error.toString();
+        console.log(message);
+      }
+      this.loadPayrollPdf = this.loadPayrollPdf.filter((value) => {
+        return value !== item.id;
+      });
     },
   },
 };

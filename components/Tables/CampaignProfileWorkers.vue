@@ -192,6 +192,6 @@ export default {
 </script>
 <style scoped>
 .table {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 </style>
