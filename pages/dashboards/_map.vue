@@ -55,6 +55,7 @@ export default {
   name: 'PageMapsSupport',
   mixins: [geocode],
   layout: 'simple',
+  auth: false,
   data() {
     return {
       initial: 'the',
