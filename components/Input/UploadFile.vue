@@ -38,12 +38,12 @@
           <span>Upload do arquivo:</span>
         </BCardText>
         <BCardText>
-          <b-progress
+          <BProgress
             :value="item.progress"
             :max="100"
             show-progress
             animated
-          ></b-progress>
+          ></BProgress>
         </BCardText>
         <BCardText>
           <h3 class="flex card-title">

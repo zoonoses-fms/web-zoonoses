@@ -26,6 +26,9 @@
 
           <BCollapse id="nav-collapse" is-nav>
             <BNavbarNav>
+              <BNavItem to="/site/institutional/chart">Organograma</BNavItem>
+              <BNavItem to="/systemz">SystemZ</BNavItem>
+<!--
               <BNavItemDropdown text="Intitucional" left>
                 <BDropdownItem to="/site/institutional/chart"
                   >Organograma</BDropdownItem
@@ -37,8 +40,9 @@
                   >Legislação</BDropdownItem
                 >
               </BNavItemDropdown>
-              <BNavItem to="/systemz">SystemZ</BNavItem>
+
               <BNavItem to="/dashboards">Dashboards</BNavItem>
+ -->
             </BNavbarNav>
           </BCollapse>
         </div>

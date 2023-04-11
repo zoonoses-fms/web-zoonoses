@@ -125,6 +125,7 @@ export default {
       'BInputGroup',
       'BInputGroupAppend',
       'BPagination',
+      'BProgress',
       'BOverlay',
       'BTable',
       'BCard',
@@ -133,6 +134,7 @@ export default {
       'BCardHeader',
       'BCardBody',
       'BCardGroup',
+      'BCardText',
       'BModal',
       'BSpinner',
       'BIconMap',
@@ -158,9 +160,10 @@ export default {
       'BIconExclamationCircle',
       'BIconPinMap',
       'BIconTelephone',
+      'BIconThermometerHalf',
       'BIconMailbox',
       'BCarousel',
-      'BCarouselSlide'
+      'BCarouselSlide',
     ],
     directives: [
       'VBModal',
@@ -227,15 +230,18 @@ export default {
   build: {
     transpile: [
       ...['vue-apexcharts'],
-      ...['claygl', 'echarts', 'echarts-gl', 'zrender'],
+      // ...['claygl', 'echarts', 'echarts-gl', 'zrender'],
       ...[
         'ol/Map',
         'ol/View',
+        'ol/control/Control',
         'ol/layer/Tile',
         'ol/layer/Vector',
+        'ol/layer/Heatmap',
         'ol/source/Vector',
-        'ol/Overlay',
+        'ol/source/Cluster',
         'ol/source/OSM',
+        'ol/Overlay',
         'ol/style/Style',
         'ol/style/Text',
         'ol/style/Fill',
@@ -258,9 +264,10 @@ export default {
         'ol-ext/legend/Legend',
         'ol-ext/legend/Item',
         'ol/easing',
-        'hex-to-rgba',
+        'hex-to-rgba'
       ],
-      [...'suneditor']
+      [...'suneditor'],
+      'vue2-org-tree'
     ],
     babel: {
       compact: true,
@@ -327,16 +334,69 @@ export default {
     // linkExactActiveClass: 'active',
     middleware: ['auth'],
     extendRoutes(routes, resolve) {
-      routes.push({
-        name: 'datasets_loads',
-        path: '/datasets/load/:source/:system/:initial',
-        component: '~/pages/datasets/_load.vue',
+      const isDatasetsLoads = routes.some((element) => {
+        if (element.name === 'datasets_loads') {
+          return true;
+        }
+
+        return false;
       });
-      routes.push({
-        name: 'dashboards_show',
-        path: '/dashboards/show/:source/:system/:initial',
-        component: '~/pages/dashboards/_show.vue',
+
+      if (!isDatasetsLoads) {
+        routes.push({
+          name: 'datasets_loads',
+          path: '/datasets/load/:source/:system/:initial',
+          component: '~/pages/datasets/_load.vue',
+        });
+      }
+
+      const isDashboardsShow = routes.some((element) => {
+        if (element.name === 'dashboards_show') {
+          return true;
+        }
+
+        return false;
       });
+
+      if (!isDashboardsShow) {
+        routes.push({
+          name: 'data_show',
+          path: '/dashboards/data/:source/:system/:initial',
+          component: '~/pages/dashboards/_data.vue',
+        });
+      }
+
+      const isDashboardsMap = routes.some((element) => {
+        if (element.name === 'dashboards_map') {
+          return true;
+        }
+
+        return false;
+      });
+
+      if (!isDashboardsMap) {
+        routes.push({
+          name: 'dashboards_map',
+          path: '/dashboards/map/:source/:system/:initial',
+          component: '~/pages/dashboards/_map.vue',
+        });
+      }
+
+      const isDashboardsHeatMap = routes.some((element) => {
+        if (element.name === 'dashboards_heatmap') {
+          return true;
+        }
+
+        return false;
+      });
+
+      if (!isDashboardsHeatMap) {
+        routes.push({
+          name: 'dashboards_heatmap',
+          path: '/dashboards/heatmap/:id',
+          component: '~/pages/dashboards/_heatmap.vue',
+        });
+      }
     },
   },
   /*

@@ -1,5 +1,5 @@
 <template>
-  <div class="card text-center shadow-2xl m-2">
+  <div class="card text-center shadow m-2">
     <div class="card-body pl-2 pr-1 py-1">
       <strong class="card-title">{{ title }}</strong>
       <div class="overflow-y-auto h-100">
@@ -35,25 +35,31 @@
                 >
                 </b-form-checkbox>
               </td>
+
               <td>
                 <NuxtLink
-                  :to="`/${system}/map/${row.id}`"
+                  :to="`/dashboards/heatmap/${row.id}`"
                   class="btn btn-sm btn-secondary m-0"
                 >
-                  <b-icon-map class="icon-menu w-4 h-4 stroke-current" />
+                  <BIconThermometerHalf
+                    class="icon-menu w-4 h-4 stroke-current"
+                  />
+
+                  <BIconMap class="icon-menu w-4 h-4 stroke-current" />
                 </NuxtLink>
+<!--
                 <NuxtLink
                   :to="`/${system}/details/${row.id}`"
                   class="btn btn-sm btn-primary m-0"
                 >
-                  <b-icon-plus
-                    class="icon-menu w-4 h-4 stroke-current"
-                  />
+                  <b-icon-plus class="icon-menu w-4 h-4 stroke-current" />
                   <b-icon-chevron-right
                     class="icon-menu w-4 h-4 ml-2 stroke-current"
                   />
                 </NuxtLink>
+                 -->
               </td>
+
             </tr>
           </tbody>
         </table>

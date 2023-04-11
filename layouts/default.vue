@@ -77,7 +77,7 @@
             <b-navbar-nav class="ml-auto">
               <b-nav-item to="/"><b-icon-house></b-icon-house></b-nav-item>
               <b-nav-item to="/systemz">SystemZ</b-nav-item>
-              <b-nav-item to="/dashboards">Dashboards</b-nav-item>
+              <b-nav-item to="/dashboards">Observatório</b-nav-item>
 
               <b-nav-item-dropdown v-if="$auth.loggedIn" right>
                 <!-- Using 'button-content' slot -->

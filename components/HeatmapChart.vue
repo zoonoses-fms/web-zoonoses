@@ -4,8 +4,8 @@
       <div id="chart">
         <ApexChart
           ref="chart"
-          type="area"
-          height="320"
+          type="heatmap"
+          height="220"
           :options="options"
           :series="series"
         ></ApexChart>
@@ -15,28 +15,27 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import charts from '@/mixins/charts';
+import charts from "@/mixins/charts";
 
 export default {
-  name: 'PainelLineChart',
+  name: "PainelLineChart",
   mixins: [charts],
   props: {
     title: {
       type: String,
-      default: '',
+      default: "",
     },
     value: {
       type: String,
-      default: '',
+      default: "",
     },
     desc: {
       type: String,
-      default: '',
+      default: "",
     },
     button: {
       type: String,
-      default: 'Mais',
+      default: "Mais",
     },
     url: {
       type: String,
@@ -52,50 +51,85 @@ export default {
     },
     locationName: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   data() {
     return {
       series: [],
+
       options: {
-        colors: [],
         chart: {
           height: 320,
-          type: 'area',
-          zoom: {
-            enabled: false,
+          type: "heatmap",
+          toolbar: {
+            show: true,
+
+            tools: {
+              download: true,
+              selection: false,
+              zoom: false,
+              zoomin: false,
+              zoomout: false,
+              pan: false,
+              reset: false,
+              customIcons: [],
+            },
           },
         },
-        theme: {
-          mode: this.$store.state.modeChart,
+        plotOptions: {
+          heatmap: {
+            radius: 1,
+            enableShades: true,
+            shadeIntensity: 0.7,
+            useFillColorAsStroke: false,
+            colorScale: {
+              ranges: [
+                {
+                  from: 0,
+                  to: 50,
+                  name: "Baixa",
+                  color: "#00A100",
+                },
+                {
+                  from: 51,
+                  to: 100,
+                  name: "Média",
+                  color: "#128FD9",
+                },
+                {
+                  from: 101,
+                  to: 500,
+                  name: "Alta",
+                  color: "#FFB200",
+                },
+                {
+                  from: 501,
+                  to: 2000,
+                  name: "Extrema",
+                  color: "#FF0000",
+                },
+              ],
+            },
+            distributed: true,
+          },
         },
         dataLabels: {
           enabled: false,
         },
         stroke: {
-          curve: 'straight',
-          width: 2,
-        },
-        markers: {
-          size: 3,
-          hover: {
-            size: 5,
-          },
+          width: 1,
         },
         title: {
           text: `${this.title} ${this.locationName}`,
-          align: 'center',
+          align: "left",
           floating: true,
         },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5,
-          },
-        },
         xaxis: {
-          categories: Vue.locale.shortMonths,
+          type: "numeric",
+          min: 1,
+          max: 53,
+          decimalsInFloat: 0,
         },
       },
     };
@@ -109,7 +143,7 @@ export default {
     url(val) {
       // this.getSerie(val, this.params);
     },
-    '$store.state.modeChart'() {
+    "$store.state.modeChart"() {
       this.$refs.chart.chart.updateOptions({
         theme: {
           mode: this.$store.state.modeChart,
@@ -120,10 +154,12 @@ export default {
       });
     },
   },
-  mounted() {},
+  mounted() {
+    // this.getSerie(this.url, this.params);
+  },
   methods: {
     async getSerie(url, params) {
-      const colors = [];
+      // const colors = [];
       const series = [];
 
       let result;
@@ -132,7 +168,7 @@ export default {
           params,
         });
 
-        colors.push(dataset.color);
+        // colors.push(dataset.color);
         const data = [];
         result.data.data.forEach((itemData) => {
           data.push(itemData.count);
@@ -145,7 +181,7 @@ export default {
 
       this.update({
         series,
-        colors,
+        // colors,
         title: {
           text: `${this.title} ${this.locationName}`,
         },

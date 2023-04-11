@@ -1,5 +1,5 @@
 <template>
-  <div class="card text-center shadow-2xl m-2">
+  <div class="card text-center shadow m-2">
     <div class="card-body pl-2 pr-1 py-5">
       <div id="chart">
         <ApexChart

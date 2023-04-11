@@ -1,5 +1,5 @@
 <template>
-  <div class="card text-center shadow-2xl m-2">
+  <div class="card text-center shadow m-2">
     <div class="row">
       <div class="col-lg-4 col-md-6 col-sm-12 card-dashboard">
         <client-only>
@@ -51,20 +51,19 @@
       </div>
     </div>
     <div class="row justify-content-md-center">
-      <div class="col-11">
+      <div class="col-12">
         <client-only>
-          <LazyEchartsBar3DChart
+          <LazyHeatmapChart
             ref="serieByWeek"
             title="Notificação por semana: "
             :datasets.sync="checkedDatasets"
             :location-name.sync="locationName"
             :params.sync="paramsSerieByWeek"
             :url.sync="urlSerie"
-          ></LazyEchartsBar3DChart>
+          />
         </client-only>
       </div>
     </div>
-    {{ $route.params }}
   </div>
 </template>
 
@@ -78,9 +77,9 @@ export default {
       initial: 'the',
       locationName: 'Teresina',
       checkedDatasets: [],
-      urlBase: `dataset/datasus/dengueon/`,
-      urlBaseSerieRange: `dataset/serie/range/datasus/dengueon/`,
-      urlBaseSerie: `dataset/serie/datasus/dengueon/`,
+      urlBase: `dataset/datasus/`,
+      urlBaseSerieRange: `dataset/serie/range/datasus/`,
+      urlBaseSerie: `dataset/serie/datasus/`,
       urlSerieRange: '',
       paramsDatasets: {
         limit: 20,
@@ -109,9 +108,9 @@ export default {
     };
   },
   created() {
-    this.url = `${this.urlBase}${this.initial}`;
-    this.urlSerieRange = `${this.urlBaseSerieRange}${this.initial}`;
-    this.urlSerie = `${this.urlBaseSerie}${this.initial}`;
+    this.url = `${this.urlBase}${this.$route.params.system}/${this.initial}`;
+    this.urlSerieRange = `${this.urlBaseSerieRange}${this.$route.params.system}/${this.initial}`;
+    this.urlSerie = `${this.urlBaseSerie}${this.$route.params.system}/${this.initial}`;
   },
   methods: {
     changeDatasets(checkedDatasets) {

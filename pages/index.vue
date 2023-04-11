@@ -10,7 +10,7 @@ export default {
   layout: 'site',
   auth: false,
   created() {
-    this.$router.push('/site');
+    this.$router.push('/dashboards');
   },
   mounted() {
     // this.$auth.refreshTokens();
