@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     welcomeMessage() {
-      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Mapa casos Aboviroses');
+      this.$store.commit('layout/CHANGE_NAV_TITLE', 'Mapa casos arboviroses');
     },
 
     async getRegisters(id) {
