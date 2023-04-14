@@ -235,6 +235,7 @@ export default {
         'ol/Map',
         'ol/View',
         'ol/control/Control',
+        'ol/control/FullScreen',
         'ol/layer/Tile',
         'ol/layer/Vector',
         'ol/layer/Heatmap',
@@ -393,7 +394,7 @@ export default {
       if (!isDashboardsHeatMap) {
         routes.push({
           name: 'dashboards_heatmap',
-          path: '/dashboards/heatmap/:id',
+          path: '/dashboards/heatmap/:source/:system/:initial/:id',
           component: '~/pages/dashboards/_heatmap.vue',
         });
       }

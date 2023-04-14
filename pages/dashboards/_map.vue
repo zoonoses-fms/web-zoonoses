@@ -18,8 +18,9 @@
                 :title.sync="locationName"
                 :url.sync="url"
                 sort="year"
-                system="dengeon"
+                :system="`${source}/${system}/${initial}`"
                 :params.sync="paramsDatasets"
+                :pre-select="1"
                 @checked="changeDatasets"
               ></LazyCardsDatasets>
             </client-only>
@@ -58,18 +59,23 @@ export default {
   auth: false,
   data() {
     return {
-      initial: 'the',
       locationName: 'Teresina',
       checkedDatasets: [],
-      urlBase: `dataset/datasus/`,
+      urlBase: `dataset/`,
       paramsDatasets: {
         limit: 20,
       },
       url: null,
+      source: '',
+      system: '',
+      initial: '',
     };
   },
   created() {
-    this.url = `${this.urlBase}${this.$route.params.system}/${this.initial}`;
+    this.source = this.$route.params.source;
+    this.system = this.$route.params.system;
+    this.initial = this.$route.params.initial;
+    this.url = `${this.urlBase}${this.source}/${this.system}/${this.initial}`;
     this.welcomeMessage();
   },
   methods: {

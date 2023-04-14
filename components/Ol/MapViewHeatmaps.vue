@@ -1,35 +1,37 @@
 <template>
   <div ref="container">
-    <label ref="vol" class="p-1 rounded-pill bg-gradient-light text-dark">
-      Sensibilidade
-      <input
-        id="vol"
-        v-model="sensitivity"
-        type="range"
-        name="vol"
-        min="0"
-        max="1"
-        step=".05"
-    /></label>
-    <div ref="map" class="map" :style="mapStyle" @resize="resize"></div>
-    <div v-show="showPopover" id="popup" style="width: 5px; height: 5px">
-      <span></span>
-    </div>
-    <b-popover
-      ref="popover"
-      target="popup"
-      placement="top"
-      :show.sync="showPopover"
-    >
-      {{ featureInfo.values_.count }}
-    </b-popover>
-    <div id="gr" ref="gr" class="ol-legend ol-unselectable ol-control">
-      <div class="d-flex justify-content-between">
-        <small>Baixo</small>
-        <small>Alto</small>
+    <BOverlay :show="show">
+      <label ref="vol" class="p-1 rounded-pill bg-gradient-light text-dark">
+        Sensibilidade
+        <input
+          id="vol"
+          v-model="sensitivity"
+          type="range"
+          name="vol"
+          min="0"
+          max="1"
+          step=".05"
+      /></label>
+      <div ref="map" class="map" :style="mapStyle" @resize="resize"></div>
+      <div v-show="showPopover" id="popup" style="width: 5px; height: 5px">
+        <span></span>
       </div>
-      <canvas id="legend-gradient" width="150" height="20"></canvas>
-    </div>
+      <b-popover
+        ref="popover"
+        target="popup"
+        placement="top"
+        :show.sync="showPopover"
+      >
+        {{ featureInfo.values_.count }}
+      </b-popover>
+      <div id="gr" ref="gr" class="ol-legend ol-unselectable ol-control">
+        <div class="d-flex justify-content-between">
+          <small>Baixo</small>
+          <small>Alto</small>
+        </div>
+        <canvas id="legend-gradient" width="150" height="20"></canvas>
+      </div>
+    </BOverlay>
   </div>
 </template>
 
@@ -58,6 +60,8 @@ import { getCenter } from 'ol/extent';
 // import { easeOut } from 'ol/easing';
 import OSM from 'ol/source/OSM';
 import Control from 'ol/control/Control';
+import FullScreen from 'ol/control/FullScreen';
+
 
 //
 // Define rotate to north control.
@@ -183,6 +187,7 @@ export default {
       legendControl: null,
       legend: null,
       sensitivity: 0.5,
+      show: false,
     };
   },
   computed: {
@@ -201,7 +206,7 @@ export default {
       this.setInfo(value);
     },
     sensitivity(value) {
-      console.log(value);
+      this.show = true;
       this.sensitivity = Number(value);
 
       this.updateFeatures(this.mapFeatures);
@@ -255,6 +260,7 @@ export default {
       });
 
       const vol = new Control({ element: this.$refs.vol });
+      const fullScreen = new FullScreen();
 
       this.map = new Map({
         target: this.$refs.map,
@@ -266,7 +272,7 @@ export default {
         }),
       });
       this.map.addControl(vol);
-
+      this.map.addControl(fullScreen);
       new ResizeObserver(this.resize).observe(this.$refs.container);
       /*
       this.source.on('addfeature', () => {
@@ -301,6 +307,7 @@ export default {
       }, 500);
     },
     updateFeatures(mapFeatures) {
+      this.show = true;
       this.source.clear();
       this.map.render();
       const geoJsonfeatures = {
@@ -322,6 +329,7 @@ export default {
       */
 
       this.source.addFeatures(this.features);
+      this.show = false;
     },
     setInfo(value) {
       if (value) {

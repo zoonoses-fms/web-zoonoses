@@ -38,7 +38,7 @@
 
               <td>
                 <NuxtLink
-                  :to="`/dashboards/heatmap/${row.id}`"
+                  :to="`/dashboards/heatmap/${system}/${row.id}`"
                   class="btn btn-sm btn-secondary m-0"
                 >
                   <BIconThermometerHalf
@@ -100,6 +100,10 @@ export default {
       type: Object,
       required: true,
     },
+    preSelect: {
+      type: Number,
+      default: 3,
+    }
   },
   data() {
     return {
@@ -115,7 +119,7 @@ export default {
     });
     this.rows = await response.data;
     this.checkedDatasets = [];
-    for (let index = 0; index < 3; index++) {
+    for (let index = 0; index < this.preSelect; index++) {
       this.checkedDatasets.push(this.rows[index].id);
     }
   },

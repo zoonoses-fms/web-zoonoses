@@ -1,28 +1,30 @@
 <template>
   <div ref="container">
-    <label ref="vol" class="p-1 rounded-pill bg-gradient-light text-dark">
-      Distância
-      <input
-        id="vol"
-        v-model="rangeDistance"
-        type="range"
-        name="vol"
-        min="0"
-        max="100"
-    /></label>
+    <BOverlay :show="show">
+      <label ref="vol" class="p-1 rounded-pill bg-gradient-light text-dark">
+        Distância
+        <input
+          id="vol"
+          v-model="rangeDistance"
+          type="range"
+          name="vol"
+          min="0"
+          max="100"
+      /></label>
 
-    <div ref="map" class="map" :style="mapStyle" @resize="resize"></div>
-    <div v-show="showPopover" id="popup" style="width: 5px; height: 5px">
-      <span></span>
-    </div>
-    <b-popover
-      ref="popover"
-      target="popup"
-      placement="top"
-      :show.sync="showPopover"
-    >
-      {{ featureInfo.values_.count }}
-    </b-popover>
+      <div ref="map" class="map" :style="mapStyle" @resize="resize"></div>
+      <div v-show="showPopover" id="popup" style="width: 5px; height: 5px">
+        <span></span>
+      </div>
+      <b-popover
+        ref="popover"
+        target="popup"
+        placement="top"
+        :show.sync="showPopover"
+      >
+        {{ featureInfo.values_.count }}
+      </b-popover>
+    </BOverlay>
   </div>
 </template>
 
@@ -50,6 +52,7 @@ import { getCenter } from 'ol/extent';
 // import { easeOut } from 'ol/easing';
 import OSM from 'ol/source/OSM';
 import Control from 'ol/control/Control.js';
+import FullScreen from 'ol/control/FullScreen';
 
 //
 // Define rotate to north control.
@@ -194,6 +197,7 @@ export default {
       }),
       maxFeatureCount: null,
       currentResolution: null,
+      show: false,
     };
   },
   computed: {
@@ -240,6 +244,8 @@ export default {
         source: new OSM(),
       });
       const vol = new Control({ element: this.$refs.vol });
+      const fullScreen = new FullScreen();
+
       this.map = new Map({
         target: this.$refs.map,
         layers: [this.raster],
@@ -250,6 +256,7 @@ export default {
         }),
       });
       this.map.addControl(vol);
+      this.map.addControl(fullScreen);
       new ResizeObserver(this.resize).observe(this.$refs.container);
     },
     resize() {
@@ -320,7 +327,8 @@ export default {
 
       const styleItem = dataset.styles.find((s) => s.radius === radius);
 
-      const radius = (magnitude / ((resolution / 100) * 0.75) )* 0.045 + 5;
+      // const radius = (magnitude / ((resolution / 100) * 0.75) )* 0.045 + 5;
+      const radius = magnitude / 50 + resolution / 10 + 5;
       if (styleItem === undefined) {
         style = new Style({
           image: new Circle({
@@ -370,6 +378,7 @@ export default {
     },
 
     async updateMap(datasets) {
+      this.show = true;
       this.clearLayer();
 
       for (const dataset of datasets) {
@@ -380,6 +389,7 @@ export default {
       }
 
       this.map.render();
+      this.show = false;
     },
     clearLayer() {
       this.vectors.forEach((layer, index) => {
