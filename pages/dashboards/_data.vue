@@ -8,7 +8,8 @@
             :title.sync="locationName"
             :url.sync="url"
             sort="year"
-            system="dengeon"
+            :system="`${source}/${system}/${initial}`"
+
             :params.sync="paramsDatasets"
             @checked="changeDatasets"
           ></LazyCardsDatasets>
@@ -108,6 +109,9 @@ export default {
     };
   },
   created() {
+    this.source = this.$route.params.source;
+    this.system = this.$route.params.system;
+    this.initial = this.$route.params.initial;
     this.url = `${this.urlBase}${this.$route.params.system}/${this.initial}`;
     this.urlSerieRange = `${this.urlBaseSerieRange}${this.$route.params.system}/${this.initial}`;
     this.urlSerie = `${this.urlBaseSerie}${this.$route.params.system}/${this.initial}`;

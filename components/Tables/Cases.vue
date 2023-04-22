@@ -1,6 +1,6 @@
 <template>
-  <div class="card text-center shadow m-2">
-    <div class="card-body pl-2 pr-1 py-1">
+  <div class="card shadow m-2">
+    <div class="card-body pl-2 pr-1 py-1 text-left">
       <BTable striped hover :items="series" :fields="fields"></BTable>
     </div>
   </div>

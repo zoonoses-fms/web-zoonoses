@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12">
             <NuxtLink
-              :to="`/dashboards/data/datasus/${$route.params.system}/${initial}`"
+              :to="`/dashboards/data/${source}/${system}/${initial}`"
               class="btn btn-sm btn-block btn-info d-flex justify-content-between"
             >
               <BIconBarChart />Estatísticas

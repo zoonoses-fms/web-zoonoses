@@ -1,19 +1,21 @@
 <template>
-  <div class="card text-center shadow m-2">
+  <div class="card shadow m-2">
     <div class="row">
-      <div class="col-12 col-md-6 col-lg-4 table-cases">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 table-cases">
+        <CardsControlElementMap @changeControl="getControlItens" />
         <LazyTablesCases
           :id="id"
           :url.sync="urlSerie"
           :params="paramsSerieByCases"
         />
       </div>
-      <div class="col-12 col-md-6 col-lg-8 map-points">
+      <div class="col-12 col-md-6 col-lg-8 col-xl-9 map-points text-center">
         <client-only placeholder="Loading...">
           <LazyOlMapViewHeatmaps
             height="80"
             :map-features.sync="mapFeatures"
             :zoom-out="14"
+            :map-control-itens="mapControlItens"
           >
           </LazyOlMapViewHeatmaps>
         </client-only>
@@ -42,6 +44,7 @@ export default {
         limit: 20,
       },
       mapFeatures: [],
+      mapControlItens: [],
       paramsSerieByCases: {
         per: 'nm_bairro',
         rating: 'nm_bairro',
@@ -91,6 +94,33 @@ export default {
         }
       }
       this.mapFeatures = await geocodes;
+    },
+    getControlItens(itens) {
+      const mapControlItens = [];
+      itens.forEach(async (item) => {
+        const response = await this.$axios.get(`${item}`);
+        const mapElements = response.data;
+        const geocodes = [];
+
+        for (const [index, item] of mapElements.entries()) {
+          if (item.geometry != null) {
+            item.geometry = JSON.parse(item.geometry);
+            item.geometry.coordinates.splice(2, 1);;
+            geocodes.push({
+              type: 'Feature',
+              id: index,
+              geometry: item.geometry,
+              // properties: { ...item },
+            });
+          }
+        }
+
+        mapControlItens.push({
+          name: item,
+          features: geocodes,
+        });
+      });
+      this.mapControlItens = mapControlItens;
     },
   },
 };

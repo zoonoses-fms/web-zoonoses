@@ -42,6 +42,7 @@ import hexToRgba from 'hex-to-rgba';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
+// import LayerGroup from 'ol/layer/Group';
 // import GeomPoint from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
 import HeatmapLayer from 'ol/layer/Heatmap';
@@ -51,21 +52,23 @@ import Text from 'ol/style/Text';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Circle from 'ol/style/Circle';
+import Icon from 'ol/style/Icon';
 import RegularShape from 'ol/style/RegularShape';
 // import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Select } from 'ol/interaction';
 import Overlay from 'ol/Overlay';
+// import { forEachCorner, getCenter } from 'ol/extent';
 import { getCenter } from 'ol/extent';
 // import { easeOut } from 'ol/easing';
 import OSM from 'ol/source/OSM';
 import Control from 'ol/control/Control';
 import FullScreen from 'ol/control/FullScreen';
 
-
 //
 // Define rotate to north control.
 //
+// bannerFms: require('~/assets/img/banner/banner-fms.png'),
 
 export default {
   name: 'OlMapViewPoints',
@@ -102,19 +105,23 @@ export default {
       type: String,
       default: '#dc3545',
     },
+    mapControlItens: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
       source: null,
-      vectorAdd: null,
-      sourceAdd: null,
       vector: null,
       raster: null,
+      layersControls: [],
       map: null,
       features: [],
       featuresEdited: [],
       offsetWidth: null,
-      modify: null,
       selectedEditable: null,
       selectedInfo: null,
       draw: null,
@@ -174,14 +181,13 @@ export default {
           }),
         }),
       }),
-      styleRadar: new Style({
-        image: new Circle({
-          stroke: new Stroke({
-            color: hexToRgba(this.colorRadar, 1),
-            width: 2,
-          }),
-          radius: 30,
-          points: 1,
+      styleIcon: new Style({
+        image: new Icon({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          scale: 0.35,
+          src: require('~/assets/img/rubber_shop.png'),
         }),
       }),
       legendControl: null,
@@ -210,6 +216,9 @@ export default {
       this.sensitivity = Number(value);
 
       this.updateFeatures(this.mapFeatures);
+    },
+    mapControlItens(values) {
+      this.updateControlsItens(values);
     },
     deep: true,
   },
@@ -245,16 +254,6 @@ export default {
         wrapX: false,
       });
 
-      this.sourceAdd = new VectorSource({
-        style: this.styleAdd,
-        wrapX: false,
-      });
-
-      this.vectorAdd = new VectorLayer({
-        source: this.sourceAdd,
-        style: this.styleAdd,
-      });
-
       this.raster = new TileLayer({
         source: new OSM(),
       });
@@ -264,7 +263,7 @@ export default {
 
       this.map = new Map({
         target: this.$refs.map,
-        layers: [this.raster, this.vector, this.vectorAdd],
+        layers: [this.raster, this.vector],
         view: new View({
           projection: 'EPSG:3857',
           center: [-4765711.89, -567780.5],
@@ -274,32 +273,9 @@ export default {
       this.map.addControl(vol);
       this.map.addControl(fullScreen);
       new ResizeObserver(this.resize).observe(this.$refs.container);
-      /*
-      this.source.on('addfeature', () => {
-        if (!this.add) {
-          this.$emit('featuresload', false);
-          this.map.getView().fit(this.features[0].getGeometry());
-          this.map
-            .getView()
-            .animate({ zoom: this.map.getView().getZoom() - this.zoomOut });
-        }
-      });
-       */
+
       this.setInfo(true);
       this.setLegend();
-
-      // document.getElementById('gr').appendChild(this.vector.gradient_);
-      // Desenha o gradiente de cores na legenda
-      /*       var canvas = document.getElementById('legend-gradient');
-      var context = canvas.getContext('2d');
-      var gradient = context.createLinearGradient(0, 0, canvas.width, 0);
-      gradient.addColorStop(0, '#FF0000');
-      gradient.addColorStop(0.25, '#FFA500');
-      gradient.addColorStop(0.5, '#FFFF00');
-      gradient.addColorStop(0.75, '#00FF00');
-      gradient.addColorStop(1, '#0000FF');
-      context.fillStyle = gradient;
-      context.fillRect(0, 0, canvas.width, canvas.height); */
     },
     resize() {
       setTimeout(() => {
@@ -309,7 +285,7 @@ export default {
     updateFeatures(mapFeatures) {
       this.show = true;
       this.source.clear();
-      this.map.render();
+      // this.map.render();
       const geoJsonfeatures = {
         type: 'FeatureCollection',
         name: 'the_blocks',
@@ -321,12 +297,6 @@ export default {
       };
 
       this.features = new GeoJSON().readFeatures(geoJsonfeatures);
-
-      /*
-      for (const feature of this.features) {
-        feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
-      }
-      */
 
       this.source.addFeatures(this.features);
       this.show = false;
@@ -362,9 +332,6 @@ export default {
       } else {
         this.map.removeInteraction(this.selectedInfo);
       }
-    },
-    changeFeatureName() {
-      this.$emit('modify', new GeoJSON().writeFeatures([this.featureInfo]));
     },
     setLegend() {
       if (process.client) {
@@ -422,6 +389,43 @@ export default {
           }),
         }),
       });
+    },
+    updateControlsItens(mapControlItens) {
+      this.show = true;
+      this.layersControls.forEach((item) => {
+        this.map.removeLayer(item);
+      });
+
+      this.layersControls = [];
+
+      mapControlItens.forEach((element) => {
+        const layer = new VectorLayer({
+          source: new VectorSource(),
+          style: this.styleIcon,
+          wrapX: false,
+        });
+
+        const geoJsonfeatures = {
+          type: 'FeatureCollection',
+          name: element.name,
+          crs: {
+            type: 'name',
+            properties: { name: 'urn:ogc:def:crs:EPSG::3857' },
+          },
+          features: element.features,
+        };
+
+        const features = new GeoJSON().readFeatures(geoJsonfeatures);
+        console.log(features[0].getGeometry());
+        console.log(layer.getSource());
+        layer.getSource().addFeatures(features);
+
+        this.map.addLayer(layer);
+
+        this.layersControls.push(layer);
+
+      });
+      this.show = false;
     },
   },
 };

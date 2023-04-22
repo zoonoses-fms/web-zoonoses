@@ -322,13 +322,15 @@ export default {
         .reduce((accumulator, object) => {
           return accumulator + object.get('count');
         }, 0);
+
+      const radius = magnitude / 50 + resolution / 10 + 5;
+
       const sourceId = feature.get('features')[0].get('source_id');
       const dataset = this.datasets.find((d) => d.id === sourceId);
 
       const styleItem = dataset.styles.find((s) => s.radius === radius);
-
       // const radius = (magnitude / ((resolution / 100) * 0.75) )* 0.045 + 5;
-      const radius = magnitude / 50 + resolution / 10 + 5;
+
       if (styleItem === undefined) {
         style = new Style({
           image: new Circle({
@@ -388,7 +390,7 @@ export default {
         this.map.addLayer(layer);
       }
 
-      this.map.render();
+      // this.map.render();
       this.show = false;
     },
     clearLayer() {

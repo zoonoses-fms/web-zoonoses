@@ -239,6 +239,7 @@ export default {
         'ol/layer/Tile',
         'ol/layer/Vector',
         'ol/layer/Heatmap',
+        'ol/layer/Group',
         'ol/source/Vector',
         'ol/source/Cluster',
         'ol/source/OSM',
