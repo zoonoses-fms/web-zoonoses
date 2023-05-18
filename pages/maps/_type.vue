@@ -1,7 +1,7 @@
 <template>
   <div class="page pr-2">
     <article class="cell cell-map">
-      <b-overlay :show="showOverlay" rounded="sm">
+      <BOverlay :show="showOverlay" rounded="sm">
         <client-only>
           <LazyOlMap
             :map-features="mapFeatures"
@@ -17,7 +17,7 @@
             @deleteAddFeature="setDeleteFearures"
           ></LazyOlMap>
         </client-only>
-      </b-overlay>
+      </BOverlay>
     </article>
     <aside class="cell cell-edit">
       <div class="card p-1 content-location">
@@ -405,6 +405,7 @@ export default {
               name: map.name,
               description: map.description,
               gid: map.gid,
+              properties: map.properties ?  map.properties : ''
             },
           });
         }

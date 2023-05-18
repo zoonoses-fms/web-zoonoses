@@ -20,6 +20,15 @@
           placeholder="name"
         />
       </div>
+      <div v-if="featureInfo.values_.properties !== undefined" class="form-group">
+        <label>Imóveis:</label>
+        <input
+          v-model="featureInfo.values_.properties"
+          type="number"
+          class="form-control"
+          placeholder="Número de Imóveis"
+        />
+      </div>
       <button
         type="button"
         class="btn btn-primary"
