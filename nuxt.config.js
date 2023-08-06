@@ -141,6 +141,7 @@ export default {
       'BIconPlus',
       'BIconChevronRight',
       'BIconHouse',
+      'BIconClipboard',
       'BIconSignpostSplit',
       'BIconPencil',
       'BIconPeople',

@@ -56,7 +56,11 @@
                           type="email"
                           label="Email"
                           placeholder="Email"
-                          @blur="checkEmail"
+                          @blur="
+                            () => {
+                              checkEmail();
+                            }
+                          "
                         >
                         </b-form-input>
 
@@ -136,6 +140,7 @@
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Senha"
+                      vid="Senha"
                       :rules="{ required: true, min: 5 }"
                     >
                       <b-form-group label="Senha" label-for="password-input">
@@ -161,7 +166,7 @@
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Confirme a senha"
-                      rules="required|password:@Senha"
+                      rules="required|confirmed:Senha"
                     >
                       <b-form-group
                         label="Confirme a senha"
@@ -258,6 +263,7 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { mask } from 'vue-the-mask';
 import is from '@/mixins/is';
+
 export default {
   name: 'FormsUser',
   components: {
@@ -322,7 +328,7 @@ export default {
   },
   computed: {},
   created() {
-    this.id = this.oldUser.id;
+    if (this.oldUser.id !== null) this.id = this.oldUser.id;
     this.user = { ...this.oldUser };
   },
   mounted() {},
@@ -448,13 +454,20 @@ export default {
       });
     },
     async checkEmail() {
-      const response = await this.$axios.get(
-        `/users/check-email/${this.user.email}`
-      );
-      const status = await response.data;
-
-      if (status) {
-        this.$toast.error('Email já cadastrado');
+      if (this.user.id === null) {
+        const response = await this.$axios.get(
+          `/users/check-email?email=${this.user.email}`
+        );
+        const status = await response.data;
+        console.log(status);
+        if (status) {
+          this.$bvToast.toast('Email já cadastrado', {
+              title: 'Error',
+              autoHideDelay: 5000,
+              variant: 'danger',
+              solid: true,
+            });
+        }
       }
     },
     async updateImage() {
