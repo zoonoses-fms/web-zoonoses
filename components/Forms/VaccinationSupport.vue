@@ -37,7 +37,7 @@
                           type="button"
                           @click="getGeocodingByName"
                         >
-                          <b-icon-search></b-icon-search>
+                          <BIconSearch></BIconSearch>
                         </button>
                       </div>
                     </div>
@@ -174,7 +174,7 @@
                     type="button"
                     @click="getGeocodingByAddress"
                   >
-                    <b-icon-search></b-icon-search>
+                    <BIconSearch></BIconSearch>
                   </button>
                 </div>
               </div>

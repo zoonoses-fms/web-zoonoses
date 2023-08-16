@@ -27,7 +27,7 @@
                 type="button"
                 @click="getRows"
               >
-                <b-icon-search></b-icon-search>
+                <BIconSearch></BIconSearch>
               </button>
             </div>
           </div>

@@ -131,7 +131,7 @@
                 :to="`/ncrlo/campaign/support/${data.item.id}`"
                 class="btn btn-warning"
               >
-                <b-icon-search></b-icon-search>
+                <BIconSearch></BIconSearch>
               </NuxtLink>
             </template>
             <template #cell(delete)="data">

@@ -61,7 +61,7 @@
                 :to="`/ncrlo/campaign/${data.item.id}`"
                 class="btn btn-warning"
               >
-                <b-icon-search></b-icon-search>
+                <BIconSearch></BIconSearch>
               </NuxtLink>
             </template>
             <template #cell(edit)="data">
@@ -71,6 +71,14 @@
                 :old-campaign="data.item"
                 @input="feedback"
               ></LazyFormsCampaign>
+            </template>
+            <template #cell(verification)="data">
+              <NuxtLink
+                :to="`/ncrlo/campaign/verification/${data.item.id}`"
+                class="btn btn-warning"
+              >
+                <BIconCheckCircle></BIconCheckCircle>
+              </NuxtLink>
             </template>
             <template #cell(delete)="data">
               <LazyModalDelete
@@ -132,6 +140,10 @@ export default {
         {
           key: 'edit',
           label: 'Editar',
+        },
+        {
+          key: 'verification',
+          label: 'Verif.',
         },
         {
           key: 'delete',

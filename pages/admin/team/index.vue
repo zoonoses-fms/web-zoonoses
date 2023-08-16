@@ -20,7 +20,7 @@
           />
           <div class="input-group-append">
             <span class="input-group-text">
-              <b-icon-search></b-icon-search>
+              <BIconSearch></BIconSearch>
             </span>
           </div>
         </div>

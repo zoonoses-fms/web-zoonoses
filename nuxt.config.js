@@ -108,6 +108,8 @@ export default {
       'BNavbarNav',
       'BNavItem',
       'BCollapse',
+      'BListGroup',
+      'BListGroupItem',
       'BPopover',
       'BAvatar',
       'BButton',
