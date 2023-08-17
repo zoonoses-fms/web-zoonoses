@@ -24,7 +24,6 @@
               {{ data.item.name }}
             </template>
             <template #cell(type)="data">
-              {{ data.item.workerId }}: {{ data.item.type }}
               <BFormRadioGroup
                 v-slot="{ ariaDescribedby }"
                 v-model="data.item.type"
@@ -121,7 +120,6 @@
                 {{ data.item.name }}
               </template>
               <template #cell(type)="data">
-                {{ data.item.workerId }}: {{ data.item.type }}
                 <BFormRadioGroup
                   v-slot="{ ariaDescribedby }"
                   v-model="data.item.type"
@@ -226,7 +224,6 @@
                 {{ data.item.name }}
               </template>
               <template #cell(type)="data">
-                {{ data.item.workerId }}: {{ data.item.type }}
                 <BFormRadioGroup
                   v-slot="{ ariaDescribedby }"
                   v-model="data.item.type"
@@ -421,7 +418,7 @@ export default {
       });
       try {
         const response = await this.$axios.put(
-          `${this.urlWorker}${workerId}/?${q.toString()}`,
+          `${this.urlWorker}${workerId}/?${q.toString()}`
         );
         this.$bvToast.toast('Cadastro atualizado!', {
           title: 'Sucesso',
