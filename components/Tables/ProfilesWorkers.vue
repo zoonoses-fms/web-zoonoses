@@ -23,6 +23,34 @@
             <template #cell(name)="data">
               {{ data.item.name }}
             </template>
+            <template #cell(type)="data">
+              {{ data.item.workerId }}: {{ data.item.type }}
+              <BFormRadioGroup
+                v-slot="{ ariaDescribedby }"
+                v-model="data.item.type"
+                label="Tipo"
+                @change="changeTypeWorker(data.item.workerId, data.item.type)"
+              >
+                <BFormRadio
+                  :aria-describedby="ariaDescribedby"
+                  name="type-worker"
+                  value="fms"
+                  >FMS
+                </BFormRadio>
+                <BFormRadio
+                  :aria-describedby="ariaDescribedby"
+                  name="type-worker"
+                  value="ace"
+                  >ACE
+                </BFormRadio>
+                <BFormRadio
+                  :aria-describedby="ariaDescribedby"
+                  name="type-worker"
+                  value="acs"
+                  >ACS
+                </BFormRadio>
+              </BFormRadioGroup>
+            </template>
             <template #cell(is_confirmation)="data">
               <BFormCheckbox
                 :id="`checkbox-${data.item.id}`"
@@ -91,6 +119,34 @@
             >
               <template #cell(name)="data">
                 {{ data.item.name }}
+              </template>
+              <template #cell(type)="data">
+                {{ data.item.workerId }}: {{ data.item.type }}
+                <BFormRadioGroup
+                  v-slot="{ ariaDescribedby }"
+                  v-model="data.item.type"
+                  label="Tipo"
+                  @change="changeTypeWorker(data.item.workerId, data.item.type)"
+                >
+                  <BFormRadio
+                    :aria-describedby="ariaDescribedby"
+                    name="type-worker"
+                    value="fms"
+                    >FMS
+                  </BFormRadio>
+                  <BFormRadio
+                    :aria-describedby="ariaDescribedby"
+                    name="type-worker"
+                    value="ace"
+                    >ACE
+                  </BFormRadio>
+                  <BFormRadio
+                    :aria-describedby="ariaDescribedby"
+                    name="type-worker"
+                    value="acs"
+                    >ACS
+                  </BFormRadio>
+                </BFormRadioGroup>
               </template>
               <template #cell(is_confirmation)="data">
                 <BFormCheckbox
@@ -169,6 +225,34 @@
               <template #cell(name)="data">
                 {{ data.item.name }}
               </template>
+              <template #cell(type)="data">
+                {{ data.item.workerId }}: {{ data.item.type }}
+                <BFormRadioGroup
+                  v-slot="{ ariaDescribedby }"
+                  v-model="data.item.type"
+                  label="Tipo"
+                  @change="changeTypeWorker(data.item.workerId, data.item.type)"
+                >
+                  <BFormRadio
+                    :aria-describedby="ariaDescribedby"
+                    name="type-worker"
+                    value="fms"
+                    >FMS
+                  </BFormRadio>
+                  <BFormRadio
+                    :aria-describedby="ariaDescribedby"
+                    name="type-worker"
+                    value="ace"
+                    >ACE
+                  </BFormRadio>
+                  <BFormRadio
+                    :aria-describedby="ariaDescribedby"
+                    name="type-worker"
+                    value="acs"
+                    >ACS
+                  </BFormRadio>
+                </BFormRadioGroup>
+              </template>
               <template #cell(is_confirmation)="data">
                 <BFormCheckbox
                   :id="`checkbox-${data.item.id}`"
@@ -212,6 +296,11 @@ export default {
           sortable: true,
         },
         {
+          key: 'type',
+          label: 'Tipo',
+          sortable: true,
+        },
+        {
           key: 'is_confirmation',
           label: 'Confirmado',
           sortable: true,
@@ -231,6 +320,11 @@ export default {
         {
           key: 'profile',
           label: 'Perfil',
+          sortable: true,
+        },
+        {
+          key: 'type',
+          label: 'Tipo',
           sortable: true,
         },
         {
@@ -276,6 +370,11 @@ export default {
           sortable: true,
         },
         {
+          key: 'type',
+          label: 'Tipo',
+          sortable: true,
+        },
+        {
           key: 'saads',
           label: 'SAAD',
           sortable: true,
@@ -300,6 +399,7 @@ export default {
       sortDirection: 'asc',
       profilesCycle: [],
       url: 'ncrlo/campaign/worker/',
+      urlWorker: 'ncrlo/vaccination/worker/',
     };
   },
   watch: {
@@ -315,6 +415,35 @@ export default {
     });
   },
   methods: {
+    changeTypeWorker: async function (workerId, type) {
+      const q = new URLSearchParams({
+        change_type: type,
+      });
+      try {
+        const response = await this.$axios.put(
+          `${this.urlWorker}${workerId}/?${q.toString()}`,
+        );
+        this.$bvToast.toast('Cadastro atualizado!', {
+          title: 'Sucesso',
+          autoHideDelay: 5000,
+          variant: 'success',
+          solid: true,
+        });
+        this.$emit('update', await response.data);
+        this.show = false;
+      } catch (errors) {
+        for (const prop in errors.response.data) {
+          errors.response.data[prop].forEach((element) => {
+            this.$bvToast.toast(element, {
+              title: 'Error',
+              autoHideDelay: 5000,
+              variant: 'danger',
+              solid: true,
+            });
+          });
+        }
+      }
+    },
     getWorkersPoint: async function () {
       const q = new URLSearchParams({
         campaign_id: this.cycle.campaign_id,
@@ -342,6 +471,8 @@ export default {
           support: worker.support.support.name,
           point: worker.point.point.name,
           profile: worker.profile.name,
+          workerId: worker.worker.id,
+          type: worker.worker.type,
           saads: saads.join(),
           is_confirmation: worker.is_confirmation,
           _rowVariant: worker.is_confirmation ? 'success' : 'danger',
@@ -376,6 +507,8 @@ export default {
           name: worker.worker.name,
           support: worker.support.support.name,
           profile: worker.profile.name,
+          workerId: worker.worker.id,
+          type: worker.worker.type,
           saads: saads.join(),
           is_confirmation: worker.is_confirmation,
           _rowVariant: worker.is_confirmation ? 'success' : 'danger',
@@ -423,11 +556,14 @@ export default {
       return date.toLocaleDateString('pt-BR');
     },
     createRow: function (profile, worker) {
+      console.log(worker.type);
       const date = this.getDate(worker);
       profile.workers.push({
         id: worker.pivot.id,
         date,
+        workerId: worker.id,
         name: worker.name,
+        type: worker.type,
         is_confirmation: worker.pivot.is_confirmation,
         _rowVariant: worker.pivot.is_confirmation ? 'success' : 'danger',
       });

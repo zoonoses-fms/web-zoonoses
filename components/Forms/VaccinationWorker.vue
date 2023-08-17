@@ -95,23 +95,20 @@
                 />
               </div>
             </div>
-            <b-form-radio-group v-slot="{ ariaDescribedby }" label="Tipo">
+            <b-form-radio-group v-slot="{ ariaDescribedby }" v-model="worker.type"  label="Tipo">
               <b-form-radio
-                v-model="worker.type"
                 :aria-describedby="ariaDescribedby"
                 name="type-worker"
                 value="fms"
                 >FMS
               </b-form-radio>
               <b-form-radio
-                v-model="worker.type"
                 :aria-describedby="ariaDescribedby"
                 name="type-worker"
                 value="ace"
                 >ACE
               </b-form-radio>
               <b-form-radio
-                v-model="worker.type"
                 :aria-describedby="ariaDescribedby"
                 name="type-worker"
                 value="acs"
