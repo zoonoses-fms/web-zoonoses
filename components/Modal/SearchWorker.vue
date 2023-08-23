@@ -46,14 +46,31 @@
                 :items="rows"
                 primary-key="id"
               >
+                <template #cell(id)="data">
+                  {{ data.item.id }}
+                </template>
                 <template #cell(name)="data">
                   {{ data.item.name }}
                 </template>
                 <template #cell(occupation)="data">
                   {{ data.item.occupation }}
                 </template>
-                <template #cell(location)="data">
-                  {{ data.item.location }}
+                <template #cell(cycle_name)="data">
+                  <NuxtLink :to="`/ncrlo/campaign/${data.item.campaign_id}`">
+                    {{ data.item.cycle_name }}
+                  </NuxtLink>
+                </template>
+                <template #cell(support_name)="data">
+                  <NuxtLink :to="`/ncrlo/campaign/cycle/${data.item.cycle_id}`">
+                    {{ data.item.support_name }}
+                  </NuxtLink>
+                </template>
+                <template #cell(point_name)="data">
+                  <NuxtLink
+                    :to="`/ncrlo/campaign/support/${data.item.support_id}`"
+                  >
+                    {{ data.item.point_name }}
+                  </NuxtLink>
                 </template>
               </BTable>
             </BCard>
@@ -89,6 +106,11 @@ export default {
       rows: [],
       fields: [
         {
+          key: 'id',
+          label: 'Id',
+          sortable: true,
+        },
+        {
           key: 'name',
           label: 'Name',
           sortable: true,
@@ -99,8 +121,18 @@ export default {
           sortable: true,
         },
         {
-          key: 'location',
-          label: 'Local',
+          key: 'cycle_name',
+          label: 'Etapa ',
+          sortable: true,
+        },
+        {
+          key: 'support_name',
+          label: 'AP ',
+          sortable: true,
+        },
+        {
+          key: 'point_name',
+          label: 'Posto ',
           sortable: true,
         },
       ],
@@ -128,6 +160,8 @@ export default {
           params,
         });
         this.rows = await response.data;
+
+        console.log(this.rows);
       } catch (error) {
         /* if(error.response.status === 401) {
                   this.$router.push('/');

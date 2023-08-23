@@ -28,12 +28,13 @@
                 selected-label="Selecionado"
                 :multiple="profile.is_multiple"
                 track-by="id"
-                label="name"
+                label="label"
                 placeholder="Selecione"
                 :allow-empty="true"
                 @select="select"
               >
                 <template slot="singleLabel" slot-scope="{ option }">
+                  <strong>{{ option.id }}</strong> : 
                   <strong>{{ option.name }}</strong> Matrícula
                   <strong>{{ option.registration }}</strong>
                 </template>
@@ -86,12 +87,13 @@
                       selected-label="Selecionado"
                       :multiple="profile.is_multiple"
                       track-by="id"
-                      label="name"
+                      label="label"
                       placeholder="Selecione"
                       :allow-empty="true"
                       @select="select"
                     >
                       <template slot="singleLabel" slot-scope="{ option }">
+                        <strong>{{ option.id }}</strong> : 
                         <strong>{{ option.name }}</strong> Matrícula
                         <strong>{{ option.registration }}</strong>
                       </template>
