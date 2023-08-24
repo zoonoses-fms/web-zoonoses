@@ -10,15 +10,12 @@
           {{ profile.name }} - {{ profile.management }}
         </div>
         <div class="card-body p-0">
-          <div
-            v-if="profile.is_pre_campaign == 0"
-            class="input-group"
-          >
+          <div v-if="profile.is_pre_campaign == 0" class="input-group">
             <label class="form-control h-auto">
               <Multiselect
                 v-model="profile.workers[0]"
                 :options="
-                  profile.is_pre_load ? [...preListWorker] : [...listWorkers]
+                  profile.is_pre_load ? [...preListWorker[0]] : [...listWorkers]
                 "
                 :searchable="true"
                 :close-on-select="!profile.is_multiple"
@@ -34,7 +31,7 @@
                 @select="select"
               >
                 <template slot="singleLabel" slot-scope="{ option }">
-                  <strong>{{ option.id }}</strong> : 
+                  <strong>{{ option.id }}</strong> :
                   <strong>{{ option.name }}</strong> Matrícula
                   <strong>{{ option.registration }}</strong>
                 </template>
@@ -93,7 +90,7 @@
                       @select="select"
                     >
                       <template slot="singleLabel" slot-scope="{ option }">
-                        <strong>{{ option.id }}</strong> : 
+                        <strong>{{ option.id }}</strong> :
                         <strong>{{ option.name }}</strong> Matrícula
                         <strong>{{ option.registration }}</strong>
                       </template>
