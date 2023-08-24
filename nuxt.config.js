@@ -156,6 +156,8 @@ export default {
       'BIconBarChart',
       'BIconTrash',
       'BIconPrinter',
+      'BIconFilePdf',
+      'BIconTable',
       'BIconPersonBadgeFill',
       'BIconCurrencyDollar',
       'BIconXCircle',

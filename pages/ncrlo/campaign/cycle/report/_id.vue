@@ -13,9 +13,12 @@
           >
             Faixa Etária de Canino
           </NuxtLink>
-          <b-button class="mt-0" variant="warning" @click="reportPdf(cycle)">
-            <b-icon-printer></b-icon-printer>
-          </b-button>
+          <BButton class="mt-0" variant="danger" @click="reportPdf(cycle)">
+            <BIconFilePdf></BIconFilePdf>
+          </BButton>
+          <BButton class="mt-0" variant="info" @click="reportXls(cycle)">
+            <BIconTable></BIconTable>
+          </BButton>
         </template>
       </BCard>
     </div>
@@ -300,6 +303,31 @@ export default {
         link.href = window.URL.createObjectURL(blob);
         link.target = '_blank';
         link.download = `${today}-Relatório de vacinação.pdf`;
+        link.click();
+        // window.open(url);
+        // console.log(response);
+      } catch (error) {
+        const message =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+        console.log(message);
+      }
+    },
+    async reportXls(support) {
+      try {
+        const response = await this.$axios.get(`${this.url}xlsx/${support.id}`, {
+          responseType: 'blob',
+        });
+        const today = new Date().toISOString().slice(0, 10);
+        const blob = new Blob([response.data], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        // const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = '_blank';
+        link.download = `${today}-Relatório de vacinação.xlsx`;
         link.click();
         // window.open(url);
         // console.log(response);
