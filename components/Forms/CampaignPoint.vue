@@ -29,6 +29,26 @@
                       />
                     </div>
                     <div class="col-12 col-md-6 col-lg-3">
+                      <label for="goal-input">Meta Cães:</label>
+                      <input
+                        v-model="point.goal_dogs"
+                        name="goal-input"
+                        class="form-control form-control-sm"
+                        type="number"
+                      />
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                      <label for="goal-input">Meta Gatos:</label>
+                      <input
+                        v-model="point.goal_cats"
+                        name="goal-input"
+                        class="form-control form-control-sm"
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-12 col-md-6 col-lg-3">
                       <label for="total-input">Total:</label>
                       <input
                         v-model="point.total"
@@ -312,12 +332,14 @@ export default {
       default() {
         return {
           id: null,
-         campaign_support_id: null,
+          campaign_support_id: null,
           vaccination_point_id: null,
           supervisor_id: null,
           order: null,
           area: null,
           goal: null,
+          goal_cats: null,
+          goal_dogs: null,
           male_dog_under_4m: null,
           female_dog_under_4m: null,
           male_dog_major_4m_under_1y: null,
@@ -369,7 +391,7 @@ export default {
         default() {
           return {
             id: null,
-           campaign_support_id: null,
+            campaign_support_id: null,
             vaccination_point_id: null,
             supervisor_id: null,
             order: null,

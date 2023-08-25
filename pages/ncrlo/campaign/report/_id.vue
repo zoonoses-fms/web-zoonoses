@@ -8,11 +8,7 @@
             {{ campaign.start }}
             {{ campaign.end != null ? ' - ' + campaign.end : '' }}
           </h6>
-          <b-button
-            class="mt-0"
-            variant="warning"
-            @click="reportPdf(campaign)"
-          >
+          <b-button class="mt-0" variant="warning" @click="reportPdf(campaign)">
             <b-icon-printer></b-icon-printer>
           </b-button>
         </template>
@@ -62,9 +58,27 @@
           <template #cell(total)="data">
             {{ data.item.total.toLocaleString('pt-BR') }}
           </template>
-          <template #cell(goal)="data">
-            {{ data.item.goal.toLocaleString('pt-BR') }}
+          
+          <template #cell(goal_dogs)="data">
+            {{ data.item.goal_dogs | locateNumber }}
           </template>
+
+          <template #cell(goal_cats)="data">
+            {{ data.item.goal_cats | locateNumber }}
+          </template>
+
+          <template #cell(calcGoalDogs)="data">
+            {{ calcGoalDogs(data.item) }}
+          </template>
+
+          <template #cell(calcGoalCats)="data">
+            {{ calcGoalCats(data.item) }}
+          </template>
+
+          <template #cell(goal)="data">
+            {{ data.item.goal | locateNumber }}
+          </template>
+
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
@@ -97,7 +111,7 @@
           <template #cell(male_cat)="data">
             {{ data.item.male_cat.toLocaleString('pt-BR') }}
           </template>
->
+          >
           <template #cell(female_cat)="data">
             {{ data.item.female_cat.toLocaleString('pt-BR') }}
           </template>
@@ -109,9 +123,27 @@
           <template #cell(total)="data">
             {{ data.item.total.toLocaleString('pt-BR') }}
           </template>
-          <template #cell(goal)="data">
-            {{ data.item.goal.toLocaleString('pt-BR') }}
+          
+          <template #cell(goal_dogs)="data">
+            {{ data.item.goal_dogs | locateNumber }}
           </template>
+
+          <template #cell(goal_cats)="data">
+            {{ data.item.goal_cats | locateNumber }}
+          </template>
+
+          <template #cell(calcGoalDogs)="data">
+            {{ calcGoalDogs(data.item) }}
+          </template>
+
+          <template #cell(calcGoalCats)="data">
+            {{ calcGoalCats(data.item) }}
+          </template>
+
+          <template #cell(goal)="data">
+            {{ data.item.goal | locateNumber }}
+          </template>
+
           <template #cell(calcGoal)="data">
             {{ calcGoal(data.item) }}
           </template>
@@ -136,7 +168,11 @@ export default {
         { key: 'female_cat', label: 'Gatas', sortable: false },
         { key: 'total_of_cats', label: 'Total Gatos', sortable: false },
         { key: 'total', label: 'Total', sortable: false },
+        { key: 'goal_dogs', label: 'Meta Cães', sortable: false },
+        { key: 'goal_cats', label: 'Meta Gatos', sortable: false },
         { key: 'goal', label: 'Meta', sortable: false },
+        { key: 'calcGoalDogs', label: 'Cobertura Cães', sortable: false },
+        { key: 'calcGoalCats', label: 'Cobertura Gatos', sortable: false },
         { key: 'calcGoal', label: 'Cobertura', sortable: false },
       ],
       fields: [
@@ -148,7 +184,11 @@ export default {
         { key: 'female_cat', label: 'Gatas', sortable: false },
         { key: 'total_of_cats', label: 'Total Gatos', sortable: false },
         { key: 'total', label: 'Total', sortable: false },
+        { key: 'goal_dogs', label: 'Meta Cães', sortable: false },
+        { key: 'goal_cats', label: 'Meta Gatos', sortable: false },
         { key: 'goal', label: 'Meta', sortable: false },
+        { key: 'calcGoalDogs', label: 'Cobertura Cães', sortable: false },
+        { key: 'calcGoalCats', label: 'Cobertura Gatos', sortable: false },
         { key: 'calcGoal', label: 'Cobertura', sortable: false },
       ],
     };
@@ -163,14 +203,31 @@ export default {
       );
 
       this.campaign = response.data;
-
-      /*       const saads = Object.keys(this.cycle.saads).map(
-        (key) => this.cycle.saads[key]
-      );
-      console.log(saads); */
     },
     calcGoal(item) {
       if (item.total > 0 && item.goal) {
+        const percent = item.total / (item.goal / 100);
+        return `${percent.toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}%`;
+      } else {
+        return '0%';
+      }
+    },
+    calcGoalDogs(item) {
+      if (item.total_of_dogs > 0 && item.goal_dogs) {
+        const percent = item.total / (item.goal / 100);
+        return `${percent.toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}%`;
+      } else {
+        return '0%';
+      }
+    },
+    calcGoalCats(item) {
+      if (item.total_of_cats > 0 && item.goal_cats) {
         const percent = item.total / (item.goal / 100);
         return `${percent.toLocaleString('pt-BR', {
           minimumFractionDigits: 2,
@@ -191,9 +248,12 @@ export default {
     },
     async reportPdf(campaign) {
       try {
-        const response = await this.$axios.get(`${this.url}pdf/${campaign.id}`, {
-          responseType: 'blob',
-        });
+        const response = await this.$axios.get(
+          `${this.url}pdf/${campaign.id}`,
+          {
+            responseType: 'blob',
+          }
+        );
         const today = new Date().toISOString().slice(0, 10);
         const blob = new Blob([response.data], { type: 'application/pdf' });
         // const url = window.URL.createObjectURL(blob);
