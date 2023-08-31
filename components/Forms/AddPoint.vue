@@ -11,16 +11,42 @@
       :id="`modal-xl-${id}`"
       size="xl"
       scrollable
-      title="Adicionar Ponto de Apoio"
+      title="Adicionar Posto"
     >
       <div class="row justify-content-between">
         <div class="col-12">
           <BCard class="text-center">
+            <div class="d-flex justify-content-end p-1">
+              <BFormGroup
+                label="Busca"
+                label-for="filter-input"
+                label-cols-sm="3"
+                label-align-sm="right"
+                label-size="sm"
+                class="mb-0"
+              >
+                <b-input-group size="sm">
+                  <b-form-input
+                    id="filter-input"
+                    v-model="filter"
+                    type="search"
+                    placeholder="Busca do posto"
+                  ></b-form-input>
+
+                  <b-input-group-append>
+                    <b-button :disabled="!filter" @click="filter = ''"
+                      >Limpar</b-button
+                    >
+                  </b-input-group-append>
+                </b-input-group>
+              </BFormGroup>
+            </div>
             <BTable
               id="table-campaign-supports"
               striped
               responsive
               hover
+              :filter="filter"
               :fields="fields"
               :items="viccinationPoints"
               primary-key="id"
@@ -85,6 +111,8 @@ export default {
       show: false,
       url: 'ncrlo/vaccination/point',
       viccinationPoints: [],
+      filter: "",
+      filterOn: ['neme', 'address'],
       fields: [
         {
           key: 'id',
